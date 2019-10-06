@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "esnext", /* BABEL will take this and transpile into appropriate version */
+    "pretty": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "lib": [
+      "es5",
+      "es2015.promise",
+      "es2017",
+      "es6",
+      "esnext"
+    ],
+    "types": [
+      /* "webpack-env",
+      "jest", */
+      "node"
+    ]
+  }
+}
