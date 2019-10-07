@@ -1,0 +1,22 @@
+type Query {
+  getPosts: [Post]!
+}
+
+type Mutation {
+  signUpUser(userInput: userInput): User!
+  addPost(postInput: postInput): Post!
+}
+
+input userInput {
+  userName: String!
+  email: String!
+  password: ID!
+}
+
+input postInput {
+  title: String!
+  imageUrl: String!
+  catagories: [String!]!
+  description: String!
+  createdBy: ID!
+}

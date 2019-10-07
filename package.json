@@ -11,8 +11,5 @@
   "dependencies": {
     "backend": "1.0.0",
     "frontend": "1.0.0"
-  },
-  "scripts": {
-    "server": "babel-node --extensions .ts,.js App/backend/index.ts"
   }
 }

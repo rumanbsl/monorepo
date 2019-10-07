@@ -1,0 +1,17 @@
+{
+  "editor.formatOnSave": false,
+  "eslint.autoFixOnSave": true,
+  "eslint.enable": true,
+  "eslint.validate": [
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "git.rebaseWhenSync": true,
+  "editor.snippetSuggestions": "top",
+  "docthis.includeDescriptionTag": true,
+  "javascript.suggest.completeJSDocs": true,
+  "better-comments.highlightPlainText": true
+}

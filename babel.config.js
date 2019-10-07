@@ -1,3 +1,7 @@
 module.exports = {
-  "plugins": ["dynamic-import-node", "@babel/syntax-dynamic-import", "@babel/transform-typescript"]
+  "plugins": [
+    "@babel/transform-typescript",
+    "dynamic-import-node",
+    "@babel/syntax-dynamic-import"
+  ]
 }

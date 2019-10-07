@@ -6,11 +6,7 @@ EXPOSE 3000
 
 WORKDIR /backend
 RUN mkdir project
-COPY ./babel.config.js\
-  ./tsconfig.json\
-  ./yarn.lock*.json\
-  ./backend/package*.json\
-  ./
+COPY ./yarn.lock*.json ./backend/package*.json ./
 RUN npm i -g yarn && yarn
 
 FROM base as prod
