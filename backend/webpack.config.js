@@ -1,51 +1,50 @@
 const path = require("path");
-const nodeExternals = require('webpack-node-externals');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const nodeExternals = require("webpack-node-externals");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-const mode = process.env.BUILD;
+const mode = process.env.BUILD || "production";
 
 const configuration = {
   entry: path.resolve(__dirname, "src", "main"),
-  output: {
-    filename: "[name].js"
-  },
+  output: { filename: "[name].js" },
   mode,
   devtool: "source-map",
   resolve: {
     extensions: [".wasm", ".mjs", ".js", ".ts", ".json", ".gql", ".graphql"],
-    alias: {
-      "@": path.resolve("./")
-    },
+    alias: { "@": path.resolve("./") },
   },
   target: "node",
   node: {
-    __dirname: false,
+    __dirname: true, // needed for all the fs operations
     __filename: false,
   },
   externals: [nodeExternals()],
   module: {
     rules: [
       {
-        test: /\.(js|ts)$/,
+        test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: mode === "production" ? "babel-loader" : "ts-loader",
-        }
+        use: { loader: "babel-loader" },
+      },
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: { loader: mode === "production" ? "babel-loader" : "ts-loader" },
       },
       {
         test: /\.(graphql|gql)$/,
         exclude: /node_modules/,
-        loader: 'graphql-tag/loader'
-      }
-    ]
+        loader: "graphql-tag/loader",
+      },
+    ],
   },
-  plugins: [new CleanWebpackPlugin()]
-}
+  plugins: [new CleanWebpackPlugin()],
+};
 
 if (mode === "development") {
   configuration.watchOptions = {
     poll: 1000,
-    ignored: ["*.{test,spec}.{js,ts}", "node_modules"]
+    ignored: ["*.{test,spec}.{js,ts}", "node_modules"],
   };
   const eslintConfig = {
     enforce: "pre",
@@ -53,9 +52,9 @@ if (mode === "development") {
     include: path.resolve(__dirname, "src"),
     exclude: /node_modules/,
     loader: "eslint-loader",
-    options: { fix: true }
+    options: { fix: true },
   };
-  configuration.module.rules.push(eslintConfig)
+  configuration.module.rules.push(eslintConfig);
 }
 console.log(`..... Running ${mode} build .....`);
 

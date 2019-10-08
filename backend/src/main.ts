@@ -1,56 +1,54 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import http, { Server } from "http";
 import console from "chalk-console";
-import { ApolloServer } from "apollo-server-express";
-
+import { readFileSync } from "fs";
+import { resolve } from "path";
+import http, { Server } from "http";
 import App from "./app";
-import resolvers from "@/src/graphql-api/resolvers";
-import typeDefs from "@/src/graphql-api/typeDefs";
 
-try {
-  const PORT = process.env.PORT || 3000;
+console.log(readFileSync(resolve(__dirname, "txt.html"), { encoding: "utf-8" }));
 
-  const configureHttpServer = (httpServer: Server): void => {
-    console.info("Creating Express app");
-    const app = App();
-    console.info("Creating Apollo server");
-    const apolloServer = new ApolloServer({
-      typeDefs,
-      resolvers,
-    });
+(async function (): Promise<void> {
+  try {
+    const { app, initializeApolloServer } = await App();
+    const PORT = process.env.PORT || 3000;
+    const configureHttpServer = (httpServer: Server): void => {
+      console.info("Creating Express app");
+      console.info("Creating Apollo server");
+      const apolloServer = initializeApolloServer();
 
-    apolloServer.applyMiddleware({ app });
-    console.info("Express app created with Apollo middleware");
+      apolloServer.applyMiddleware({ app, path: "/graphql" });
+      console.info("Express app created with Apollo middleware");
 
-    httpServer.on("request", app);
-    apolloServer.installSubscriptionHandlers(httpServer);
-  };
+      httpServer.on("request", app);
+      apolloServer.installSubscriptionHandlers(httpServer);
+    };
 
-  if (!(process as any).httpServer) {
-    console.info("Creating HTTP server");
+    if (!(process as any).httpServer) {
+      console.info("Creating HTTP server");
 
-    (process as any).httpServer = http.createServer();
+      (process as any).httpServer = http.createServer();
 
-    configureHttpServer((process as any).httpServer);
+      configureHttpServer((process as any).httpServer);
 
-    (process as any).httpServer.listen(PORT, () => {
-      console.info(`HTTP server ready at http://localhost:${PORT}`);
-      console.info(`Websocket server ready at ws://localhost:${PORT}`);
-    });
-  } else {
-    console.info("Reloading HTTP server");
-    (process as any).httpServer.removeAllListeners("upgrade");
-    (process as any).httpServer.removeAllListeners("request");
+      (process as any).httpServer.listen(PORT, () => {
+        console.info(`HTTP server ready at http://localhost:${PORT}`);
+        console.info(`Websocket server ready at ws://localhost:${PORT}`);
+      });
+    } else {
+      console.info("Reloading HTTP server");
+      (process as any).httpServer.removeAllListeners("upgrade");
+      (process as any).httpServer.removeAllListeners("request");
 
-    configureHttpServer((process as any).httpServer);
+      configureHttpServer((process as any).httpServer);
 
-    console.info("HTTP server reloaded");
+      console.info("HTTP server reloaded");
+    }
+  } catch (error) {
+    console.error(error);
   }
-} catch (error) {
-  console.error(error);
-}
 
-if (module.hot) {
-  console.info("HOT SWAPPING");
-  module.hot.accept();
-}
+  if (module.hot) {
+    console.info("HOT SWAPPING");
+    module.hot.accept();
+  }
+}());

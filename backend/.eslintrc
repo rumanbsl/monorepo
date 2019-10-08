@@ -97,6 +97,7 @@
       "error",
       2
     ],
+    "@typescript-eslint/ban-ts-ignore": ["off"],
     "@typescript-eslint/semi": ["error"],
     "@typescript-eslint/camelcase": [
       "error",
@@ -114,6 +115,14 @@
         "@typescript-eslint/explicit-function-return-type": 0,
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-unused-vars": 0,
+        "import/no-extraneous-dependencies": 0
+      }
+    },
+    {
+      "files": "webpack.*.{js,ts}",
+      "rules": {
+        "@typescript-eslint/no-var-requires": 0,
+        "require-jsdoc": 0,
         "import/no-extraneous-dependencies": 0
       }
     }

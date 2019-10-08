@@ -1,4 +1,22 @@
 {
-  "workbench.settings.useSplitJSON": true,
-  "json.format.enable": false
+  "editor.formatOnSave": false,
+  "eslint.autoFixOnSave": true,
+  "eslint.enable": true,
+  "eslint.validate": [
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "git.rebaseWhenSync": true,
+  "editor.snippetSuggestions": "top",
+  "docthis.includeDescriptionTag": true,
+  "typescript.suggest.completeJSDocs": false,
+  "javascript.suggest.completeJSDocs": false,
+  "better-comments.highlightPlainText": true
 }

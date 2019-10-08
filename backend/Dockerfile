@@ -1,15 +1,20 @@
-# cd ../../ && docker build -f ./backend/Dockerfile . --target=prod
-
-# !NOTE => Since we are copying files from ../../ the build context is also there, and docker build should be run from there
-FROM node:12 as base
+FROM node:12-alpine as base
 EXPOSE 3000
-
 WORKDIR /backend
-RUN mkdir project
-COPY ./yarn.lock*.json ./backend/package*.json ./
-RUN npm i -g yarn && yarn
+COPY ./package*.json ./
+
+# Intermediate stage, only to build prduction code
+FROM base as build
+RUN npm i
+COPY . .
+RUN npm run build
+
+FROM build as dev
+CMD [ "npm", "run", "start" ]
 
 FROM base as prod
-WORKDIR /backend/project
-COPY ./backend .
-CMD [ "yarn", "start" ]
+RUN rm -rf node_modules
+RUN npm i --only=prod
+COPY --from=build /backend/dist ./dist
+COPY --from=build /backend/src ./src
+CMD ["node", "./dist/main.js"]
