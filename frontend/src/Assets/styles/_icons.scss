@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "Fbly-icons";
+  src: url('../icon-fonts/Fbly-icons.eot');
+  src: url('../icon-fonts/Fbly-icons.eot?#iefix') format('eot'),
+    url('../icon-fonts/Fbly-icons.woff2') format('woff2'),
+    url('../icon-fonts/Fbly-icons.woff') format('woff'),
+    url('../icon-fonts/Fbly-icons.ttf') format('truetype'),
+    url('../icon-fonts/Fbly-icons.svg#Fbly-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon-alarm:before { content: "\EA01" }
+.icon-arrow-right:before { content: "\EA02" }
+.icon-arrow-round-light:before { content: "\EA03" }
+.icon-bars:before { content: "\EA04" }
+.icon-calendar:before { content: "\EA05" }
+.icon-check-circle:before { content: "\EA06" }
+.icon-check:before { content: "\EA07" }
+.icon-chevron-down:before { content: "\EA08" }
+.icon-chevron-up:before { content: "\EA09" }
+.icon-clear:before { content: "\EA0A" }
+.icon-email:before { content: "\EA0B" }
+.icon-external-link:before { content: "\EA0C" }
+.icon-eye_closed:before { content: "\EA0D" }
+.icon-garbage:before { content: "\EA0E" }
+.icon-globe:before { content: "\EA0F" }
+.icon-menu:before { content: "\EA10" }
+.icon-organization:before { content: "\EA11" }
+.icon-plugin:before { content: "\EA12" }
+.icon-qr-code-link:before { content: "\EA13" }
+.icon-search:before { content: "\EA14" }
+.icon-smartphone:before { content: "\EA15" }
+.icon-sms:before { content: "\EA16" }
+.icon-summary:before { content: "\EA17" }
+.icon-tablet:before { content: "\EA18" }
+.icon-times-circle:before { content: "\EA19" }

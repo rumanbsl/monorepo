@@ -1,8 +1,17 @@
 {
   "compilerOptions": {
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "esnext", /* BABEL will take this and transpile into appropriate version */
+    "baseUrl": ".",
+    "types": [
+      "webpack-env",
+      "jest",
+      "node"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "pretty": true,
     "strict": true,
     "strictNullChecks": true,
@@ -14,17 +23,8 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "importHelpers": true,
-    "lib": [
-      "es5",
-      "es2015.promise",
-      "es2017",
-      "es6",
-      "esnext"
-    ],
-    "types": [
-      /* "webpack-env",
-      "jest", */
-      "node"
-    ]
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true
   }
 }
