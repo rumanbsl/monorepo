@@ -1,0 +1,11 @@
+rules:
+  # your other rules go here
+  syntaxcheck: error # could also be 'warning'
+  typecheck: error # could also be 'warning'
+overrides:
+  - files: "*.vue"
+    processor: "@fimbul/ve"
+project: tsconfig.json
+exclude:
+  - "**/*.d.ts"
+  - "surveyEditor"

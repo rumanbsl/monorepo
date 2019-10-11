@@ -1,7 +1,9 @@
 module.exports = {
-  "plugins": [
-    "@babel/transform-typescript",
-    "dynamic-import-node",
-    "@babel/syntax-dynamic-import"
-  ]
-}
+  env: {
+    test: {
+      plugins: [
+        "babel-plugin-transform-require-context",
+      ],
+    },
+  },
+};

@@ -1,10 +1,4 @@
 {
-  "env": {
-    "commonjs": true,
-    "es6": true,
-    "node": true,
-    "jest": true
-  },
   "plugins": [
     "import"
   ],
@@ -17,114 +11,13 @@
     },
     "sourceType": "module"
   },
-  "root": true,
   "extends": [
-    "airbnb-base",
-    "plugin:@typescript-eslint/recommended"
+    "../.eslintrc"
   ],
   "settings": {
     "import/resolver": {
       "node": true,
       "eslint-import-resolver-typescript": true
     }
-  },
-  "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 160
-      }
-    ],
-    "no-multi-spaces": 2,
-    "camelcase": 0,
-    "no-param-reassign": 0,
-    "no-underscore-dangle": 0,
-    "no-unused-vars": 0,
-    "import/no-named-as-default": 0,
-    "import/no-unresolved": 0,
-    "comma-dangle": 2,
-    "linebreak-style": "error",
-    "no-multiple-empty-lines": [
-      "error",
-      {
-        "max": 1,
-        "maxEOF": 0
-      }
-    ],
-    "object-curly-newline": [
-      "error",
-      {
-        "multiline": true
-      }
-    ],
-    "comma-spacing": [
-      "error",
-      {
-        "before": false,
-        "after": true
-      }
-    ],
-    "no-trailing-spaces": "error",
-    "no-console": 0,
-    "semi": 0,
-    "quotes": [
-      "error",
-      "double"
-    ],
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ],
-    "space-before-blocks": [
-      "error",
-      {
-        "functions": "always",
-        "keywords": "always",
-        "classes": "never"
-      }
-    ],
-    "func-names": 0,
-    "require-jsdoc": ["error", {
-      "require": {
-          "FunctionDeclaration": true,
-          "MethodDefinition": true,
-          "ClassDeclaration": true,
-          "ArrowFunctionExpression": false,
-          "FunctionExpression": false
-      }
-  }],
-    "@typescript-eslint/indent": [
-      "error",
-      2
-    ],
-    "@typescript-eslint/ban-ts-ignore": ["off"],
-    "@typescript-eslint/semi": ["error"],
-    "@typescript-eslint/camelcase": [
-      "error",
-      {
-        "properties": "never"
-      }
-    ],
-    "no-throw-literal": 0
-  },
-  "overrides": [
-    {
-      "files": "*.{test,spec}.{js,ts}",
-      "rules": {
-        "require-jsdoc": 0,
-        "@typescript-eslint/explicit-function-return-type": 0,
-        "@typescript-eslint/no-explicit-any": 0,
-        "@typescript-eslint/no-unused-vars": 0,
-        "import/no-extraneous-dependencies": 0
-      }
-    },
-    {
-      "files": "webpack.*.{js,ts}",
-      "rules": {
-        "@typescript-eslint/no-var-requires": 0,
-        "require-jsdoc": 0,
-        "import/no-extraneous-dependencies": 0
-      }
-    }
-  ]
+  }
 }

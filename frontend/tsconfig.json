@@ -1,10 +1,35 @@
 {
-  "extends": "../tsconfig.json",
-
+  "extends": "../tsconfig",
+  "include": [
+    "**/*.ts",
+    "**/*.vue"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@": ["./"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "src/*": [
+        "./src/*"
+      ],
+      "storybook/*": [
+        "./.storybook/*"
+      ],
+      "tests/*": [
+        "./__tests__/*"
+      ]
+    },
+    "lib": [
+      "dom",
+      "es5",
+      "es2015.promise",
+      "es2017",
+      "es6",
+      "esnext"
+    ]
   }
 }

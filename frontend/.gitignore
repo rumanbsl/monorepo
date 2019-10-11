@@ -1,0 +1,8 @@
+node_modules
+*.cache
+dist
+.DS_Store
+src/assets/fonts
+src/assets/icon-fonts
+*yarn-error*
+.env

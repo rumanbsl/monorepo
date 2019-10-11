@@ -1,6 +1,10 @@
 {
+  "extends": "../tsconfig.json",
   "include": [
     "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ],
   "compilerOptions": {
     "target": "esnext",
@@ -14,11 +18,8 @@
     },
     "types": [
       "webpack-env",
-      // "jest",
+      "jest",
       "node"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
     ],
     "lib": [
       "es5",
@@ -26,17 +27,5 @@
       "es2017",
       "es6",
       "esnext"
-    ],
-    "pretty": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "importHelpers": true
-  }
+    ]
 }

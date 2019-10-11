@@ -9,10 +9,10 @@ console.log(readFileSync(resolve(__dirname, "txt.html"), { encoding: "utf-8" }))
 
 (async function (): Promise<void> {
   try {
-    const { app, initializeApolloServer } = await App();
     const PORT = process.env.PORT || 3000;
-    const configureHttpServer = (httpServer: Server): void => {
+    const configureHttpServer = async (httpServer: Server): Promise<void> => {
       console.info("Creating Express app");
+      const { app, initializeApolloServer } = await App();
       console.info("Creating Apollo server");
       const apolloServer = initializeApolloServer();
 
@@ -28,7 +28,7 @@ console.log(readFileSync(resolve(__dirname, "txt.html"), { encoding: "utf-8" }))
 
       (process as any).httpServer = http.createServer();
 
-      configureHttpServer((process as any).httpServer);
+      await configureHttpServer((process as any).httpServer);
 
       (process as any).httpServer.listen(PORT, () => {
         console.info(`HTTP server ready at http://localhost:${PORT}`);
@@ -39,7 +39,7 @@ console.log(readFileSync(resolve(__dirname, "txt.html"), { encoding: "utf-8" }))
       (process as any).httpServer.removeAllListeners("upgrade");
       (process as any).httpServer.removeAllListeners("request");
 
-      configureHttpServer((process as any).httpServer);
+      await configureHttpServer((process as any).httpServer);
 
       console.info("HTTP server reloaded");
     }
