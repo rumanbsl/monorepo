@@ -3,7 +3,6 @@
 import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-
 /**
  *
  *
