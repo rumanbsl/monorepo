@@ -12,8 +12,8 @@ export default {
     const posts = await Post.find()
       .sort({ createdDate: 1 })
       .populate({
-        path: "createdBy",
-        model: "User",
+        path  : "createdBy",
+        model : "User",
       });
     return posts;
   },

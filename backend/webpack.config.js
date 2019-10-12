@@ -18,7 +18,7 @@ const configuration = {
     __dirname: true, // needed for all the fs operations
     __filename: false,
   },
-  externals: [nodeExternals()],
+  externals: [nodeExternals({modulesDir: "../node_modules/"})],
   module: {
     rules: [
       {
