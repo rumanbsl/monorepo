@@ -1,13 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-// import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import { resolve } from "path";
 import StyleLintWebpackPlugin from "stylelint-webpack-plugin";
 import { Configuration, HotModuleReplacementPlugin } from "webpack";
 import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 import styleLoaders from "./loaders";
 
-const devConfig: Configuration & DevServerConfiguration = {
+interface IwebpackConfig extends Configuration {
+  devServer: DevServerConfiguration;
+}
+
+const devConfig: IwebpackConfig = {
   output: {
     filename      : "[name].bundle.js",
     chunkFilename : "[name].bundle.js",
@@ -19,7 +23,7 @@ const devConfig: Configuration & DevServerConfiguration = {
     rules: [
       {
         test : /\.(sa|sc|c)ss$/,
-        use  : styleLoaders({ modules: false, mode: "development" }),
+        use  : styleLoaders({ mode: "development" }),
       },
 
       {
@@ -33,10 +37,10 @@ const devConfig: Configuration & DevServerConfiguration = {
     ],
   },
   plugins: [
-    // new ForkTsCheckerWebpackPlugin({
-    //   vue         : true,
-    //   reportFiles : ["src/**/*.{ts,vue}"],
-    // }),
+    new ForkTsCheckerWebpackPlugin({
+      vue         : true,
+      reportFiles : ["src/**/*.{ts,tsx,vue}"],
+    }),
     new HotModuleReplacementPlugin(),
     new StyleLintWebpackPlugin({
       configFile : "./.vuestylelintrc",
@@ -45,9 +49,10 @@ const devConfig: Configuration & DevServerConfiguration = {
     new StyleLintWebpackPlugin({
       configFile : "./.stylelintrc",
       files      : ["src/**/*.scss"],
-    }),
+    }) as any,
   ],
   devServer: {
+    // needed for react change observation
     watchContentBase : true,
     clientLogLevel   : "warning",
     contentBase      : [
@@ -56,26 +61,15 @@ const devConfig: Configuration & DevServerConfiguration = {
     ],
     historyApiFallback : true,
     hot                : true,
-    host               : "0.0.0.0",
     port               : 80,
     proxy              : [
       {
-        context : ["/graphql"],
+        context : ["/api", "/graphql"],
         target  : "http://localhost:3000",
       },
-      /* {
-        // for docker, TODO
-        "/graphql": {
-          target: {
-            host: "backend",
-            protocol: "http:",
-            port: 3000,
-          },
-          changeOrigin: true,
-        },
-      }, */
     ],
-    quiet: true,
+    quiet        : true,
+    watchOptions : { ignored: ["*.{test,spec}.{js,ts}", "node_modules"] },
   },
 };
 

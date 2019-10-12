@@ -11,6 +11,14 @@
     "graphql": "^14.5.8",
     "mongoose": "^5.7.3"
   },
+  "devDependencies": {
+    "@types/express": "^4.17.1",
+    "@types/mongoose": "^5.5.19",
+    "jest-transform-graphql": "^2.1.0",
+    "node-hot-loader": "^1.17.6",
+    "webpack-node-externals": "^1.7.2"
+
+  },
   "scripts": {
     "build": "BUILD=production webpack",
     "start": "BUILD=development node-hot --logLevel none",

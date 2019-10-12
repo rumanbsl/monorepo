@@ -1,20 +1,14 @@
-/* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
 import HtmlWebPackPlugin from "html-webpack-plugin";
 import { resolve } from "path";
 import SimpleProgressWebpackPlugin from "simple-progress-webpack-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import { VueLoaderPlugin } from "vue-loader";
-import { Configuration, DefinePlugin } from "webpack";
-
-require("dotenv").config();
-
-const tsLoader = process.env.NODE_ENV === "development" ? {
-  loader  : "ts-loader",
-  options : { appendTsSuffixTo: [/\.vue$/] },
-} : {};
+import { Configuration } from "webpack";
 
 export default {
+  stats        : "errors-only",
   entry        : [resolve(__dirname, "..", "src", "main")],
   optimization : {
     splitChunks: {
@@ -54,17 +48,14 @@ export default {
         use  : ["url-loader?limit=10000", "img-loader"],
       },
       {
-        test    : /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
+        test    : /\.(eot|ttf|woff|woff2)(\?\S*)?$/,
         loader  : "file-loader",
         options : { name: "./fonts/[name].[ext]", publicPath: "/" },
       },
       {
         test    : /\.(ts|js)$/,
         exclude : /(node_modules)/,
-        use     : [
-          "babel-loader",
-          tsLoader,
-        ],
+        loader  : "babel-loader",
       },
       {
         test : /\.html$/,
@@ -86,6 +77,6 @@ export default {
     new VueLoaderPlugin(),
     new FriendlyErrorsWebpackPlugin(),
     new SimpleProgressWebpackPlugin(),
-    new DefinePlugin({ WEATHER_API_KEY: JSON.stringify(process.env.WEATHER_API_KEY) }),
+    new CleanWebpackPlugin(),
   ],
 } as Configuration;

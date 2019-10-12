@@ -1,14 +1,9 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import console from "chalk-console";
-import { readFileSync } from "fs";
-import { resolve } from "path";
 import http, { Server } from "http";
 import App from "./app";
 
-console.log(readFileSync(resolve(__dirname, "txt.html"), { encoding: "utf-8" }));
-
-// eslint-disable-next-line func-names
 (async function (): Promise<void> {
   try {
     const PORT = process.env.PORT || 3000;
