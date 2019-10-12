@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig",
   "include": [
     "**/*.ts"
   ],
@@ -7,20 +7,12 @@
     "node_modules"
   ],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
       "@/*": [
-        "./*"
+        "./src*"
       ]
     },
-    "types": [
-      "webpack-env",
-      "jest",
-      "node"
-    ],
     "lib": [
       "es5",
       "es2015.promise",
@@ -28,4 +20,5 @@
       "es6",
       "esnext"
     ]
+  }
 }

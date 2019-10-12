@@ -3,28 +3,28 @@ import { Iuser } from "@/src/interfaces";
 
 const schema = new mongoose.Schema({
   userName: {
-    type: String,
-    required: true,
-    unique: true,
+    type     : String,
+    required : true,
+    unique   : true,
   },
   email: {
-    type: String,
-    required: true,
-    unique: true,
+    type     : String,
+    required : true,
+    unique   : true,
   },
   password: {
-    type: String,
-    required: true,
+    type     : String,
+    required : true,
   },
-  avatar: { type: String },
-  joinDate: {
-    type: Date,
-    default: Date.now(),
+  avatar   : { type: String },
+  joinDate : {
+    type    : Date,
+    default : Date.now(),
   },
   favourites: {
-    type: [mongoose.Schema.Types.ObjectId],
-    required: true,
-    ref: "Post",
+    type     : [mongoose.Schema.Types.ObjectId],
+    required : true,
+    ref      : "Post",
   },
 });
 

@@ -3,45 +3,45 @@ import { Ipost } from "src/interfaces";
 
 const schema = new mongoose.Schema({
   title: {
-    type: String,
-    required: true,
+    type     : String,
+    required : true,
   },
   imageUrl: {
-    type: String,
-    required: true,
+    type     : String,
+    required : true,
   },
   catagories: {
-    type: [String],
-    required: true,
+    type     : [String],
+    required : true,
   },
   description: {
-    type: String,
-    required: true,
+    type     : String,
+    required : true,
   },
   createdDate: {
-    type: Date,
-    default: Date.now(),
+    type    : Date,
+    default : Date.now(),
   },
   likes: {
-    type: Number,
-    default: 0,
+    type    : Number,
+    default : 0,
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
+    type     : mongoose.Schema.Types.ObjectId,
+    required : true,
+    ref      : "User",
   },
 
   messages: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
+      type     : mongoose.Schema.Types.ObjectId,
+      required : true,
+      ref      : "User",
     },
   ],
 });
 
-schema.virtual("id").get(function () {
+schema.virtual("id").get(function postSchema() {
   // @ts-ignore
   return this._id.toString();
 });

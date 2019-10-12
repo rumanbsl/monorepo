@@ -4,14 +4,27 @@
   "eslint.enable": true,
   "eslint.validate": [
     {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
       "language": "typescript",
       "autoFix": true
     },
     {
-      "language": "javascript",
+      "language": "html",
       "autoFix": true
-    },
+    }
   ],
+  "eslint.workingDirectories": ["./frontend", "backend"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "git.rebaseWhenSync": true,
   "editor.snippetSuggestions": "top",

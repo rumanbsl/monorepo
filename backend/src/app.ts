@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { ApolloServer, PubSub } from "apollo-server-express";
 import express, { Express } from "express";
 import mongoose from "mongoose";
@@ -42,26 +41,26 @@ class App{
     useCustomMiddlewares(app);
     Routes(app);
   }
+}
 
-  /**
+/**
  * @description
  * @returns {ApolloServer}
  * @memberof App
  */
-  initializeApolloServer(): ApolloServer {
-    return new ApolloServer({
-      typeDefs,
-      resolvers,
-      context: {
-        ...mongooseSchemas,
-        pubsub: new PubSub(),
-      },
-      playground: { version: "1.7.25" },
-    });
-  }
+function initializeApolloServer(): ApolloServer {
+  return new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: {
+      ...mongooseSchemas,
+      pubsub: new PubSub(),
+    },
+    playground: { version: "1.7.25" },
+  });
 }
 
-export default async (): Promise<App> => {
+export default async (): Promise<{ initializeApolloServer: () => ApolloServer; app: Express }> => {
   await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/docker-ts`, { useNewUrlParser: true });
-  return new App();
+  return { ...new App(), initializeApolloServer };
 };

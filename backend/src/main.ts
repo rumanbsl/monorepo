@@ -1,3 +1,4 @@
+/* eslint-disable no-inner-declarations */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import console from "chalk-console";
 import { readFileSync } from "fs";
@@ -7,10 +8,16 @@ import App from "./app";
 
 console.log(readFileSync(resolve(__dirname, "txt.html"), { encoding: "utf-8" }));
 
+// eslint-disable-next-line func-names
 (async function (): Promise<void> {
   try {
     const PORT = process.env.PORT || 3000;
-    const configureHttpServer = async (httpServer: Server): Promise<void> => {
+    /**
+     * @description
+     * @param {Server} httpServer
+     * @returns {Promise<void>}
+     */
+    async function configureHttpServer(httpServer: Server): Promise<void> {
       console.info("Creating Express app");
       const { app, initializeApolloServer } = await App();
       console.info("Creating Apollo server");
@@ -21,7 +28,7 @@ console.log(readFileSync(resolve(__dirname, "txt.html"), { encoding: "utf-8" }))
 
       httpServer.on("request", app);
       apolloServer.installSubscriptionHandlers(httpServer);
-    };
+    }
 
     if (!(process as any).httpServer) {
       console.info("Creating HTTP server");
