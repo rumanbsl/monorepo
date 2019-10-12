@@ -22,6 +22,7 @@
     "build": "BUILD=production webpack",
     "start": "nodemon",
     "watch": "nodemon dist/main.js",
+    "lint": "eslint --ext .ts --max-warnings=500 --fix ./src",
     "test": "jest --collectCoverage"
   }
 }
