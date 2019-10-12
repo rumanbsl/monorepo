@@ -16,7 +16,8 @@
     "frontend:merge": "package-merge ./frontend/package.json ./package.json > frontend-package.json",
     "backend:merge": "package-merge ./backend/package.json ./package.json > backend-package.json",
     "frontend:dev": "lerna run start --scope=@ruman-blog/frontend --stream",
-    "version:bump": "lerna version --conventional-commits --yes"
+    "version:bump": "lerna version --conventional-commits --yes",
+    "test": "lerna run test --stream"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.3",
@@ -111,6 +112,7 @@
     "img-loader": "^3.0.1",
     "jest": "24.8.0",
     "jest-serializer-vue": "^2.0.2",
+    "jest-transform-graphql": "^2.1.0",
     "jest-transform-stub": "^2.0.0",
     "jscodeshift": "^0.6.4",
     "json-loader": "^0.5.7",

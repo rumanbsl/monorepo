@@ -15,6 +15,7 @@
     "build": "BUILD=production webpack",
     "start": "BUILD=development node-hot --logLevel none",
     "watch": "nodemon dist/main.js",
-    "lint": "eslint --ext .ts --max-warnings=500 --fix ./src"
+    "lint": "eslint --ext .ts --max-warnings=500 --fix ./src",
+    "test": "jest --collectCoverage"
   }
 }
