@@ -1,6 +1,6 @@
 {
   "name": "@ruman-blog/frontend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -31,10 +31,10 @@
     "apollo-boost": "^0.4.4",
     "apollo-client": "2.6.4",
     "apollo-link": "1.2.12",
-    "graphql-tag": "2.10.1",
     "axios": "^0.19.0",
     "date-fns": "^2.4.1",
     "graphql": "^14.5.8",
+    "graphql-tag": "2.10.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "vue": "^2.6.10",
