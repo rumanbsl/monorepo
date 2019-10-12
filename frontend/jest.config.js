@@ -9,7 +9,6 @@ module.exports = {
   collectCoverageFrom: [
     "!**/node_modules/**",
     "!**/cypress/**",
-    "!src/modules/SurveyEditor",
     "!src/**/**/Interfaces/**",
     "!src/Interfaces/**",
     "!src/@types/**",
