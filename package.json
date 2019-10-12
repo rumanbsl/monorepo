@@ -16,7 +16,7 @@
     "frontend:merge": "package-merge ./frontend/package.json ./package.json > frontend-package.json",
     "backend:merge": "package-merge ./backend/package.json ./package.json > backend-package.json",
     "frontend:dev": "lerna run start --scope=@ruman-blog/frontend --stream",
-    "new:version": "lerna version --conventional-commits --yes"
+    "version:bump": "lerna version --conventional-commits --yes"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.3",
