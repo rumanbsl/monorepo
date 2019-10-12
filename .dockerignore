@@ -8,3 +8,7 @@
 !babel.config.js
 !.eslintrc
 !tsconfig.json
+!package.json
+
+/backend/node_modules/**
+/frontend/node_modules/**

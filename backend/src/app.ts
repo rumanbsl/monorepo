@@ -1,8 +1,6 @@
 import { ApolloServer, PubSub } from "apollo-server-express";
 import express, { Express } from "express";
 import mongoose from "mongoose";
-import { readFile } from "fs";
-import { promisify } from "util";
 import resolvers from "./graphql-api/resolvers";
 import typeDefs from "./graphql-api/typeDefs";
 import useCustomMiddlewares from "./middlewares/custom";
@@ -11,9 +9,7 @@ import mongooseSchemas from "./models";
 import Routes from "./routes";
 
 const HOST_DB = process.env.HOST_DB || "localhost";
-const mongoPort = HOST_DB === "database" ? 27017 : 27010;
-const readFileAsync = promisify(readFile);
-readFileAsync(`${process.cwd()}./txt.html`).then((data) => console.log(data));
+const mongoPort = process.env.HOST_DB ? 27017 : 27010;
 
 /**
  * @description

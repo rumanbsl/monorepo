@@ -2,17 +2,17 @@ FROM node:12-alpine as base
 EXPOSE 3000
 WORKDIR /app
 ENV PATH=/app/node_modules/.bin:$PATH
-COPY ./backend/package*.json\
+COPY ./package*.json yarn*lock\
   babel.config.js\
   .eslintrc\
   tsconfig.json ./
-RUN npm i
-
+COPY ./backend/package.json ./backend/
+RUN npm i -g yarn && yarn
 
 FROM base as dev
 WORKDIR /app/backend
 COPY ./backend .
-RUN rm -rf node_modules
+COPY --from=base /app/backend .
 CMD [ "npm", "run", "start" ]
 
 
