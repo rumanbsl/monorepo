@@ -8,5 +8,5 @@
     "src/models/"
   ],
   "exec": "BUILD=development node-hot --logLevel none",
-  "ext": "ts js"
+  "ext": "ts js yaml json gql graphql"
 }
