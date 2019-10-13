@@ -1,0 +1,12 @@
+{
+  "verbose": false,
+  "watch": [
+    "webpack.config.js",
+    ".eslintrc",
+    "babel.config.js",
+    "tsconfig.json",
+    "src/models/"
+  ],
+  "exec": "BUILD=development node-hot --logLevel none",
+  "ext": "ts js"
+}

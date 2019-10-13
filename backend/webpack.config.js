@@ -1,7 +1,6 @@
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-
 const mode = process.env.BUILD || "production";
 
 const configuration = {
@@ -56,6 +55,6 @@ if (mode === "development") {
   };
   configuration.module.rules.push(eslintConfig);
 }
-console.log(`..... Running ${mode} build .....`);
+console.log(`..... Running ${mode} build!! .....`);
 
 module.exports = configuration;
