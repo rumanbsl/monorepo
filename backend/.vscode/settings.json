@@ -8,10 +8,12 @@
       "autoFix": true
     },
   ],
-  "typescript.tsdk": "node_modules/typescript/lib",
   "git.rebaseWhenSync": true,
   "editor.snippetSuggestions": "top",
   "docthis.includeDescriptionTag": true,
   "javascript.suggest.completeJSDocs": true,
-  "better-comments.highlightPlainText": true
+  "better-comments.highlightPlainText": true,
+  "jest.autoEnable": false,
+  "typescript.tsdk": "../node_modules/typescript/lib",
+  "jest.pathToJest": "../node_modules/.bin/jest"
 }

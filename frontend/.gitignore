@@ -6,3 +6,4 @@ src/assets/fonts
 src/assets/icon-fonts
 *yarn-error*
 .env
+data

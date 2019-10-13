@@ -1,24 +1,27 @@
 - Frontend:
-  - [-] Vue Project
-  - [-] typescript
+  - [X] Vue Project
+  - [X] TailwindCSS
   - [-] Vuera for React interop
-  - [-] jest,
   - [-] Cypress for E2E
-  - [-] Linting
-  - [-] Docker Container
 
 - Backend
-  - [-] typescript
-  - [-] Graphql server (Express)
+  - [X] typescript
+  - [X] Graphql server (Express)
   - [-] Prisma
-  - [-] Docker Container
 
-- Redis
-
-- Project Root
-  - [-] Monorepo (yarn Workspace)
+- Project Overall
+  - [X] typescript
+  - [X] jest,
+  - [X] Linting
+  - [X] Docker Container
+  - [X] Monorepo (yarn Workspace)
   - [-] CircleCI for CI/CD pipeline
-  - [-] Docker Compose for dev containerzation pipeline
+  - [X] Docker Container (Frontend, Backend)
+  - [-] Docker Compose
+    - [X] Frontend
+    - [X] Backend
+    - [X] Mongo
+    - [-] Redis
     - [-] Traefik for reverse proxy
     - [-] Have environment secrets
   - [-] Kubernetes for container orchestration (minikube to simulate GC/AWS)

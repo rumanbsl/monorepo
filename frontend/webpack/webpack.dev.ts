@@ -6,6 +6,8 @@ import StyleLintWebpackPlugin from "stylelint-webpack-plugin";
 import { Configuration, HotModuleReplacementPlugin } from "webpack";
 import { Configuration as DevServerConfiguration } from "webpack-dev-server";
 import styleLoaders from "./loaders";
+// backend port is internal, not available in docker-compose.yml
+const HOST_BACKEND = process.env.HOST_BACKEND || "localhost";
 
 interface IwebpackConfig extends Configuration {
   devServer: DevServerConfiguration;
@@ -52,24 +54,24 @@ const devConfig: IwebpackConfig = {
     }) as any,
   ],
   devServer: {
-    // needed for react change observation
-    watchContentBase : true,
-    clientLogLevel   : "warning",
-    contentBase      : [
-      resolve(__dirname, "..", "dist"),
-      resolve(__dirname, "..", "public"),
-    ],
-    historyApiFallback : true,
-    hot                : true,
     port               : 80,
+    host               : "0.0.0.0",
+    clientLogLevel     : "warning",
+    hot                : true,
+    watchContentBase   : true,
+    historyApiFallback : true,
+    quiet              : true,
+    watchOptions       : { ignored: ["*.{test,spec}.{js,ts}", "node_modules"] },
     proxy              : [
       {
         context : ["/api", "/graphql"],
-        target  : "http://localhost:3000",
+        target  : `http://${HOST_BACKEND}:3000`,
       },
     ],
-    quiet        : true,
-    watchOptions : { ignored: ["*.{test,spec}.{js,ts}", "node_modules"] },
+    contentBase: [
+      resolve(__dirname, "..", "dist"),
+      resolve(__dirname, "..", "public"),
+    ],
   },
 };
 

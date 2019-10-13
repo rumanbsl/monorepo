@@ -4,7 +4,7 @@ import console from "chalk-console";
 import http, { Server } from "http";
 import App from "./app";
 
-(async function (): Promise<void> {
+(async function Start(): Promise<void> {
   try {
     const PORT = process.env.PORT || 3000;
     /**

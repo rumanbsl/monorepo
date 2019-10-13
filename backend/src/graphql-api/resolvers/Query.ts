@@ -8,7 +8,6 @@ interface Iquery {
 
 export default {
   getPosts: async (_: unknown, __: unknown, { Post }: { Post: Model<IpostModel> }) => {
-    console.log("MOI");
     const posts = await Post.find()
       .sort({ createdDate: 1 })
       .populate({
