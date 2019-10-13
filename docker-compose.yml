@@ -1,29 +1,13 @@
 version: "2.4"
 services:
-  backend:
-    tty: true
-    build:
-      context: .
-      dockerfile: ./backend/dev.Dockerfile
-    environment:
-      - HOST_DB=database
-    volumes:
-      - ./package.json:/app/package.json
-      - ./babel.config.js:/app/babel.config.js
-      - ./.eslintrc:/app/.eslintrc
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./backend:/app/backend
-      - /app/node_modules
-      - /app/backend/node_modules
-    depends_on:
-      database:
-        condition: service_healthy
-
+#############################################################################
   frontend:
     tty: true
     build:
       context: .
       dockerfile: ./frontend/dev.Dockerfile
+    environment:
+        - HOST_BACKEND=backend
     volumes:
       - ./package.json:/app/package.json
       - ./babel.config.js:/app/babel.config.js
@@ -32,18 +16,41 @@ services:
       - ./frontend:/app/frontend:rw
       - /app/node_modules
       - /app/frontend/node_modules
-    depends_on:
-      database:
-        condition: service_healthy
     ports:
       - 80:80
-
+#############################################################################
+  backend:
+      tty: true
+      build:
+        context: .
+        dockerfile: ./backend/dev.Dockerfile
+      environment:
+        - HOST_DB=database
+      volumes:
+        - ./package.json:/app/package.json
+        - ./babel.config.js:/app/babel.config.js
+        - ./.eslintrc:/app/.eslintrc
+        - ./tsconfig.json:/app/tsconfig.json
+        - ./backend:/app/backend
+        - /app/node_modules
+        - /app/backend/node_modules
+      depends_on:
+        database:
+          condition: service_healthy
+        redis:
+          condition: service_healthy
+# ############################################################################
   database:
     image: mongo:4
     restart: always
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
     volumes:
-      - ./data:/data/db
+      - ~/monorepo-db:/data/db
     ports:
       - "27017:27010"
+#############################################################################
+  redis:
+    image: redis:5.0.6-alpine
+    healthcheck:
+      test: redis-cli ping

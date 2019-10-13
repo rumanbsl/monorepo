@@ -24,7 +24,7 @@ class App{
    */
   constructor() {
     this.app = express();
-    // this.applyMiddleWare();
+    this.applyMiddleWare();
   }
 
   /**

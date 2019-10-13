@@ -28,8 +28,7 @@ const schema = new mongoose.Schema({
   },
 });
 
-schema.virtual("id").get(function () {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+schema.virtual("id").get(function userSchema() {
   // @ts-ignore
   return this._id.toString();
 });
