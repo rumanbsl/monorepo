@@ -57,6 +57,6 @@ function initializeApolloServer(): ApolloServer {
 }
 
 export default async (): Promise<{ initializeApolloServer: () => ApolloServer; app: Express }> => {
-  await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/docker-ts`, { useNewUrlParser: true });
+  await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/docker-ts`, { useNewUrlParser: true, useUnifiedTopology: true });
   return { ...new App(), initializeApolloServer };
 };

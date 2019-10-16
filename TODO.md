@@ -21,8 +21,8 @@
     - [X] Frontend
     - [X] Backend
     - [X] Mongo
-    - [-] Redis
-    - [-] Traefik for reverse proxy
+    - [X] Redis
+    - [X] Traefik for reverse proxy
     - [-] Have environment secrets
   - [-] Kubernetes for container orchestration (minikube to simulate GC/AWS)
 

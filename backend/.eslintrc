@@ -3,14 +3,6 @@
     "import"
   ],
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "tsconfigRootDir": ".",
-    "ecmaFeatures": {
-      "classes": true
-    },
-    "sourceType": "module"
-  },
   "extends": [
     "../.eslintrc"
   ],

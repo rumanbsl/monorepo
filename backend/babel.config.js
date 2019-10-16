@@ -1,7 +1,7 @@
 module.exports = {
-  extends: "../babel.config.js",
-  presets: [
-    ["@babel/env", { targets: { node: 12 } }]  ],
+  extends : "../babel.config.js",
+  presets : [
+    ["@babel/env", { targets: { node: 12 } }]],
   plugins: [
     "@babel/transform-typescript",
     "dynamic-import-node",
@@ -9,13 +9,11 @@ module.exports = {
     [
       "module-resolver",
       {
-        "root": [
-          "./"
+        root: [
+          "./",
         ],
-        "alias": {
-          "@": "./"
-        }
-      }
-    ]
-  ]
-}
+        alias: { "@": "./" },
+      },
+    ],
+  ],
+};

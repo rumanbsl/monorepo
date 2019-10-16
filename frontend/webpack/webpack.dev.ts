@@ -54,13 +54,15 @@ const devConfig: IwebpackConfig = {
     }) as any,
   ],
   devServer: {
-    port               : 80,
+    port               : 8090,
     host               : "0.0.0.0",
     clientLogLevel     : "warning",
+    https              : true,
+    disableHostCheck   : true,
     hot                : true,
-    watchContentBase   : true,
     historyApiFallback : true,
     quiet              : true,
+    watchContentBase   : true,
     watchOptions       : { ignored: ["*.{test,spec}.{js,ts}", "node_modules"] },
     proxy              : [
       {

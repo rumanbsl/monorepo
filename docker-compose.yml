@@ -1,13 +1,16 @@
+# #HOST_PORT:DOCKER_PORT
+
 version: "2.4"
 services:
-#############################################################################
+  #############################################################################
   frontend:
+    container_name: "FRONTEND"
     tty: true
     build:
       context: .
       dockerfile: ./frontend/dev.Dockerfile
     environment:
-        - HOST_BACKEND=backend
+      - HOST_BACKEND=backend
     volumes:
       - ./package.json:/app/package.json
       - ./babel.config.js:/app/babel.config.js
@@ -16,31 +19,41 @@ services:
       - ./frontend:/app/frontend:rw
       - /app/node_modules
       - /app/frontend/node_modules
+    labels:
+      # Route config
+      - "traefik.http.routers.fe-router.rule=Host(`ruman.fi`,`ruman.com`)"
+      # https setting, with certificate
+      # - "traefik.http.routers.fe-router.tls.certresolver=fe-cert"
+      # - "traefik.http.routers.fe-router.entrypoints=websecure"
+      - "traefik.http.services.fe-service.loadbalancer.server.port=8090"
+      - "traefik.enable=true"
     ports:
-      - 80:80
-#############################################################################
+      - 8090:8090
+  #############################################################################
   backend:
-      tty: true
-      build:
-        context: .
-        dockerfile: ./backend/dev.Dockerfile
-      environment:
-        - HOST_DB=database
-      volumes:
-        - ./package.json:/app/package.json
-        - ./babel.config.js:/app/babel.config.js
-        - ./.eslintrc:/app/.eslintrc
-        - ./tsconfig.json:/app/tsconfig.json
-        - ./backend:/app/backend
-        - /app/node_modules
-        - /app/backend/node_modules
-      depends_on:
-        database:
-          condition: service_healthy
-        redis:
-          condition: service_healthy
-# ############################################################################
+    tty: true
+    container_name: "BACKEND"
+    build:
+      context: .
+      dockerfile: ./backend/dev.Dockerfile
+    environment:
+      - HOST_DB=database
+    volumes:
+      - ./package.json:/app/package.json
+      - ./babel.config.js:/app/babel.config.js
+      - ./.eslintrc:/app/.eslintrc
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./backend:/app/backend
+      - /app/node_modules
+      - /app/backend/node_modules
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  ############################################################################
   database:
+    container_name: "DATABASE"
     image: mongo:4
     restart: always
     healthcheck:
@@ -49,8 +62,24 @@ services:
       - ~/monorepo-db:/data/db
     ports:
       - "27017:27010"
-#############################################################################
+  #############################################################################
   redis:
+    container_name: "REDIS"
     image: redis:5.0.6-alpine
     healthcheck:
       test: redis-cli ping
+  # #############################################################################
+
+  # - "traefik.http.routers.fe-router.middlewares=fe-auth"
+  # - "traefik.http.middlewares.fe-auth.basicauth.users=test:"
+  reverse-proxy:
+    container_name: "TRAEFIK"
+    image: "traefik:v2.0.2"
+    volumes:
+      - "./acme.json:/acme.json"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik/traefik.toml:/etc/traefik/traefik.toml"
+    ports:
+      - "80:8090" # PROXY ENTRYPOINT
+      - "443:443" # PROXY ENTRYPOINT
+      - "8080:8080" # TRAEFIK DASHBOARD
