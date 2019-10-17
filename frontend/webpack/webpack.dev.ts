@@ -45,12 +45,8 @@ const devConfig: IwebpackConfig = {
     }),
     new HotModuleReplacementPlugin(),
     new StyleLintWebpackPlugin({
-      configFile : "./.vuestylelintrc",
-      files      : ["src/**/*.vue"],
-    }),
-    new StyleLintWebpackPlugin({
       configFile : "./.stylelintrc",
-      files      : ["src/**/*.scss"],
+      files      : ["src/**/*.scss", "src/**/*.vue"],
     }) as any,
   ],
   devServer: {

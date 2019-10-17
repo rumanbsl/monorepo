@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="content">
     Lets do it!!
   </div>
 </template>
@@ -20,6 +20,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-</style>
