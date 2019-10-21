@@ -11,8 +11,6 @@ COPY ./frontend .
 COPY --from=base /app/frontend .
 RUN yarn build
 
-FROM base as prod
-WORKDIR /app/frontend
-COPY --from=build /app/frontend/dist ./dist
-
-#TODO nginX
+FROM nginx as prod
+WORKDIR /dist
+COPY --from=build /app/frontend/dist /usr/share/nginx/html
