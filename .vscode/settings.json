@@ -24,7 +24,11 @@
       "autoFix": true
     }
   ],
-  "eslint.workingDirectories": ["./frontend", "./backend"],
+  "eslint.workingDirectories": [
+    "./frontend",
+    "./backend",
+    "./mobile"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "git.rebaseWhenSync": true,
   "editor.snippetSuggestions": "top",

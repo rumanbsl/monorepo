@@ -5,8 +5,7 @@
   "license": "MIT",
   "workspaces": [
     "frontend",
-    "backend",
-    "mobile"
+    "backend"
   ],
   "scripts": {
     "frontend:merge": "package-merge ./package.json ./frontend/package.json > package.json",
