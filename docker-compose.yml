@@ -25,7 +25,7 @@ services:
       # https setting, with certificate
       # - "traefik.http.routers.fe-router.tls.certresolver=fe-cert"
       # - "traefik.http.routers.fe-router.entrypoints=websecure"
-      - "traefik.http.services.fe-service.loadbalancer.server.port=8090"
+      # - "traefik.http.services.fe-service.loadbalancer.server.port=8090"
       - "traefik.enable=true"
     ports:
       - 8090:8090

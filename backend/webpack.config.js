@@ -11,7 +11,7 @@ const configuration = {
   devtool : "source-map",
   resolve : {
     extensions : [".wasm", ".mjs", ".js", ".ts", ".json", ".gql", ".graphql"],
-    alias      : { "@": path.resolve("./") },
+    alias      : { "@": path.resolve("./src") },
   },
   target : "node",
   node   : {

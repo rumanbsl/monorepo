@@ -1,7 +1,7 @@
 import { ResolverFn } from "apollo-server-express";
 import { Model } from "mongoose";
-import { IuserModel } from "@/src/models/User";
-import { IpostModel } from "@/src/models/Post";
+import { IuserModel } from "@/models/User";
+import { IpostModel } from "@/models/Post";
 
 interface Imutation {
   signUpUser: ResolverFn;

@@ -53,7 +53,7 @@ const devConfig: IwebpackConfig = {
     port               : 8090,
     host               : "0.0.0.0",
     clientLogLevel     : "warning",
-    https              : true,
+    // https              : true,
     disableHostCheck   : true,
     hot                : true,
     historyApiFallback : true,

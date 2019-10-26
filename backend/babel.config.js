@@ -12,7 +12,7 @@ module.exports = {
         root: [
           "./",
         ],
-        alias: { "@": "./" },
+        alias: { "@": "./src" },
       },
     ],
   ],
