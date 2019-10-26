@@ -1,0 +1,10 @@
+schema:
+  # - ./src/graphql-api/typeDefs/**/*.graphql
+  - ./src/graphql-api/typeDefs/**/*.gql
+config:
+  enumsAsString: false
+generates:
+  ./src/Interfaces/Models.ts:
+    plugins:
+      - typescript
+      - typescript-mongodb

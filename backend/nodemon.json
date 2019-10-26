@@ -7,6 +7,6 @@
     "tsconfig.json",
     "src/models/"
   ],
-  "exec": "BUILD=development node-hot --logLevel none",
+  "exec": "BUILD=development node-hot --logLevel none & yarn type-gen",
   "ext": "ts js yaml json gql graphql"
 }

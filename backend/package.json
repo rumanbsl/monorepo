@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/runtime": "^7.6.2",
     "apollo-server-express": "^2.9.5",
+    "@graphql-codegen/typescript-mongodb": "1.8.2",
     "chalk-console": "^1.1.0",
     "express": "^4.17.1",
     "graphql": "^14.5.8",
@@ -23,6 +24,7 @@
     "start": "nodemon",
     "watch": "nodemon dist/main.js",
     "lint": "eslint --ext .ts --max-warnings=500 --fix ./src",
-    "test": "jest --collectCoverage"
+    "test": "jest --collectCoverage",
+    "type-gen": "graphql-codegen -c typeGen.yml --watch"
   }
 }

@@ -1,0 +1,21 @@
+type User @entity {
+    _id: String! @id
+    name: String! @column
+    age: Int! @column
+    email: String @column
+    sex: Sex @column
+}
+
+input UserInput {
+  _id: String!
+}
+
+extend type Query {
+  getUser(input: UserInput!): User!
+  getBoo: String!
+}
+
+enum Sex {
+  Male
+  Female
+}

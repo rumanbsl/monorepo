@@ -1,7 +1,6 @@
 {
   "plugins": [
-    "import",
-    "graphql"
+    "import"
   ],
   "parser": "@typescript-eslint/parser",
   "extends": [
@@ -12,20 +11,5 @@
       "node": true,
       "eslint-import-resolver-typescript": true
     }
-  },
-  "overrides": [
-    {
-      "files": "*.graphql",
-      "rules": {
-        "graphql/template-strings": [
-          "error",
-          {
-            "env": "apollo",
-            "tagName": "graphql"
-          }
-        ]
-
-      }
-    }
-  ]
+  }
 }

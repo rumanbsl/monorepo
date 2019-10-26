@@ -1,4 +1,4 @@
 {
-   "schemaPath": "src/graphql-api/typeDefs/root.graphql",
-   "includes": ["*.graphql"]
+   "schemaPath": "src/graphql-api/typeDefs/root.gql",
+   "includes": ["*.gql"]
  }

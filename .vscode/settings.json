@@ -22,10 +22,6 @@
     {
       "language": "html",
       "autoFix": true
-    },
-    {
-      "language": "graphql",
-      "autoFix": true
     }
   ],
   "eslint.workingDirectories": [

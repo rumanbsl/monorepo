@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import { Iuser } from "@/interfaces";
+import { UserDbObject } from "@/Interfaces/Models";
 
 const schema = new mongoose.Schema({
-  userName: {
+  name: {
     type     : String,
     required : true,
-    unique   : true,
   },
   email: {
     type     : String,
@@ -33,5 +32,5 @@ schema.virtual("id").get(function userSchema() {
   return this._id.toString();
 });
 
-export interface IuserModel extends Iuser, mongoose.Document{id: string}
+export type IuserModel = UserDbObject & mongoose.Document;
 export default mongoose.model<IuserModel>("User", schema, "users");
