@@ -1,6 +1,0 @@
-type Message {
-  _id: ID
-  messageBody: String!
-  messageDate: String
-  messageUser: User!
-}
