@@ -9,7 +9,7 @@ import mongooseSchemas from "./models";
 import Routes from "./routes";
 
 const HOST_DB = process.env.HOST_DB || "localhost";
-const mongoPort = process.env.HOST_DB ? 27017 : 27010;
+const mongoPort = HOST_DB === "database" ? 27017 : 27010;
 
 /**
  * @description
@@ -24,7 +24,6 @@ class App{
    */
   constructor() {
     this.app = express();
-    this.applyMiddleWare();
   }
 
   /**
@@ -44,7 +43,7 @@ class App{
  * @returns {ApolloServer}
  * @memberof App
  */
-function initializeApolloServer(): ApolloServer {
+export function initializeApolloServer(): ApolloServer {
   return new ApolloServer({
     typeDefs,
     resolvers,
@@ -56,7 +55,7 @@ function initializeApolloServer(): ApolloServer {
   });
 }
 
-export default async (): Promise<{ initializeApolloServer: () => ApolloServer; app: Express }> => {
-  await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/docker-ts`, { useNewUrlParser: true, useUnifiedTopology: true });
-  return { ...new App(), initializeApolloServer };
+export default async (): Promise<App> => {
+  await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/docker-ts`, { useNewUrlParser: true });
+  return new App();
 };
