@@ -44,7 +44,7 @@ services:
       - ./.eslintrc:/app/.eslintrc
       - ./tsconfig.json:/app/tsconfig.json
       - ./backend:/app/backend
-      - /app/node_modules
+      - backend-node_modules/app/node_modules
       - /app/backend/node_modules
     depends_on:
       database:
@@ -56,13 +56,13 @@ services:
     container_name: "DATABASE"
     image: mongo:4
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: prisma
-      MONGO_INITDB_ROOT_PASSWORD: prisma
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: prisma
+    #   MONGO_INITDB_ROOT_PASSWORD: prisma
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
     volumes:
-      - mongostorage:/var/lib/mongo
+      - mongostorage:/data/db
     ports:
       - "27010:27017"
   redis:
@@ -88,3 +88,4 @@ services:
   # #############################################################################
 volumes:
   mongostorage:
+  backend-node_modules:

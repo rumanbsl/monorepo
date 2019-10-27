@@ -1,21 +1,37 @@
-type User @entity {
-    _id: String! @id
-    name: String! @column
-    age: Int! @column
-    email: String @column
-    sex: Sex @column
-}
-
-input UserInput {
-  _id: String!
-}
-
-extend type Query {
-  getUser(input: UserInput!): User!
-  getBoo: String!
-}
-
 enum Sex {
   Male
   Female
+}
+
+type User @entity {
+    _id: String! @id
+    password: String!
+    name: String! @column
+    email: String @column
+    joinDate: String @column(overrideType: String)
+    sex: Sex @column
+}
+
+input getUserInput {
+  _id: String!
+}
+input getUsersInput {
+  limit: Int
+  skip: Int
+}
+
+input postUserInput {
+  name: String!
+  password: String!
+  email: String!
+  sex: Sex
+}
+
+extend type Query {
+  getUser(input: getUserInput!): User!
+  getUsers(input: getUsersInput): [User]!
+}
+
+extend type Mutation {
+  postUser(input: postUserInput): User!
 }

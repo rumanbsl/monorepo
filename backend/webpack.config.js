@@ -29,7 +29,7 @@ const configuration = {
       {
         test    : /\.ts$/,
         exclude : /node_modules/,
-        use     : { loader: mode === "production" ? "babel-loader" : "ts-loader" },
+        use     : ["babel-loader", "ts-loader"],
       },
       {
         test    : /\.(graphql|gql)$/,
@@ -43,8 +43,8 @@ const configuration = {
 
 if (mode === "development") {
   configuration.watchOptions = {
-    poll    : 1000,
-    ignored : ["*.{test,spec}.{js,ts}", "node_modules"],
+    // poll    : 1000,
+    ignored: ["*.{test,spec}.{js,ts}", "node_modules"],
   };
   const eslintConfig = {
     enforce : "pre",

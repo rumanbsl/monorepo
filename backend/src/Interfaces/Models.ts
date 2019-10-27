@@ -21,21 +21,48 @@ export type AdditionalEntityFields = {
   type?: Maybe<Scalars['String']>,
 };
 
+export type GetUserInput = {
+  _id: Scalars['String'],
+};
+
+export type GetUsersInput = {
+  limit?: Maybe<Scalars['Int']>,
+  skip?: Maybe<Scalars['Int']>,
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   _?: Maybe<Scalars['String']>,
+  postUser: User,
+};
+
+
+export type MutationPostUserArgs = {
+  input?: Maybe<PostUserInput>
+};
+
+export type PostUserInput = {
+  name: Scalars['String'],
+  password: Scalars['String'],
+  email: Scalars['String'],
+  sex?: Maybe<Sex>,
 };
 
 export type Query = {
    __typename?: 'Query',
   _?: Maybe<Scalars['String']>,
   getUser: User,
-  getBoo: Scalars['String'],
+  getUsers: Array<Maybe<User>>,
 };
 
 
 export type QueryGetUserArgs = {
-  input: UserInput
+  input: GetUserInput
+};
+
+
+export type QueryGetUsersArgs = {
+  input?: Maybe<GetUsersInput>
 };
 
 export enum Sex {
@@ -46,21 +73,18 @@ export enum Sex {
 export type User = {
    __typename?: 'User',
   _id: Scalars['String'],
+  password: Scalars['String'],
   name: Scalars['String'],
-  age: Scalars['Int'],
   email?: Maybe<Scalars['String']>,
+  joinDate?: Maybe<Scalars['String']>,
   sex?: Maybe<Sex>,
-};
-
-export type UserInput = {
-  _id: Scalars['String'],
 };
 
 import { ObjectID } from 'mongodb';
 export type UserDbObject = {
   _id: ObjectID,
   name: string,
-  age: number,
   email?: Maybe<string>,
+  joinDate?: String,
   sex?: Maybe<Sex>,
 };
