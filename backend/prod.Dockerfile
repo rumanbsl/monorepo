@@ -4,7 +4,11 @@ WORKDIR /app
 ENV PATH=/app/node_modules/.bin:$PATH
 COPY ./package*.json ./yarn*lock ./babel.config.js ./
 COPY ./backend/package.json ./backend/
-RUN npm i -g yarn && yarn
+RUN apk --no-cache add --virtual native-deps \
+  g++ gcc libgcc libstdc++ linux-headers make python && \
+  npm install --quiet node-gyp -g &&\
+  yarn install && \
+  apk del native-deps
 
 FROM base as build
 WORKDIR /app/backend

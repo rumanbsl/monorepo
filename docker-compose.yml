@@ -38,14 +38,16 @@ services:
       dockerfile: ./backend/dev.Dockerfile
     environment:
       - HOST_DB=database
+    env_file:
+      - SECRETS/dev.env
     volumes:
       - ./package.json:/app/package.json
       - ./babel.config.js:/app/babel.config.js
       - ./.eslintrc:/app/.eslintrc
       - ./tsconfig.json:/app/tsconfig.json
       - ./backend:/app/backend
-      - backend-node_modules/app/node_modules
-      - /app/backend/node_modules
+      - backend-deps/app/node_modules
+      - backend-nested-deps/app/backend/node_modules
     depends_on:
       database:
         condition: service_healthy
@@ -88,4 +90,5 @@ services:
   # #############################################################################
 volumes:
   mongostorage:
-  backend-node_modules:
+  backend-deps:
+  backend-nested-deps:

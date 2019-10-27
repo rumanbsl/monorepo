@@ -8,7 +8,7 @@ type User @entity {
     password: String!
     name: String! @column
     email: String @column
-    joinDate: String @column(overrideType: String)
+    joinDate: Date! @column
     sex: Sex @column
 }
 

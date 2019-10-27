@@ -6,6 +6,7 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
+  Date: any,
 };
 
 
@@ -20,6 +21,7 @@ export type AdditionalEntityFields = {
   path?: Maybe<Scalars['String']>,
   type?: Maybe<Scalars['String']>,
 };
+
 
 export type GetUserInput = {
   _id: Scalars['String'],
@@ -76,7 +78,7 @@ export type User = {
   password: Scalars['String'],
   name: Scalars['String'],
   email?: Maybe<Scalars['String']>,
-  joinDate?: Maybe<Scalars['String']>,
+  joinDate: Scalars['Date'],
   sex?: Maybe<Sex>,
 };
 
@@ -85,6 +87,6 @@ export type UserDbObject = {
   _id: ObjectID,
   name: string,
   email?: Maybe<string>,
-  joinDate?: String,
+  joinDate: any,
   sex?: Maybe<Sex>,
 };

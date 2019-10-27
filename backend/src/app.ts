@@ -47,8 +47,9 @@ export function initializeApolloServer(): ApolloServer {
   return new ApolloServer({
     typeDefs,
     resolvers,
-    context(/* { req } */) {
+    context({ req }) {
       return {
+        req,
         ...mongooseSchemas,
         pubsub: new PubSub(),
       };
