@@ -1,52 +1,15 @@
-use serde_json::Value;
 use http::status::StatusCode;
-use serde::{Serialize, Deserialize};
 use tide::{error::ResultExt, response, Context, EndpointResult};
-use super::super::State;
-
 use juniper::{
     self,
     object,
     RootNode,
     http::GraphQLRequest,
     FieldResult,
-    GraphQLObject,
-    GraphQLInputObject
 };
-use mongodb::{
-    doc,
-    db::{ThreadedDatabase},
-    oid::ObjectId,
-    bson,
-    Bson
-};
-#[derive(GraphQLObject, Default, Serialize, Deserialize, Debug)]
-#[graphql(description="A humanoid creature in the Star Wars universe")]
-struct Human {
-    name: String,
-    sex: Option<String>
-}
 
-#[derive(GraphQLInputObject)]
-#[graphql(description="A humanoid creature in the Star Wars universe")]
-struct NewHuman {
-    name: String
-}
-
-fn movie(ctx: &State, id: String)->FieldResult<Human>{
-    let collection = ctx.db.lock().unwrap().collection("users");
-    let doc = doc! {
-        "_id": ObjectId::with_string(&id[..]).unwrap()
-    };
-    let cursor = collection.find_one(Some(doc.clone()), None)
-    .ok().expect("Failed to execute find.");
-    if let Some(data) = cursor {
-        let json: Value = Bson::Document(data).into();
-        let u: Human = serde_json::from_value(json).unwrap();
-        Ok(u)
-    } else { Ok(Human::default()) }
-}
-
+use super::super::{State};
+use super::users;
 
 struct Query;
 struct Mutation;
@@ -55,16 +18,12 @@ impl juniper::Context for State {}
 
 #[object(Context = State)]
 impl Query {
-    fn movie(ctx: &State, id: String)->FieldResult<Human>{
-        movie(ctx, id)
-    }
+    fn get_user(ctx: &State, id: String)->FieldResult<users::User>{ users::get_user(ctx, id) }
 }
 
 #[object(Context = State)]
 impl Mutation {
-    fn hola()->FieldResult<String> {
-        Ok("moi".into())
-    }
+    fn create_user(ctx: &State, user: users::NewUser)->FieldResult<String>{ users::create_user(ctx, user) }
 }
 
 type Schema = RootNode<'static, Query, Mutation>;

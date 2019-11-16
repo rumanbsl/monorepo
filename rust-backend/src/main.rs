@@ -44,9 +44,6 @@ struct Config {
 
 impl Config {
     fn get() -> Result<Config, Error> {
-        for (key, value) in env::vars() {
-            println!("{}: {}", key, value);
-        }
         let mut config = Config::default();
         if let Ok(port) = env::var("SERVER_PORT") {
             config.server_port = port;
