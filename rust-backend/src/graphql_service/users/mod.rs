@@ -8,7 +8,7 @@ use wither::{
 	prelude::*,
 };
 pub mod schema;
-use bcrypt::{hash, DEFAULT_COST};
+use bcrypt::{hash, verify, DEFAULT_COST};
 use lazy_static::lazy_static;
 use regex::Regex;
 pub use schema::User;
@@ -42,7 +42,7 @@ pub fn create_user(ctx: &State, user: NewUser) -> FieldResult<String> {
 	if let Err(err) = user.validate() {
 		return Err(FieldError::from(format!("{:?}", err)));
 	}
-	let db = ctx.db.lock().unwrap();
+	let db = ctx.db.lock()?;
 	let password = hash(user.password, DEFAULT_COST)?;
 	let mut new_user = User {
 		id: None,
@@ -53,4 +53,20 @@ pub fn create_user(ctx: &State, user: NewUser) -> FieldResult<String> {
 	new_user.save(db.clone(), None)?;
 
 	Ok("created".into())
+}
+
+pub fn login_user(ctx: &State, email: String, password: String) -> FieldResult<User> {
+	let db = ctx.db.lock()?;
+	let found = User::find_one(db.clone(), Some(doc! { "email": email }), None)?;
+	if let Some(user) = found {
+		println!("{:?}", user);
+		let password = verify(password, &user.password)?;
+		if !password {
+			Err(FieldError::from(String::from("Password missmatch")))
+		} else {
+			Ok(user)
+		}
+	} else {
+		Err(FieldError::from("User not found"))
+	}
 }
