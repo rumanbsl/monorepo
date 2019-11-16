@@ -11,12 +11,13 @@ tide = "0.3.0"
 juniper = "0.14.1"
 http = "0.1.19"
 http-service = "0.3.1"
-mongodb = { version = "0.4.0", features = ["ssl"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.41"
 dotenv="0.15.0"
 jsonwebtoken = "6.0.1"
 bcrypt = "0.6.1"
-
+wither = "0.8.0"
+wither_derive = "0.8.0"
+mongodb = "0.3.0"
 [dev-dependencies]
 pretty_assertions = "0.6.1"

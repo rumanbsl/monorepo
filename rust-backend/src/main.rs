@@ -1,10 +1,6 @@
 mod graphql_service;
 mod routes;
 
-use mongodb::{
-    db::{Database, ThreadedDatabase},
-    Client, ThreadedClient,
-};
 use routes::setup_routes;
 use std::{
     env,
@@ -12,6 +8,10 @@ use std::{
     sync::Mutex,
 };
 use tide::{middleware::RootLogger, App};
+use wither::mongodb::{
+    db::{Database, ThreadedDatabase},
+    Client, ThreadedClient,
+};
 
 pub struct State {
     db: Mutex<Database>,
@@ -33,7 +33,8 @@ fn main() -> Result<(), Error> {
     app.middleware(RootLogger::new());
 
     setup_routes(&mut app);
-    Ok(app.serve(format!("0.0.0.0:{}", config.server_port))?)
+    let server_url = format!("0.0.0.0:{}", config.server_port);
+    Ok(app.serve(server_url)?)
 }
 
 #[derive(Default)]

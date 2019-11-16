@@ -1,16 +1,13 @@
 use crate::State;
-use juniper::{self, FieldResult, GraphQLInputObject, GraphQLObject};
-use mongodb::{bson, db::ThreadedDatabase, doc, oid::ObjectId, Bson};
+use juniper::{self, FieldResult, GraphQLInputObject};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-
-#[derive(GraphQLObject, Default, Serialize, Deserialize, Debug)]
-#[graphql(description = "A Useroid creature in the Star Wars universe")]
-pub struct User {
-    name: String,
-    email: String,
-    password: String,
-}
+use wither::{
+    mongodb::{bson, db::ThreadedDatabase, doc, oid::ObjectId, Bson},
+    prelude::*,
+};
+pub mod schema;
+pub use schema::User;
 
 #[derive(GraphQLInputObject, Default, Serialize, Deserialize, Debug)]
 #[graphql(description = "A humanoid creature in the Star Wars universe")]
@@ -32,6 +29,7 @@ pub fn get_user(ctx: &State, id: String) -> FieldResult<User> {
     if let Some(data) = cursor {
         let json: Value = Bson::Document(data).into();
         let u: User = serde_json::from_value(json).unwrap();
+        println!("{:#?}", u);
         Ok(u)
     } else {
         Ok(User::default())
@@ -39,15 +37,14 @@ pub fn get_user(ctx: &State, id: String) -> FieldResult<User> {
 }
 
 pub fn create_user(ctx: &State, user: NewUser) -> FieldResult<String> {
-    let collection = ctx.db.lock().unwrap().collection("users");
-    let doc = doc! {
-        "name": user.name,
-        "email": user.email,
-        "password": user.password,
+    let db = ctx.db.lock().unwrap();
+    let mut new_user = User {
+        id: None,
+        email: user.email,
+        name: user.name,
+        password: user.password,
     };
-    let cursor = collection
-        .insert_one(doc.clone(), None)
-        .expect("Failed to execute find.");
-    println!("{:#?}", cursor);
-    Ok("Created".into())
+    new_user.save(db.clone(), None)?;
+
+    Ok("created".into())
 }
