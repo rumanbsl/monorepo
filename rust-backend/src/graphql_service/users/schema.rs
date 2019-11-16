@@ -1,9 +1,7 @@
 use juniper::{self, object};
 use serde::{Deserialize, Serialize};
 use wither::mongodb::{bson, coll::options::IndexModel, doc, oid::ObjectId};
-
 use wither_derive;
-
 #[derive(Serialize, Deserialize, Debug, wither_derive::Model, Default)]
 pub struct User {
 	#[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
