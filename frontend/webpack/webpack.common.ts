@@ -7,7 +7,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import { VueLoaderPlugin } from "vue-loader";
 import { Configuration } from "webpack";
 
-export default {
+const config: Configuration = {
   stats        : "errors-only",
   entry        : [resolve(__dirname, "..", "src", "main")],
   optimization : {
@@ -20,11 +20,6 @@ export default {
         },
       },
     },
-  },
-  output: {
-    path       : resolve(__dirname, "..", "dist"),
-    publicPath : "/",
-    filename   : "index.js",
   },
   resolve: {
     alias      : { "@": resolve("src"), src: resolve("src") },
@@ -53,9 +48,20 @@ export default {
         options : { name: "./fonts/[name].[ext]", publicPath: "/" },
       },
       {
-        test    : /\.(ts|js)$/,
+        test    : /\.js$/,
         exclude : /(node_modules)/,
         loader  : "babel-loader",
+      },
+      {
+        test    : /\.ts$/,
+        exclude : /(node_modules)/,
+        use     : [
+          "babel-loader",
+          {
+            loader  : "ts-loader",
+            options : { appendTsSuffixTo: [/\.vue$/] },
+          },
+        ],
       },
       {
         test : /\.html$/,
@@ -79,4 +85,6 @@ export default {
     new SimpleProgressWebpackPlugin(),
     new CleanWebpackPlugin(),
   ],
-} as Configuration;
+};
+
+export default config;

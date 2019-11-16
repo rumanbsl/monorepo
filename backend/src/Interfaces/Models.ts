@@ -32,15 +32,26 @@ export type GetUsersInput = {
   skip?: Maybe<Scalars['Int']>,
 };
 
+export type LoginInput = {
+  email: Scalars['String'],
+  password: Scalars['String'],
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   _?: Maybe<Scalars['String']>,
   postUser: User,
+  loginUser: Scalars['String'],
 };
 
 
 export type MutationPostUserArgs = {
   input?: Maybe<PostUserInput>
+};
+
+
+export type MutationLoginUserArgs = {
+  input?: Maybe<LoginInput>
 };
 
 export type PostUserInput = {
@@ -85,6 +96,7 @@ export type User = {
 import { ObjectID } from 'mongodb';
 export type UserDbObject = {
   _id: ObjectID,
+  password: string,
   name: string,
   email?: Maybe<string>,
   joinDate: any,

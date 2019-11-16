@@ -6,7 +6,7 @@ import { Imodels } from "@/models";
 export type Context = Imodels & { req: Request};
 
 export type shapeTryCatch = typeof tryCatchWrapper;
-export type ResolverFn = (rootValue: unknown, args: unknown, context: Context, info?: unknown) => Promise<any> | any;
+export type ResolverFn = (rootValue: any, args: any, context: Context, info?: any) => Promise<any> | any;
 
 export type Iqueries = {
   [key: string]: ResolverFn | shapeTryCatch;

@@ -46,13 +46,34 @@ services:
       - ./.eslintrc:/app/.eslintrc
       - ./tsconfig.json:/app/tsconfig.json
       - ./backend:/app/backend
-      - backend-deps/app/node_modules
-      - backend-nested-deps/app/backend/node_modules
+      - backend-deps:/app/node_modules
+      - backend-nested-deps:/app/backend/node_modules
     depends_on:
       database:
         condition: service_healthy
       redis:
         condition: service_healthy
+  ############################################################################
+  backend_rust:
+    tty: true
+    container_name: "BACKEND_RUST"
+    build:
+      context: .
+      dockerfile: ./rust-backend/dev.Dockerfile
+    environment:
+      - HOST_DB=database
+    env_file:
+      - SECRETS/dev.env
+    volumes:
+      - ./rust-backend:/rust-backend
+      - rust-backend-deps:/rust-backend/target
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - 1212:1212
   ############################################################################
   database:
     container_name: "DATABASE"
@@ -92,3 +113,4 @@ volumes:
   mongostorage:
   backend-deps:
   backend-nested-deps:
+  rust-backend-deps:
