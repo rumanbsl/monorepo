@@ -8,9 +8,9 @@ use wither::{
 	prelude::*,
 };
 pub mod schema;
+use bcrypt::{hash, DEFAULT_COST};
 use lazy_static::lazy_static;
 use regex::Regex;
-
 pub use schema::User;
 #[derive(GraphQLInputObject, Default, Serialize, Deserialize, Debug, ValidateForm)]
 pub struct NewUser {
@@ -43,11 +43,12 @@ pub fn create_user(ctx: &State, user: NewUser) -> FieldResult<String> {
 		return Err(FieldError::from(format!("{:?}", err)));
 	}
 	let db = ctx.db.lock().unwrap();
+	let password = hash(user.password, DEFAULT_COST)?;
 	let mut new_user = User {
 		id: None,
 		email: user.email,
 		name: user.name,
-		password: user.password,
+		password,
 	};
 	new_user.save(db.clone(), None)?;
 
