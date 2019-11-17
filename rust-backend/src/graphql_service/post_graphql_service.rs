@@ -2,8 +2,8 @@ use http::status::StatusCode;
 use juniper::{self, http::GraphQLRequest, object, FieldResult, RootNode};
 use tide::{error::ResultExt, response, Context, EndpointResult};
 
-use super::super::State;
 use super::users;
+use crate::State;
 
 struct Query;
 struct Mutation;
@@ -21,7 +21,7 @@ impl Mutation {
 	fn create_user(ctx: &State, user: users::NewUser) -> FieldResult<String> {
 		users::create_user(ctx, user)
 	}
-	pub fn login_user(ctx: &State, email: String, password: String) -> FieldResult<users::User> {
+	pub fn login_user(ctx: &State, email: String, password: String) -> FieldResult<String> {
 		users::login_user(ctx, email, password)
 	}
 }

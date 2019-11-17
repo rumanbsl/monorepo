@@ -1,5 +1,9 @@
 use crate::State;
+use bcrypt::{hash, verify, DEFAULT_COST};
+use jsonwebtoken::{decode, encode, errors::ErrorKind, Header, Validation};
 use juniper::{self, FieldError, FieldResult, GraphQLInputObject};
+use lazy_static::lazy_static;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use webforms::validate::{ValidateError, ValidateForm};
@@ -7,10 +11,8 @@ use wither::{
 	mongodb::{bson, db::ThreadedDatabase, doc, oid::ObjectId, Bson},
 	prelude::*,
 };
+
 pub mod schema;
-use bcrypt::{hash, verify, DEFAULT_COST};
-use lazy_static::lazy_static;
-use regex::Regex;
 pub use schema::User;
 #[derive(GraphQLInputObject, Default, Serialize, Deserialize, Debug, ValidateForm)]
 pub struct NewUser {
@@ -55,16 +57,17 @@ pub fn create_user(ctx: &State, user: NewUser) -> FieldResult<String> {
 	Ok("created".into())
 }
 
-pub fn login_user(ctx: &State, email: String, password: String) -> FieldResult<User> {
+pub fn login_user(ctx: &State, email: String, password: String) -> FieldResult<String> {
 	let db = ctx.db.lock()?;
 	let found = User::find_one(db.clone(), Some(doc! { "email": email }), None)?;
 	if let Some(user) = found {
-		println!("{:?}", user);
 		let password = verify(password, &user.password)?;
 		if !password {
-			Err(FieldError::from(String::from("Password missmatch")))
+			Err(FieldError::from("Password missmatch"))
 		} else {
-			Ok(user)
+			// authentication succesful, now create a JWT
+			let token = encode(&Header::default(), &user, &ctx.env.jwt_secret.as_ref())?;
+			Ok(token)
 		}
 	} else {
 		Err(FieldError::from("User not found"))

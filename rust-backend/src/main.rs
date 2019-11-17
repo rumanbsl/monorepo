@@ -12,51 +12,50 @@ use wither::mongodb::{
 	db::{Database, ThreadedDatabase},
 	Client, ThreadedClient,
 };
-
 pub struct State {
 	db: Mutex<Database>,
+	env: Env,
 }
 
 impl State {
-	pub fn new(db: Mutex<Database>) -> State {
-		State { db }
+	pub fn new(db: Mutex<Database>, env: Env) -> State {
+		State { db, env }
 	}
 }
 
 fn main() -> Result<(), Error> {
-	let config = Config::get()?;
+	match Env::get() {
+		Err(e) => Err(Error::new(ErrorKind::NotFound, e)),
+		Ok(env_vars) => {
+			let mongo = Client::connect(&env_vars.db_host[..], 27017)?;
+			mongo.db("tide").collection("hello");
+			let mut app = App::with_state(State::new(
+				Mutex::new(mongo.db("docker-ts")),
+				env_vars.clone(),
+			));
+			app.middleware(RootLogger::new());
 
-	let mongo =
-		Client::connect(&config.db_host[..], 27017).expect("Failed to initialize standalone client.");
-	mongo.db("tide").collection("hello");
-	let mut app = App::with_state(State::new(Mutex::new(mongo.db("docker-ts"))));
-	app.middleware(RootLogger::new());
-
-	setup_routes(&mut app);
-	let server_url = format!("0.0.0.0:{}", config.server_port);
-	Ok(app.serve(server_url)?)
+			setup_routes(&mut app);
+			let server_url = format!("0.0.0.0:{}", env_vars.server_port);
+			Ok(app.serve(server_url)?)
+		}
+	}
 }
 
-#[derive(Default)]
-struct Config {
+#[derive(Default, Clone)]
+pub struct Env {
 	db_host: String,
 	server_port: String,
+	jwt_secret: String,
 }
 
-impl Config {
-	fn get() -> Result<Config, Error> {
-		let mut config = Config::default();
-		if let Ok(port) = env::var("SERVER_PORT") {
-			config.server_port = port;
-		} else {
-			return Err(Error::new(ErrorKind::NotFound, "No server port found"));
-		};
-		if let Ok(db_host) = env::var("HOST_DB") {
-			config.db_host = db_host;
-		} else {
-			return Err(Error::new(ErrorKind::NotFound, "No db host found"));
-		};
+impl Env {
+	fn get() -> Result<Env, env::VarError> {
+		let mut env_vars = Env::default();
+		env_vars.server_port = env::var("SERVER_PORT")?;
+		env_vars.db_host = env::var("HOST_DB")?;
+		env_vars.jwt_secret = env::var("JWT_SECRET_KEY")?;
 
-		Ok(config)
+		Ok(env_vars)
 	}
 }
