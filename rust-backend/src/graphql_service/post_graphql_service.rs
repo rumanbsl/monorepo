@@ -11,14 +11,15 @@ impl juniper::Context for State {}
 
 #[object(Context = State)]
 impl Query {
-	fn get_user(ctx: &State, id: String) -> FieldResult<users::User> {
-		users::get_user(ctx, id)
+	fn version(ctx: &State) -> String {
+		println!("User Info: => {:?}", ctx.authenticated_user);
+		"1.0".into()
 	}
 }
 
 #[object(Context = State)]
 impl Mutation {
-	fn create_user(ctx: &State, user: users::NewUser) -> FieldResult<String> {
+	async fn create_user(ctx: &State, user: users::NewUser) -> FieldResult<String> {
 		users::create_user(ctx, user)
 	}
 	pub fn login_user(ctx: &State, email: String, password: String) -> FieldResult<String> {
@@ -28,10 +29,17 @@ impl Mutation {
 
 type Schema = RootNode<'static, Query, Mutation>;
 
-pub async fn post_graphql_service(mut cx: Context<State>) -> EndpointResult {
-	let query: GraphQLRequest = cx.body_json().await.client_err()?;
+pub async fn post_graphql_service(mut ctx: Context<State>) -> EndpointResult {
+	let authenticated_user = users::logged_user_info(&ctx);
+	let query: GraphQLRequest = ctx.body_json().await.client_err()?;
 	let schema = Schema::new(Query, Mutation);
-	let gql = query.execute(&schema, cx.state());
+	let state = ctx.state();
+	let state = State {
+		db: state.db.clone(),
+		env: state.env.clone(),
+		authenticated_user,
+	};
+	let gql = query.execute(&schema, &state);
 	let status = if gql.is_ok() {
 		StatusCode::OK
 	} else {

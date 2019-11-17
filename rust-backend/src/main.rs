@@ -1,11 +1,11 @@
 mod graphql_service;
 mod routes;
 
+use graphql_service::users;
 use routes::setup_routes;
 use std::{
 	env,
 	io::{Error, ErrorKind},
-	sync::Mutex,
 };
 use tide::{middleware::RootLogger, App};
 use wither::mongodb::{
@@ -13,13 +13,18 @@ use wither::mongodb::{
 	Client, ThreadedClient,
 };
 pub struct State {
-	db: Mutex<Database>,
+	db: Database,
 	env: Env,
+	authenticated_user: Option<users::User>,
 }
 
 impl State {
-	pub fn new(db: Mutex<Database>, env: Env) -> State {
-		State { db, env }
+	pub fn new(db: Database, env: Env) -> State {
+		State {
+			db,
+			env,
+			authenticated_user: None,
+		}
 	}
 }
 
@@ -29,10 +34,7 @@ fn main() -> Result<(), Error> {
 		Ok(env_vars) => {
 			let mongo = Client::connect(&env_vars.db_host[..], 27017)?;
 			mongo.db("tide").collection("hello");
-			let mut app = App::with_state(State::new(
-				Mutex::new(mongo.db("docker-ts")),
-				env_vars.clone(),
-			));
+			let mut app = App::with_state(State::new(mongo.db("docker-ts"), env_vars.clone()));
 			app.middleware(RootLogger::new());
 
 			setup_routes(&mut app);
