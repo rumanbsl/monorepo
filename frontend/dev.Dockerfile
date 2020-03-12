@@ -1,13 +1,17 @@
-FROM node:12-alpine as base
+FROM node:13-alpine as base
 EXPOSE 8090
 WORKDIR /app
-ENV PATH=/app/node_modules/.bin:$PATH
 COPY ./package*.json yarn*lock\
   babel.config.js\
-  .eslintrc\
+  .eslintrc.js\
   tsconfig.json ./
 COPY ./frontend/package.json ./frontend/
-RUN npm i -g yarn && yarn
+RUN apk add --no-cache --virtual .build-deps make gcc g++ python \
+  && yarn \
+  && apk del .build-deps
+ENV PATH=/app/node_modules/.bin:$PATH
+ENV ACLOCAL_PATH=/usr/share/aclocal
+ENV LIBRARY_PATH=/lib:/usr/lib
 
 FROM base as dev
 WORKDIR /app/frontend

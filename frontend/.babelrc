@@ -1,25 +1,8 @@
 {
-  "extends": "../babel.config.js",
   "presets": [
-    [
-      "@babel/env",
-      {
-        "targets": {
-          "chrome": "58",
-          "ie": "11"
-        }
-      }
-    ],
-    "@babel/typescript"
+    "react-app"
   ],
   "plugins": [
-    "@babel/transform-typescript",
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        "regenerator": true
-      }
-    ],
-    "@babel/syntax-dynamic-import"
+    "@babel/plugin-proposal-optional-chaining"
   ]
 }

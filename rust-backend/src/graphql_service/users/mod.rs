@@ -33,8 +33,7 @@ pub struct Claim {
 }
 
 pub fn logged_user_info(ctx: &Context<State>) -> Option<User> {
-	// extract user from token
-	let info: Option<User> = match ctx.headers().get("Authorization") {
+	match ctx.headers().get("Authorization") {
 		None => None,
 		Some(auth_header) => match auth_header.to_str() {
 			Ok(token) => {
@@ -68,8 +67,7 @@ pub fn logged_user_info(ctx: &Context<State>) -> Option<User> {
 			}
 			Err(_) => None,
 		},
-	};
-	info
+	}
 }
 
 pub fn create_user(ctx: &State, user: NewUser) -> FieldResult<String> {

@@ -1,7 +1,4 @@
 {
-  "processors": [
-  "@mapbox/stylelint-processor-arbitrary-tags"
-],
   "extends": [
     "stylelint-config-sass-guidelines",
     "stylelint-config-lost",
@@ -9,6 +6,7 @@
   ],
   "syntax": "scss",
   "rules": {
+    "selector-pseudo-element-no-unknown": null,
     "at-rule-no-unknown": null,
     "scss/at-rule-no-unknown": true,
     "no-empty-source": null,
@@ -17,6 +15,7 @@
     "order/order": null,
     "selector-pseudo-element-colon-notation": null,
     "max-nesting-depth": 3,
+    "selector-max-id": 1,
     "selector-class-pattern": null,
     "selector-no-qualifying-type": [
       true,

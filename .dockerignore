@@ -7,7 +7,7 @@
 !/rust-backend/**
 !/yarn.lock
 !babel.config.js
-!.eslintrc
+!.eslintrc.js
 !tsconfig.json
 !package.json
 

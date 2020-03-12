@@ -22,7 +22,7 @@ impl Mutation {
 	async fn create_user(ctx: &State, user: users::NewUser) -> FieldResult<String> {
 		users::create_user(ctx, user)
 	}
-	pub fn login_user(ctx: &State, email: String, password: String) -> FieldResult<String> {
+	async fn login_user(ctx: &State, email: String, password: String) -> FieldResult<String> {
 		users::login_user(ctx, email, password)
 	}
 }

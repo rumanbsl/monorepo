@@ -1,8 +1,0 @@
-valtyr:
-  overrides:
-    - files: "*.vue"
-      processor: "@fimbul/ve"
-project: tsconfig.json
-exclude:
-  - "**/*.d.ts"
-  - "surveyEditor"

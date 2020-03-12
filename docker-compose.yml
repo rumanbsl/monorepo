@@ -4,46 +4,48 @@ version: "2.4"
 services:
   #############################################################################
   frontend:
-    container_name: "FRONTEND"
+    container_name: "MONO_FRONTEND"
     tty: true
     build:
       context: .
       dockerfile: ./frontend/dev.Dockerfile
     environment:
       - HOST_BACKEND=backend
+      - NODE_ENV=development
     volumes:
       - ./package.json:/app/package.json
       - ./babel.config.js:/app/babel.config.js
-      - ./.eslintrc:/app/.eslintrc
+      - ./.eslintrc.js:/app/.eslintrc.js
       - ./tsconfig.json:/app/tsconfig.json
       - ./frontend:/app/frontend:rw
       - /app/node_modules
       - /app/frontend/node_modules
-    labels:
-      # Route config
-      - "traefik.http.routers.fe-router.rule=Host(`ruman.fi`,`ruman.com`)"
-      # https setting, with certificate
-      # - "traefik.http.routers.fe-router.tls.certresolver=fe-cert"
-      # - "traefik.http.routers.fe-router.entrypoints=websecure"
-      # - "traefik.http.services.fe-service.loadbalancer.server.port=8090"
-      - "traefik.enable=true"
+    # labels:
+    #   # Route config
+    #   - "traefik.http.routers.fe-router.rule=Host(`ruman.fi`,`ruman.com`)"
+    #   # https setting, with certificate
+    #   # - "traefik.http.routers.fe-router.tls.certresolver=fe-cert"
+    #   # - "traefik.http.routers.fe-router.entrypoints=websecure"
+    #   # - "traefik.http.services.fe-service.loadbalancer.server.port=8090"
+    #   - "traefik.enable=true"
     ports:
       - 8090:8090
   #############################################################################
   backend:
     tty: true
-    container_name: "BACKEND"
+    container_name: "MONO_BACKEND"
     build:
       context: .
       dockerfile: ./backend/dev.Dockerfile
     environment:
       - HOST_DB=database
+      - NODE_ENV=development
     env_file:
       - SECRETS/dev.env
     volumes:
       - ./package.json:/app/package.json
       - ./babel.config.js:/app/babel.config.js
-      - ./.eslintrc:/app/.eslintrc
+      - ./.eslintrc.js:/app/.eslintrc.js
       - ./tsconfig.json:/app/tsconfig.json
       - ./backend:/app/backend
       - backend-deps:/app/node_modules
@@ -56,7 +58,7 @@ services:
   ############################################################################
   backend_rust:
     tty: true
-    container_name: "BACKEND_RUST"
+    container_name: "MONO_BACKEND_RUST"
     build:
       context: .
       dockerfile: ./rust-backend/dev.Dockerfile
@@ -76,7 +78,7 @@ services:
       - 1212:1212
   ############################################################################
   database:
-    container_name: "DATABASE"
+    container_name: "MONO_DATABASE"
     image: mongo:4
     restart: always
     # environment:
@@ -89,7 +91,7 @@ services:
     ports:
       - "27010:27017"
   redis:
-    container_name: "REDIS"
+    container_name: "MONO_REDIS"
     image: redis:5.0.6-alpine
     healthcheck:
       test: redis-cli ping
@@ -98,7 +100,7 @@ services:
   # - "traefik.http.routers.fe-router.middlewares=fe-auth"
   # - "traefik.http.middlewares.fe-auth.basicauth.users=test:"
   reverse-proxy:
-    container_name: "TRAEFIK"
+    container_name: "MONO_TRAEFIK"
     image: "traefik:v2.0.2"
     volumes:
       # - "./acme.json:/acme.json"

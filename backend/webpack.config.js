@@ -47,12 +47,11 @@ if (mode === "development") {
     ignored: ["*.{test,spec}.{js,ts}", "node_modules"],
   };
   const eslintConfig = {
+    loader  : "eslint-loader",
     enforce : "pre",
     test    : /\.(ts|js)$/,
     include : path.resolve(__dirname, "src"),
     exclude : /node_modules/,
-    loader  : "eslint-loader",
-    options : { fix: true },
   };
   configuration.module.rules.push(eslintConfig);
 }

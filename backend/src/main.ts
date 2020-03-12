@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import console from "chalk-console";
 import http, { Server } from "http";
 import App, { initializeApolloServer } from "./app";

@@ -1,30 +1,32 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "importHelpers": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "baseUrl": ".",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "ES2020",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "types": [
       "webpack-env",
       "jest",
       "node"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "pretty": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "importHelpers": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitThis": true,
-    "noImplicitReturns": true
+    ]
   }
 }

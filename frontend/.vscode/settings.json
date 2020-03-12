@@ -1,53 +1,14 @@
 {
   "eslint.packageManager": "yarn",
   "eslint.enable": true,
-  "eslint.autoFixOnSave": true,
   "eslint.validate": [
-    {
-      "language": "javascript",
-      "autoFix": true
-    },
-    {
-      "language": "javascriptreact",
-      "autoFix": true
-    },
-    {
-      // to higlight linting errors
-      "language": "vue",
-      "autoFix": true
-    },
-    {
-      "language": "typescript",
-      "autoFix": true
-    },
-    {
-      "language": "html",
-      "autoFix": true
-    }
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
   ],
-  // "files.exclude": {
-  //   "**/.git": true,
-  //   "**/.svn": true,
-  //   "**/.hg": true,
-  //   "**/CVS": true,
-  //   "**/.DS_Store": true,
-  //   "*.lock": true,
-  //   "*tsconfig*": true,
-  //   "*webpack*": true,
-  //   "*lint*": true,
-  //   ".editorconfig": true,
-  //   "LICENSE": true,
-  //   ".babelrc": true,
-  //   ".vscode": true
-  // },
-  "vetur.format.defaultFormatter.css": "prettier",
-  "vetur.format.defaultFormatter.scss": "prettier",
-  "vetur.format.defaultFormatter.ts": "none",
-  "vetur.format.defaultFormatter.js": "none",
-  "vetur.format.defaultFormatter.html": "none",
   "emmet.includeLanguages": {
-    "vue": "html",
-    "vue-html": "html",
     "javascript": "javascriptreact",
     "xml": {
       "attr_quotes": "single"
@@ -62,8 +23,16 @@
   "[typescript]": {
     "editor.formatOnSave": false,
   },
+  "[typescriptreact]": {
+    "editor.formatOnSave": false,
+  },
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
-  "typescript.tsdk": "../node_modules/typescript/lib",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.wordWrapColumn": 160,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  }
 }
