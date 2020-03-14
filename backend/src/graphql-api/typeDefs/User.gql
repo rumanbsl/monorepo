@@ -7,9 +7,10 @@ type User @entity {
     _id: String! @id
     password: String! @column
     name: String! @column
-    email: String @column
+    email: String! @column
     joinDate: Date! @column
-    sex: Sex @column
+    sex: Sex! @column
+    role: Int! @column
 }
 
 input getUserInput {

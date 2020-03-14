@@ -6,9 +6,7 @@ COPY ./package*.json yarn*lock\
   .eslintrc.js\
   tsconfig.json ./
 COPY ./frontend/package.json ./frontend/
-RUN apk add --no-cache --virtual .build-deps make gcc g++ python \
-  && yarn \
-  && apk del .build-deps
+RUN apk add --no-cache --virtual .build-deps make gcc g++ python && yarn
 ENV PATH=/app/node_modules/.bin:$PATH
 ENV ACLOCAL_PATH=/usr/share/aclocal
 ENV LIBRARY_PATH=/lib:/usr/lib

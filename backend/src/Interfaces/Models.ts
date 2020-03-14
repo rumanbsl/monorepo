@@ -88,9 +88,10 @@ export type User = {
   _id: Scalars['String'];
   password: Scalars['String'];
   name: Scalars['String'];
-  email?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
   joinDate: Scalars['Date'];
-  sex?: Maybe<Sex>;
+  sex: Sex;
+  role: Scalars['Int'];
 };
 
 import { ObjectID } from 'mongodb';
@@ -98,7 +99,8 @@ export type UserDbObject = {
   _id: ObjectID,
   password: string,
   name: string,
-  email?: Maybe<string>,
+  email: string,
   joinDate: any,
-  sex?: Maybe<Sex>,
+  sex: Sex,
+  role: number,
 };

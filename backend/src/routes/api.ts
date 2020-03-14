@@ -1,8 +1,9 @@
 /* 🚥🚥 /api 🚥🚥 */
 import express from "express";
+import handleStream from "./api-controllers/handle-stream";
 
 const apiRouter = express.Router();
 
-apiRouter.route("/").get((_, res) => res.json({ route: "/api" }));
+apiRouter.route("/").get(handleStream);
 
 export default apiRouter;

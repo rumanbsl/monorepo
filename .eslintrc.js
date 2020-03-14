@@ -49,7 +49,7 @@ module.exports = {
 	},
 	"overrides": [
 		{
-			"files": "*.{test,spec}.{js,ts}",
+			"files": "*.{test,spec}.{tsx,ts}",
 			"rules": {
 				"@typescript-eslint/explicit-function-return-type": 0,
 				"@typescript-eslint/no-explicit-any": 0,
@@ -69,6 +69,9 @@ module.exports = {
 	],
 	"root": true,
 	"rules": {
+		"no-throw-literal": 0,
+		"func-names": 0,
+		"import/no-cycle": 0,
 		"@typescript-eslint/ban-ts-ignore": "off",
 		"@typescript-eslint/camelcase": "off",
 		"@typescript-eslint/explicit-function-return-type": "off",

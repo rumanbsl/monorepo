@@ -8,7 +8,6 @@ const Queries: Iqueries = {
     return found;
   }),
   getUsers: tryCatchWrapper(async (_, { input }: {input?: GetUsersInput}, { User }) => {
-    /* eslint-disable-next-line */ // https://github.com/typescript-eslint/typescript-eslint/issues/1116
     const found = await User.find({}).skip(input?.skip || 0).limit(input?.limit || 0);
     return found;
   }),

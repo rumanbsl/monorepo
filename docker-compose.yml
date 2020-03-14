@@ -56,27 +56,6 @@ services:
       redis:
         condition: service_healthy
   ############################################################################
-  backend_rust:
-    tty: true
-    container_name: "MONO_BACKEND_RUST"
-    build:
-      context: .
-      dockerfile: ./rust-backend/dev.Dockerfile
-    environment:
-      - HOST_DB=database
-    env_file:
-      - SECRETS/dev.env
-    volumes:
-      - ./rust-backend:/rust-backend
-      - rust-backend-deps:/rust-backend/target
-    depends_on:
-      database:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    ports:
-      - 1212:1212
-  ############################################################################
   database:
     container_name: "MONO_DATABASE"
     image: mongo:4
