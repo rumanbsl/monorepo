@@ -6,9 +6,16 @@ import React, { useEffect, useRef, MutableRefObject, useState } from "react";
  */
 function useVideoStream(): MutableRefObject<HTMLVideoElement> | string {
   const [err, setErr] = useState<string>();
+  const peerConnection = new RTCPeerConnection();
   const vid = useRef(document.createElement("video"));
-  const onSucccess: NavigatorUserMediaSuccessCallback = (data) => {
-    vid.current.srcObject = data;
+  const onSucccess: NavigatorUserMediaSuccessCallback = (stream) => {
+    vid.current.srcObject = stream;
+    stream.getTracks().forEach((track) => { peerConnection.addTrack(track, stream); });
+    peerConnection.createOffer()
+      .then((sdp) => peerConnection.setLocalDescription(sdp))
+      .then(() => {
+        console.log(JSON.stringify(peerConnection.localDescription, null, "\t"));
+      });
   };
 
   useEffect(() => {
@@ -24,7 +31,7 @@ function useVideoStream(): MutableRefObject<HTMLVideoElement> | string {
           setErr("This feature requires access of camera!");
         } else setErr(error.message);
       });
-  }, []);
+  });
   return err || vid;
 }
 

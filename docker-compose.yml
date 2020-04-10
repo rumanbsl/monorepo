@@ -31,6 +31,27 @@ services:
     ports:
       - 8090:8090
   #############################################################################
+  frontend-https:
+    container_name: "MONO_FRONTEND_HTTPS"
+    tty: true
+    build:
+      context: .
+      dockerfile: ./frontend/dev.Dockerfile
+      target: dev-https
+    environment:
+      - HOST_BACKEND=backend
+      - NODE_ENV=development
+    volumes:
+      - ./package.json:/app/package.json
+      - ./babel.config.js:/app/babel.config.js
+      - ./.eslintrc.js:/app/.eslintrc.js
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./frontend:/app/frontend:rw
+      - /app/node_modules
+      - /app/frontend/node_modules
+    ports:
+      - 9080:9080
+  #############################################################################
   backend:
     tty: true
     container_name: "MONO_BACKEND"

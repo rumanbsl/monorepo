@@ -4429,6 +4429,11 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
+"@types/webrtc@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@types/webrtc/-/webrtc-0.0.26.tgz#f1bae07215eb84577c35ca050866820e412a07e2"
+  integrity sha512-hTDoPKPYbgcogZA9eqhihPO+HnUs5BNPfnoOyc9bzcuq56eYV28zwJ+3tortPN0uXgmDvNs3f1JaT4oTbtWxqg==
+
 "@types/workbox-webpack-plugin@5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/workbox-webpack-plugin/-/workbox-webpack-plugin-5.0.0.tgz#5ed921dfa1238893d8e1e6df5e972a036fa98baf"

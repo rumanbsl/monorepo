@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.js",
-    "start": "PORT=8090 node scripts/start.js",
+    "start": "PORT=8081 node scripts/start.js",
     "start:https": "PORT=9080 HTTPS=true node scripts/start.js",
     "test": "node scripts/test.js",
     "lint": "eslint --config .eslintrc.js --ext .ts,.tsx --max-warnings=500 src --fix && :"
@@ -16,5 +16,8 @@
     "react-dom": "^16.13.0",
     "react-router-dom": "5.1.2",
     "socket.io-client": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/webrtc": "^0.0.26"
   }
 }

@@ -13,6 +13,6 @@ module.exports = {
     "../.eslintrc"
   ],
   "rules": {
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": [2, { "extensions": [".tsx", ".jsx"] }],
   }
 }

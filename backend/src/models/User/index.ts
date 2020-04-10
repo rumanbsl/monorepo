@@ -18,10 +18,6 @@ const schema = new mongoose.Schema({
     required : true,
     unique   : true,
   },
-  joinDate: {
-    type    : Date,
-    default : new Date(),
-  },
   sex: {
     type : String,
     enum : ["Male", "Female"],
@@ -48,7 +44,6 @@ schema
     this._password = this.encryptPassword(password);
   })
   .get(function (this: IuserSchema) {
-    console.log(("I am called"));
     return this._password;
   });
 schema.methods = methods;

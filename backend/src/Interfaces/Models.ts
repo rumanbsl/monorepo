@@ -89,7 +89,6 @@ export type User = {
   password: Scalars['String'];
   name: Scalars['String'];
   email: Scalars['String'];
-  joinDate: Scalars['Date'];
   sex: Sex;
   role: Scalars['Int'];
 };
@@ -100,7 +99,6 @@ export type UserDbObject = {
   password: string,
   name: string,
   email: string,
-  joinDate: any,
   sex: Sex,
   role: number,
 };
