@@ -11,14 +11,14 @@ ENV ACLOCAL_PATH=/usr/share/aclocal
 ENV LIBRARY_PATH=/lib:/usr/lib
 
 FROM base as dev
-EXPOSE 8090
+EXPOSE 1111
 WORKDIR /app/frontend
 COPY ./frontend .
 COPY --from=base /app/frontend .
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "start" ]
 
 FROM base as dev-https
-EXPOSE 9080
+EXPOSE 2222
 WORKDIR /app/frontend
 COPY ./frontend .
 COPY --from=base /app/frontend .

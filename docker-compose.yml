@@ -9,6 +9,7 @@ services:
     build:
       context: .
       dockerfile: ./frontend/dev.Dockerfile
+      target: dev
     environment:
       - HOST_BACKEND=backend
       - NODE_ENV=development
@@ -61,6 +62,7 @@ services:
     environment:
       - HOST_DB=database
       - NODE_ENV=development
+      - PORT=3000
     env_file:
       - SECRETS/dev.env
     volumes:
@@ -76,6 +78,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    ports:
+      - 3000:3000 # Sometimes only backend is needed. e.g. mobile app
   ############################################################################
   database:
     container_name: "MONO_DATABASE"

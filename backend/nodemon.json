@@ -5,7 +5,8 @@
     ".eslintrc.js",
     "babel.config.js",
     "tsconfig.json",
-    "src/models/"
+    "src/models/",
+    "src/Interfaces/gql-definitions.ts"
   ],
   "exec": "BUILD=development node-hot --logLevel none & yarn type-gen",
   "ext": "ts js yaml json gql graphql"

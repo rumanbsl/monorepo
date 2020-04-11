@@ -40,18 +40,18 @@ export type LoginInput = {
 export type Mutation = {
    __typename?: 'Mutation';
   _?: Maybe<Scalars['String']>;
+  createUserActivationEmail: Scalars['String'];
   loginUser: Scalars['String'];
-  postUser: User;
+};
+
+
+export type MutationCreateUserActivationEmailArgs = {
+  input: PostUserInput;
 };
 
 
 export type MutationLoginUserArgs = {
-  input?: Maybe<LoginInput>;
-};
-
-
-export type MutationPostUserArgs = {
-  input?: Maybe<PostUserInput>;
+  input: LoginInput;
 };
 
 export type PostUserInput = {

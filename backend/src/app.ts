@@ -47,18 +47,12 @@ export function initializeApolloServer(): ApolloServer {
   return new ApolloServer({
     typeDefs,
     resolvers,
-    context({ req }) {
-      return {
-        req,
-        ...mongooseSchemas,
-        pubsub: new PubSub(),
-      };
-    },
-    playground: { version: "1.7.25" },
+    context    : ({ req }) => ({ req, ...mongooseSchemas, pubsub: new PubSub() }),
+    playground : { version: "1.7.25" },
   });
 }
 
 export default async (): Promise<App> => {
-  await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/docker-ts`, { useNewUrlParser: true });
+  await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/docker-ts`, { useNewUrlParser: true, useUnifiedTopology: true });
   return new App();
 };

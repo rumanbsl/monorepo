@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { UserDbObject } from "@/Interfaces/Models";
-import uuid from "uuid/v1";
+import { UserDbObject } from "@/Interfaces/gql-definitions";
+import { v4 as uuid } from "uuid";
 import methods, { UserSchemaWithMethods } from "./methods";
 
 export type IuserSchema = UserDbObject & mongoose.Document & {

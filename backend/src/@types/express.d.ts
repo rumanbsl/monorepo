@@ -4,11 +4,15 @@ import { RequestProps } from "@/Interfaces";
 
 declare global {
   namespace Express {
-    interface Request extends RequestProps {}
+    type Request = RequestProps;
   }
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: "development" | "production";
+      JWT_SECRET_KEY: string;
+      JWT_ACCOUNT_ACTIVATION: string;
+      JWT_REST_PASSWORD: string;
+      SENDGRID_API_KEY: string;
     }
   }
 }

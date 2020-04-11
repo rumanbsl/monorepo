@@ -36,7 +36,10 @@ extend type Query {
   getUsers(input: getUsersInput): [User]!
 }
 
+
 extend type Mutation {
-  postUser(input: postUserInput): User!
-  loginUser(input: loginInput): String!
+  # postUser return activation link which creates user
+  createUserActivationEmail(input: postUserInput!): String!
+  # createUserInDB(token: String!): User!
+  loginUser(input: loginInput!): String!
 }
