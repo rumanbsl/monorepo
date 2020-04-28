@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-interface */
-import { RequestProps } from "@/Interfaces";
+interface RequestProps {
+  no: undefined;
+}
 
 declare global {
   namespace Express {
-    type Request = RequestProps;
+    interface Request extends RequestProps {}
   }
   namespace NodeJS {
     interface ProcessEnv {
@@ -13,6 +15,7 @@ declare global {
       JWT_ACCOUNT_ACTIVATION: string;
       JWT_REST_PASSWORD: string;
       SENDGRID_API_KEY: string;
+      SITE_URL: string;
     }
   }
 }

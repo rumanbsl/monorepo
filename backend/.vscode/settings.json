@@ -15,5 +15,8 @@
   "better-comments.highlightPlainText": true,
   "jest.autoEnable": false,
   "typescript.tsdk": "../node_modules/typescript/lib",
-  "jest.pathToJest": "../node_modules/.bin/jest"
+  "jest.pathToJest": "../node_modules/.bin/jest",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

@@ -1,3 +1,4 @@
 import UserQueries from "./User";
+import GeneralQueries from "./General";
 
-export default { ...UserQueries };
+export default { ...UserQueries, ...GeneralQueries };

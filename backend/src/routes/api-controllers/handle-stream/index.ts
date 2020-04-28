@@ -1,14 +1,14 @@
-import { Irequest, Iresponse } from "@/Interfaces";
 import { resolve } from "path";
 import { createReadStream, createWriteStream } from "fs";
 import { Transform } from "stream";
+import { Request, Response } from "express";
 
 /**
  * @description
  * @param {Request} req
  * @param {Response} res
  */
-async function handleStream(_: Irequest, res: Iresponse) {
+async function handleStream(_: Request, res: Response) {
   const processStream = new Transform({
     transform(chunk: Int32Array, __, cb) {
       this.push(chunk.toString().toLowerCase());

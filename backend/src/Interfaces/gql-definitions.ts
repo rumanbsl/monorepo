@@ -22,6 +22,11 @@ export type AdditionalEntityFields = {
   type?: Maybe<Scalars['String']>;
 };
 
+export type Api = {
+   __typename?: 'Api';
+  version: Scalars['String'];
+};
+
 
 export type GetUserInput = {
   _id: Scalars['String'];
@@ -64,6 +69,7 @@ export type PostUserInput = {
 export type Query = {
    __typename?: 'Query';
   _?: Maybe<Scalars['String']>;
+  api: Api;
   getUser: User;
   getUsers: Array<Maybe<User>>;
 };

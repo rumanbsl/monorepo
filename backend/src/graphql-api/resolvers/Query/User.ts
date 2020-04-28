@@ -1,8 +1,8 @@
 import { GetUserInput, GetUsersInput } from "@/Interfaces/gql-definitions";
 import tryCatchWrapper from "@/utils/tryCatchWrapper";
-import { Iqueries } from "@/Interfaces";
+import { IuserQueries } from "@/Interfaces";
 
-const Queries: Iqueries = {
+const Queries: IuserQueries = {
   getUser: tryCatchWrapper(async (_, { input }: {input: GetUserInput}, { User }) => {
     const found = await User.findById(input._id);
     if (!found) throw { error: "User not found", status: 400 };

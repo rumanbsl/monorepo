@@ -30,7 +30,7 @@ services:
     #   # - "traefik.http.services.fe-service.loadbalancer.server.port=8090"
     #   - "traefik.enable=true"
     ports:
-      - 8090:8090
+      - 1111:1111
   #############################################################################
   frontend-https:
     container_name: "MONO_FRONTEND_HTTPS"
@@ -51,7 +51,7 @@ services:
       - /app/node_modules
       - /app/frontend/node_modules
     ports:
-      - 9080:9080
+      - 2222:2222
   #############################################################################
   backend:
     tty: true
