@@ -5,8 +5,10 @@ schema:
   - ./src/graphql-api/typeDefs/**/*.gql
 config:
   enumsAsString: false
+  useIndexSignature: true
 generates:
   ./src/Interfaces/gql-definitions.ts:
     plugins:
       - typescript
+      - typescript-operations
       - typescript-mongodb

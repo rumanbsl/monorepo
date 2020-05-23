@@ -55,7 +55,6 @@ module.exports = {
 				"@typescript-eslint/no-explicit-any": 0,
 				"@typescript-eslint/no-unused-vars": 0,
 				"import/no-extraneous-dependencies": 0,
-				"require-jsdoc": 0
 			}
 		},
 		{
@@ -146,9 +145,9 @@ module.exports = {
 				"require": {
 					"ArrowFunctionExpression": false,
 					"ClassDeclaration": true,
-					"FunctionDeclaration": true,
+					"FunctionDeclaration": false,
 					"FunctionExpression": false,
-					"MethodDefinition": true
+					"MethodDefinition": false
 				}
 			}
 		],

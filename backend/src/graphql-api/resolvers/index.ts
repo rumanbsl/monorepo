@@ -1,13 +1,8 @@
-import { IResolvers } from "apollo-server-express";
 import { GraphQLDateTime } from "graphql-iso-date";
-import Query from "./Query";
-import Mutation from "./Mutation";
+import { combineResolvers } from "apollo-resolvers";
+import User from "./User";
+import Team from "./Team";
 
 const DateResolver = { Date: GraphQLDateTime };
-// IResolvers<Parent, Context> is accepted
-const resolvers: IResolvers = {
-  Query,
-  Mutation,
-};
 
-export default [DateResolver, resolvers];
+export default combineResolvers([DateResolver, User, Team]);

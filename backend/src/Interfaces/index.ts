@@ -1,36 +1,10 @@
-import { Request } from "express";
-import { Imodels } from "@/models";
 import { Mutation, Query } from "@/Interfaces/gql-definitions";
 import { Types } from "mongoose";
+import { context } from "@/app";
 
-export type Context = Imodels & { req: Request};
-export type tryCatchWrapper<T> = (fn: ResolverFn<T>) => ResolverFn<T>
-export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => T;
-
-type Iquery = Omit<Query, "__typename"|"_">
-type Imutation = Omit<Mutation, "__typename"|"_">
-
-export type Iqueries = {
-  [key in keyof Iquery]: ResolverFn<Promise<Iquery[key]>>
-}
-export type Imutations = {
-  [key in keyof Imutation]: ResolverFn<Promise<Imutation[key]>>
-}
-/* ------------ USER ----------- */
-type UserMutationKeys = Pick<Mutation, "createUserActivationEmail"|"loginUser">
-type UserQueryKeys = Pick<Query, "getUser" | "getUsers">
-export type IuserMutations = {
-  [key in keyof UserMutationKeys]: ResolverFn<Promise<UserMutationKeys[key]>>;
-}
-export type IuserQueries = {
-  [key in keyof UserQueryKeys]: ResolverFn<Promise<UserQueryKeys[key]>>;
-}
-
-/* ------------ GENERAL ----------- */
-type GeneralQueryKeys = Pick<Query, "api">;
-export type IGeneralQueries = {
-  [key in keyof GeneralQueryKeys]: ResolverFn<Promise<GeneralQueryKeys[key]>>;
-}
+type UnPromisify<T> = T extends Promise<infer U> ? U : T;
+export type Context = UnPromisify<ReturnType<typeof context>>;
+export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => Promise<T> | T;
 
 export interface ObjectID extends Types.ObjectId {
   toString: () => string;
@@ -39,3 +13,10 @@ export interface ObjectID extends Types.ObjectId {
 export interface IanyObject {
   [key: string]: unknown;
 }
+
+export type Mutations = Omit<Partial<{
+  [key in keyof Mutation]: ResolverFn<Mutation[key]>;
+}>, "__typename" | "_">
+export type Queries = Omit<Partial<{
+  [key in keyof Query]: ResolverFn<Query[key]>;
+}>, "__typename" | "_">

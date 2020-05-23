@@ -22,89 +22,87 @@ export type AdditionalEntityFields = {
   type?: Maybe<Scalars['String']>;
 };
 
-export type Api = {
-   __typename?: 'Api';
-  version: Scalars['String'];
-};
 
-
-export type GetUserInput = {
-  _id: Scalars['String'];
-};
-
-export type GetUsersInput = {
-  limit?: Maybe<Scalars['Int']>;
-  skip?: Maybe<Scalars['Int']>;
-};
-
-export type LoginInput = {
+export type InputCreateTeam = {
+  name: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
+  plan?: Maybe<Plan>;
 };
 
 export type Mutation = {
-   __typename?: 'Mutation';
+  __typename?: 'Mutation';
+  TEAM_BEFORE_CREATE: Scalars['String'];
+  TEAM_CREATE: Scalars['String'];
   _?: Maybe<Scalars['String']>;
-  createUserActivationEmail: Scalars['String'];
-  loginUser: Scalars['String'];
 };
 
 
-export type MutationCreateUserActivationEmailArgs = {
-  input: PostUserInput;
+export type MutationTeam_Before_CreateArgs = {
+  input?: Maybe<InputCreateTeam>;
 };
 
 
-export type MutationLoginUserArgs = {
-  input: LoginInput;
+export type MutationTeam_CreateArgs = {
+  token: Scalars['String'];
 };
 
-export type PostUserInput = {
-  name: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
-  sex?: Maybe<Sex>;
-};
-
-export type Query = {
-   __typename?: 'Query';
-  _?: Maybe<Scalars['String']>;
-  api: Api;
-  getUser: User;
-  getUsers: Array<Maybe<User>>;
-};
-
-
-export type QueryGetUserArgs = {
-  input: GetUserInput;
-};
-
-
-export type QueryGetUsersArgs = {
-  input?: Maybe<GetUsersInput>;
-};
-
-export enum Sex {
-  Male = 'Male',
-  Female = 'Female'
+export enum Plan {
+  Team = 'TEAM',
+  Individual = 'INDIVIDUAL',
+  Super = 'SUPER'
 }
 
-export type User = {
-   __typename?: 'User';
-  _id: Scalars['String'];
-  password: Scalars['String'];
-  name: Scalars['String'];
-  email: Scalars['String'];
-  sex: Sex;
-  role: Scalars['Int'];
+export type Query = {
+  __typename?: 'Query';
+  USER_GET?: Maybe<User>;
+  _?: Maybe<Scalars['String']>;
 };
+
+
+export type QueryUser_GetArgs = {
+  id: Scalars['String'];
+};
+
+export type Team = {
+  __typename?: 'Team';
+  _id: Scalars['String'];
+  plan: Plan;
+  name: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  users: Array<User>;
+};
+
+export type User = {
+  __typename?: 'User';
+  _id: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  role: UserRole;
+};
+
+export enum UserRole {
+  SystemAdmin = 'SYSTEM_ADMIN',
+  Admin = 'ADMIN',
+  Editor = 'EDITOR',
+  Viewer = 'VIEWER'
+}
+
 
 import { ObjectID } from 'mongodb';
 export type UserDbObject = {
   _id: ObjectID,
-  password: string,
-  name: string,
   email: string,
-  sex: Sex,
-  role: number,
+  password: string,
+  role: UserRole,
+};
+
+export type TeamDbObject = {
+  _id: ObjectID,
+  plan: Plan,
+  name: string,
+  createdAt: Date,
+  updatedAt: Date,
+  users: Array<UserDbObject['_id']>,
 };

@@ -1,45 +1,17 @@
-enum Sex {
-  Male
-  Female
+enum UserRole {
+  SYSTEM_ADMIN
+  ADMIN
+  EDITOR
+  VIEWER
 }
 
-type User @entity {
-    _id: String! @id
-    password: String! @column
-    name: String! @column
-    email: String! @column
-    sex: Sex! @column
-    role: Int! @column
-}
-
-input getUserInput {
-  _id: String!
-}
-input getUsersInput {
-  limit: Int
-  skip: Int
-}
-input loginInput {
-  email: String!
-  password: String!
-}
-
-input postUserInput {
-  name: String!
-  password: String!
-  email: String!
-  sex: Sex
+type User @entity(embedded: true) {
+  _id: String! @id
+  email: String! @column
+  password: String! @column
+  role: UserRole! @column
 }
 
 extend type Query {
-  getUser(input: getUserInput!): User!
-  getUsers(input: getUsersInput): [User]!
-}
-
-
-extend type Mutation {
-  # postUser return activation link which creates user
-  createUserActivationEmail(input: postUserInput!): String!
-  # createUserInDB(token: String!): User!
-  loginUser(input: loginInput!): String!
+  USER_GET(id: String!): User
 }

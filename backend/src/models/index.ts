@@ -1,6 +1,4 @@
 import User from "./User";
+import Team from "./Team";
 
-export type Imodels = {
-  User: typeof User;
-};
-export default { User } as const;
+export default { User, Team } as const;

@@ -4,9 +4,14 @@ interface RequestProps {
   no: undefined;
 }
 
+
 declare global {
   namespace Express {
-    interface Request extends RequestProps {}
+    interface Request extends RequestProps {
+      user: {
+        admin: boolean
+      }
+    }
   }
   namespace NodeJS {
     interface ProcessEnv {
@@ -19,6 +24,5 @@ declare global {
     }
   }
 }
-
 // global namespace must be a module, thats why export anything
 export default undefined;

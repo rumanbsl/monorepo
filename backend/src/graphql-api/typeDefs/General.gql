@@ -1,7 +1,0 @@
-type Api {
-    version: String!
-  }
-
-extend type Query {
-  api: Api!
-}

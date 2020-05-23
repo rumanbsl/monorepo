@@ -8,24 +8,17 @@ export type IuserSchema = UserDbObject & mongoose.Document & {
   _salt: string;
 };
 
-const schema = new mongoose.Schema({
-  name: {
-    type     : String,
-    required : true,
-  },
+const schema = new mongoose.Schema<IuserSchema>({
   email: {
-    type     : String,
-    required : true,
-    unique   : true,
+    type      : String,
+    required  : true,
+    lowercase : true,
+    trim      : true,
   },
-  sex: {
-    type : String,
-    enum : ["Male", "Female"],
-  },
-  // RWX:0; RW: 1; R:2
   role: {
-    type    : Number,
-    default : 1,
+    type    : String,
+    enum    : ["SYSTEM_ADMIN", "ADMIN", "EDITOR", "VIEWER"],
+    default : "ADMIN",
   },
   _password: {
     type     : String,
