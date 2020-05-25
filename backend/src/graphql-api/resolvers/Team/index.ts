@@ -1,39 +1,46 @@
+import jwt from "jsonwebtoken";
 import { Mutations } from "@/Interfaces";
 import { InputCreateTeam, Plan } from "@/Interfaces/gql-definitions";
-import errors from "@/utils/errors";
+import ApolloError from "@/utils/apolloError";
 import { baseResolver } from "../Base";
+import sendActivationEmail from "./sendActivationEmail";
 
 const Mutation: Mutations = {
-  async TEAM_CREATE(_, { input }: {input: string}, { models }) {
-    console.log(input);
+  TEAM_CREATE: baseResolver.createResolver(async (_, { token }: {token: string}, { models }) => {
+    const { name, email, password } = jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION) as InputCreateTeam;
     const { Team, User } = models;
-    // Joi validation
     const { _id } = await User.create({
-      email    : "rumanbsl@gmail.com",
-      password : "Dhaka1204!",
+      email,
+      password,
     });
     const createdTeam = await Team.create({
-      name  : "ruman",
-      users : [_id],
+      name,
+      users: [_id],
     });
-    return `Team with id: ${createdTeam._id} created successfully`;
-  },
+    return `Team with id: ${createdTeam} created successfully`;
+  }),
   TEAM_BEFORE_CREATE: baseResolver.createResolver(async (_, { input }: {input: InputCreateTeam}, { models }) => {
     // check name is taken ?
     const { Team, User } = models;
     const TeamExists = await Team.countDocuments({ name: input.name.toUpperCase() }).limit(1);
     // -> yes [ Show AlreadyExistTeam Error ]
-    if (TeamExists) throw new errors.TeamExistsError();
+    if (TeamExists) throw ApolloError({ type: "TeamExistsError" });
     // -> no [ email exists in other team ? ]
     const existsUser = await User.findOne({ email: input.email.toLowerCase() });
-    if (!existsUser) return "SENDING AUTH EMAIL USER DOES NOT EXISTS";
+    if (!existsUser) {
+      const token = await sendActivationEmail(input);
+      return token;
+    }
     const TeamWithExistingEMail = await Team.findOne({ users: existsUser._id });
     // -> -> no [ Send authentication email ]
-    if (!TeamWithExistingEMail) return "SENDING AUTH EMAIL AS TEAM DOES NOT HAVE USER WITH GIVEN EMAIL";
+    if (!TeamWithExistingEMail) {
+      const token = await sendActivationEmail(input);
+      return token;
+    }
     // -> -> yes [ Both new team and existing team are INDIVIDUAL ?]
     if (input.plan === Plan.Individual && TeamWithExistingEMail.plan === Plan.Individual) {
       // -> -> -> yes [ Show NoNewTeamFor_INDIVIDUAL_Account ]
-      throw new errors.OnlyOneIndividualTeamError();
+      throw ApolloError({ type: "OnlyOneIndividualTeamError" });
     }
     // -> -> -> no [ ask to provide existing password to create new team ]
     return "PLEASE BUY A PREMIUM PLAM";

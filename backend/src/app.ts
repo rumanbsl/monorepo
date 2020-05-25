@@ -1,4 +1,5 @@
 import { ApolloServer, PubSub } from "apollo-server-express";
+
 import express, { Express, Request } from "express";
 import mongoose from "mongoose";
 import { GraphQLError } from "graphql";
@@ -40,19 +41,20 @@ class App{
   }
 }
 
-export const context = async ({ req }: {req: Request}) => {
-  req.user = { admin: true };
-  return { req, models, pubsub: new PubSub() };
-};
+export const context = async ({ req }: {req: Request}) => ({
+  req,
+  models,
+  pubsub: new PubSub(),
+});
 
 function formatError(error: GraphQLError) {
   const originalError = error.originalError as ApolloError;
   if (isApolloErrorInstance(originalError)) {
-    console.log(JSON.stringify({
+    console.error(JSON.stringify({
       type         : "error",
       data         : originalError.data,
       internalData : originalError.internalData,
-    }));
+    }, null, 2));
   }
   return formatApolloError(error);
 }
