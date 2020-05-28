@@ -6,7 +6,9 @@ type ErrorType = "UnknownError"
   | "AuthenticationRequiredError"
   | "TeamExistsError"
   | "OnlyOneIndividualTeamError"
-  | "ValidationError";
+  | "ValidationError"
+  | "NotFoundInDBError"
+  | "AuthenticationFailed";
 
 interface ErrConfig extends Omit<ErrorConfig, "message"> {
   type: ErrorType;
@@ -26,6 +28,9 @@ export default function apolloError(errorConfig: ErrConfig) {
     case "AuthenticationRequiredError":
       msg = "You must be logged in to do this";
       break;
+    case "AuthenticationFailed":
+      msg = "Username and password missmatch!";
+      break;
     case "TeamExistsError":
       msg = "Team already exists";
       break;
@@ -34,6 +39,9 @@ export default function apolloError(errorConfig: ErrConfig) {
       break;
     case "ValidationError":
       msg = "Invalid input";
+      break;
+    case "NotFoundInDBError":
+      msg = "Record do not exists!";
       break;
 
     default:

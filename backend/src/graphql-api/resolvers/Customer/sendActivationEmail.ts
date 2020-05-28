@@ -1,12 +1,12 @@
 import sendGrid from "@sendgrid/mail";
 import jwt from "jsonwebtoken";
 
-import { InputCreateTeam } from "@/Interfaces/gql-definitions";
+import { InputCreateCustomer } from "@/Interfaces/gql-definitions";
 
 sendGrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-export default async function sendActivationEmail(pl: InputCreateTeam) {
-  const token = jwt.sign(pl, process.env.JWT_ACCOUNT_ACTIVATION, { expiresIn: "10m" });
+export default async function sendActivationEmail(pl: InputCreateCustomer) {
+  const token = jwt.sign(pl, process.env.JWT_ACCOUNT_ACTIVATION, { expiresIn: "1h" });
 
   // NOT SENDING EMAIL FOR THE TIME BEING
   const boo = "[]";
@@ -20,7 +20,7 @@ export default async function sendActivationEmail(pl: InputCreateTeam) {
       <p>Please activate your account by clicking <a href="${process.env.SITE_URL}/auth/activation/${token}">here</a></p>
       <p>This link will expire in 10 minutes</p>
       <p>Cannot See the link?</p>
-      <p>${process.env.SITE_URL}/auth/activation?token=${token}</p>
+      <p>${process.env.SITE_URL}/auth/activation/${token}</p>
     `,
     });
   }

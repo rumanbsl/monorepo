@@ -13,15 +13,3 @@ type Team @entity {
   updatedAt: String! @column(overrideType: "Date")
   users: [User!]! @link
 }
-
-input inputCreateTeam {
-  name: String!
-  email: String!
-  password: String!
-  plan: Plan
-}
-extend type Mutation {
-  # Output is success message
-  TEAM_CREATE(token: String!): String!
-  TEAM_BEFORE_CREATE(input: inputCreateTeam): String!
-}

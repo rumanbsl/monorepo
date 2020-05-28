@@ -1,0 +1,12 @@
+input inputCreateCustomer {
+  name: String!
+  email: String!
+  password: String!
+  plan: Plan
+}
+extend type Mutation {
+  # create team and user
+  createCustomer(token: String!): User!
+  # returns token that is provided in  email
+  beforeCreateCustomer(input: inputCreateCustomer): String!
+}

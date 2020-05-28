@@ -1,25 +1,26 @@
 import jwt from "jsonwebtoken";
 import { Mutations } from "@/Interfaces";
-import { InputCreateTeam, Plan } from "@/Interfaces/gql-definitions";
+import { InputCreateCustomer, Plan } from "@/Interfaces/gql-definitions";
 import ApolloError from "@/utils/apolloError";
 import { baseResolver } from "../Base";
 import sendActivationEmail from "./sendActivationEmail";
 
 const Mutation: Mutations = {
-  TEAM_CREATE: baseResolver.createResolver(async (_, { token }: {token: string}, { models }) => {
-    const { name, email, password } = jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION) as InputCreateTeam;
+  createCustomer: baseResolver.createResolver(async (_, { token }: {token: string}, { models, login }) => {
+    const { name, email, password } = jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION) as InputCreateCustomer;
     const { Team, User } = models;
-    const { _id } = await User.create({
+    const user = await User.create({
       email,
       password,
     });
-    const createdTeam = await Team.create({
+    await Team.create({
       name,
-      users: [_id],
+      users: [user._id],
     });
-    return `Team with id: ${createdTeam} created successfully`;
+    await login(user);
+    return user;
   }),
-  TEAM_BEFORE_CREATE: baseResolver.createResolver(async (_, { input }: {input: InputCreateTeam}, { models }) => {
+  beforeCreateCustomer: baseResolver.createResolver(async (_, { input }: {input: InputCreateCustomer}, { models }) => {
     // check name is taken ?
     const { Team, User } = models;
     const TeamExists = await Team.countDocuments({ name: input.name.toUpperCase() }).limit(1);

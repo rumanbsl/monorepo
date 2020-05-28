@@ -1,18 +1,21 @@
-import { ApolloServer, PubSub } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 
-import express, { Express, Request } from "express";
+import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import { GraphQLError } from "graphql";
 import { isInstance as isApolloErrorInstance, formatError as formatApolloError, ApolloError } from "apollo-errors";
+import { buildContext } from "graphql-passport";
 import resolvers from "./graphql-api/resolvers";
 import typeDefs from "./graphql-api/typeDefs";
 import useCustomMiddlewares from "./middlewares/custom";
 import useVendorMiddlewares from "./middlewares/vendors";
 import models from "./models";
 import Routes from "./routes";
+import { User } from "./Interfaces/gql-definitions";
 
 const HOST_DB = process.env.HOST_DB || "localhost";
-const mongoPort = HOST_DB === "database" ? 27017 : 27010;
+const MONGO_PORT = HOST_DB === "database" ? 27017 : 27010;
+export const DB_URL = `mongodb://${HOST_DB}:${MONGO_PORT}/jooo`;
 
 /**
  * @description This is everything
@@ -20,19 +23,9 @@ const mongoPort = HOST_DB === "database" ? 27017 : 27010;
  */
 class App{
   app: Express;
-
-  /**
-   *Creates an instance of App.
-   * @memberof App
-   */
   constructor() {
     this.app = express();
   }
-
-  /**
- * @description
- * @memberof App
- */
   applyMiddleWare(): void {
     const { app } = this;
     useVendorMiddlewares(app);
@@ -41,11 +34,13 @@ class App{
   }
 }
 
-export const context = async ({ req }: {req: Request}) => ({
-  req,
-  models,
-  pubsub: new PubSub(),
-});
+export const context = (pl: {req: Request; res: Response}) => {
+  const ctx = buildContext<User>({ ...pl });
+  return {
+    ...ctx,
+    models,
+  };
+};
 
 function formatError(error: GraphQLError) {
   const originalError = error.originalError as ApolloError;
@@ -69,6 +64,6 @@ export function initializeApolloServer(): ApolloServer {
 }
 
 export default async (): Promise<App> => {
-  await mongoose.connect(`mongodb://${HOST_DB}:${mongoPort}/jooo`, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
   return new App();
 };

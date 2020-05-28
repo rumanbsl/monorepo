@@ -2,8 +2,8 @@ import { Mutation, Query } from "@/Interfaces/gql-definitions";
 import { Types } from "mongoose";
 import { context } from "@/app";
 
-type UnPromisify<T> = T extends Promise<infer U> ? U : T;
-export type Context = UnPromisify<ReturnType<typeof context>>;
+// type UnPromisify<T> = T extends Promise<infer U> ? U : T;
+export type Context = ReturnType<typeof context>
 export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => Promise<T> | T;
 
 export interface ObjectID extends Types.ObjectId {

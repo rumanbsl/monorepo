@@ -15,3 +15,7 @@ type User @entity(embedded: true) {
 extend type Query {
   USER_GET(id: String!): User
 }
+
+extend type Mutation {
+  USER_LOGIN(email: String!,password: String!): User!
+}

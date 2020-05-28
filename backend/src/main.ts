@@ -11,6 +11,7 @@ import App, { initializeApolloServer } from "./app";
     const configureHttpServer = (httpServer: Server): void => {
       console.info("Creating Express app");
       console.info("Creating Apollo server");
+      SERVER.applyMiddleWare();
       const apolloServer = initializeApolloServer();
 
       apolloServer.applyMiddleware({ app, path: "/graphql" });
@@ -18,7 +19,6 @@ import App, { initializeApolloServer } from "./app";
 
       httpServer.on("request", app);
       apolloServer.installSubscriptionHandlers(httpServer);
-      SERVER.applyMiddleWare();
     };
 
     if (!(process as any).httpServer) {

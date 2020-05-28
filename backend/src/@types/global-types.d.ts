@@ -1,18 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-interface */
-interface RequestProps {
-  no: undefined;
-}
-
-
 declare global {
-  namespace Express {
-    interface Request extends RequestProps {
-      user: {
-        admin: boolean
-      }
-    }
-  }
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: "development" | "production";
@@ -21,6 +7,7 @@ declare global {
       JWT_REST_PASSWORD: string;
       SENDGRID_API_KEY: string;
       SITE_URL: string;
+      SESSION_SECRET: string;
     }
   }
 }

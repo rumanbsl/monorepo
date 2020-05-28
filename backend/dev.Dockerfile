@@ -11,7 +11,8 @@ COPY ./backend/package.json ./backend/
 RUN apk --no-cache add --virtual native-deps \
   g++ gcc libgcc libstdc++ linux-headers make python && \
   yarn global add node-gyp -g && yarn && \
-  apk del native-deps
+  echo "Keeping native deps for dev build, because yarn install need it"
+# apk del native-deps
 
 FROM base as dev
 WORKDIR /app/backend

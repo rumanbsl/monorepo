@@ -23,7 +23,7 @@ export type AdditionalEntityFields = {
 };
 
 
-export type InputCreateTeam = {
+export type InputCreateCustomer = {
   name: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
@@ -32,18 +32,25 @@ export type InputCreateTeam = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  TEAM_BEFORE_CREATE: Scalars['String'];
-  TEAM_CREATE: Scalars['String'];
+  USER_LOGIN: User;
   _?: Maybe<Scalars['String']>;
+  beforeCreateCustomer: Scalars['String'];
+  createCustomer: User;
 };
 
 
-export type MutationTeam_Before_CreateArgs = {
-  input?: Maybe<InputCreateTeam>;
+export type MutationUser_LoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
-export type MutationTeam_CreateArgs = {
+export type MutationBeforeCreateCustomerArgs = {
+  input?: Maybe<InputCreateCustomer>;
+};
+
+
+export type MutationCreateCustomerArgs = {
   token: Scalars['String'];
 };
 
