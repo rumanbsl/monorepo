@@ -32,10 +32,11 @@ export type InputCreateCustomer = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  USER_LOGIN: User;
+  USER_LOGIN: Scalars['String'];
+  USER_LOGOUT?: Maybe<Scalars['Boolean']>;
   _?: Maybe<Scalars['String']>;
   beforeCreateCustomer: Scalars['String'];
-  createCustomer: User;
+  createCustomer: Scalars['String'];
 };
 
 
@@ -64,11 +65,6 @@ export type Query = {
   __typename?: 'Query';
   USER_GET?: Maybe<User>;
   _?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryUser_GetArgs = {
-  id: Scalars['String'];
 };
 
 export type Team = {

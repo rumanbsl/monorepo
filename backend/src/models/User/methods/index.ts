@@ -2,6 +2,9 @@ import crypto from "crypto";
 import { IuserSchema } from "..";
 
 const methods = {
+  authenticate(this: IuserSchema, passwordPlain: string) {
+    return (this as any).encryptPassword(passwordPlain) === this.password;
+  },
   encryptPassword(this: IuserSchema, password: string) {
     if (!password) return "";
     const hashed = crypto

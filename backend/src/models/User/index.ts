@@ -14,6 +14,7 @@ const schema = new mongoose.Schema<IuserSchema>({
     required  : true,
     lowercase : true,
     trim      : true,
+    unique    : true,
   },
   role: {
     type    : String,

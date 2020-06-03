@@ -5,8 +5,8 @@ input inputCreateCustomer {
   plan: Plan
 }
 extend type Mutation {
-  # create team and user
-  createCustomer(token: String!): User!
+  # create team and user - signup
+  createCustomer(token: String!): String!
   # returns token that is provided in  email
   beforeCreateCustomer(input: inputCreateCustomer): String!
 }

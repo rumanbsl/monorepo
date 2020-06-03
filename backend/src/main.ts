@@ -11,10 +11,11 @@ import App, { initializeApolloServer } from "./app";
     const configureHttpServer = (httpServer: Server): void => {
       console.info("Creating Express app");
       console.info("Creating Apollo server");
-      SERVER.applyMiddleWare();
       const apolloServer = initializeApolloServer();
 
+      SERVER.applyMiddleWare();
       apolloServer.applyMiddleware({ app, path: "/graphql" });
+      SERVER.applyRoutes();
       console.info("Express app created with Apollo middleware");
 
       httpServer.on("request", app);

@@ -1,17 +1,15 @@
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, PubSub } from "apollo-server-express";
 
 import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import { GraphQLError } from "graphql";
 import { isInstance as isApolloErrorInstance, formatError as formatApolloError, ApolloError } from "apollo-errors";
-import { buildContext } from "graphql-passport";
 import resolvers from "./graphql-api/resolvers";
 import typeDefs from "./graphql-api/typeDefs";
 import useCustomMiddlewares from "./middlewares/custom";
 import useVendorMiddlewares from "./middlewares/vendors";
 import models from "./models";
 import Routes from "./routes";
-import { User } from "./Interfaces/gql-definitions";
 
 const HOST_DB = process.env.HOST_DB || "localhost";
 const MONGO_PORT = HOST_DB === "database" ? 27017 : 27010;
@@ -28,19 +26,19 @@ class App{
   }
   applyMiddleWare(): void {
     const { app } = this;
-    useVendorMiddlewares(app);
     useCustomMiddlewares(app);
-    Routes(app);
+    useVendorMiddlewares(app);
+  }
+  applyRoutes() {
+    Routes(this.app);
   }
 }
 
-export const context = (pl: {req: Request; res: Response}) => {
-  const ctx = buildContext<User>({ ...pl });
-  return {
-    ...ctx,
-    models,
-  };
-};
+export const context = (pl: {req: Request; res: Response}) => ({
+  ...pl,
+  models,
+  pubSub: new PubSub(),
+});
 
 function formatError(error: GraphQLError) {
   const originalError = error.originalError as ApolloError;

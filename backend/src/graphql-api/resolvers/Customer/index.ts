@@ -6,7 +6,7 @@ import { baseResolver } from "../Base";
 import sendActivationEmail from "./sendActivationEmail";
 
 const Mutation: Mutations = {
-  createCustomer: baseResolver.createResolver(async (_, { token }: {token: string}, { models, login }) => {
+  createCustomer: baseResolver.createResolver(async (_, { token }: {token: string}, { models }) => {
     const { name, email, password } = jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION) as InputCreateCustomer;
     const { Team, User } = models;
     const user = await User.create({
@@ -17,8 +17,7 @@ const Mutation: Mutations = {
       name,
       users: [user._id],
     });
-    await login(user);
-    return user;
+    return "Customer create succesfully, return token when ready";
   }),
   beforeCreateCustomer: baseResolver.createResolver(async (_, { input }: {input: InputCreateCustomer}, { models }) => {
     // check name is taken ?
