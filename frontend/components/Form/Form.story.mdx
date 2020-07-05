@@ -1,0 +1,17 @@
+import { Meta, Preview, Story, Props, Source, SourceState } from '@storybook/addon-docs/blocks';
+import { text } from "@storybook/addon-knobs";
+import Form from '.';
+import Input from './Input/'
+
+<Meta title="Form" component={Form} />
+
+# Form
+
+With `MDX` we can define a story for `Checkbox` right in the middle of our
+markdown documentation.
+
+<Preview>
+  <Story name="default[text]">
+    <Form><Input icon="search" value={text("test", "Input text")} /></Form>
+  </Story>
+</Preview>

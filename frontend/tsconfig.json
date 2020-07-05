@@ -1,14 +1,7 @@
 {
-  "extends": "../tsconfig",
-  "include": [
-    "**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
   "compilerOptions": {
     "baseUrl": "./",
-    "jsx": "react",
+    "jsx": "preserve",
     "lib": [
       "dom",
       "dom.iterable",
@@ -16,18 +9,36 @@
     ],
     "noEmit": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "src/*": [
-        "./src/*"
-      ],
-      "storybook/*": [
+      ".storybook/*": [
         "./.storybook/*"
       ],
-      "tests/*": [
-        "./__tests__/*"
+      "components/*": [
+        "./components/*"
+      ],
+      "Interfaces/*": [
+        "./Interfaces/*"
+      ],
+      "pages/*": [
+        "./pages/*"
+      ],
+      "styles/*": [
+        "./styles/*"
+      ],
+      "utils/*": [
+        "./utils/*"
       ]
-    }
-  }
+    },
+    "target": "es5",
+    "allowJs": true,
+    "module": "esnext"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "../tsconfig",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

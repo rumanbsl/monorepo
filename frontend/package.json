@@ -1,23 +1,32 @@
 {
-  "name": "@ruman-blog/frontend",
-  "private": true,
-  "scripts": {
-    "build": "node scripts/build.js",
-    "start": "PORT=1111 node scripts/start.js",
-    "start:https": "PORT=2222 HTTPS=true node scripts/start.js",
-    "test": "node scripts/test.js",
-    "lint": "eslint --config .eslintrc.js --ext .ts,.tsx --max-warnings=500 src --fix && :"
-  },
-  "version": "0.1.0",
   "dependencies": {
-    "react": "^16.13.0",
-    "react-app-polyfill": "^1.0.6",
-    "react-dev-utils": "^10.2.0",
-    "react-dom": "^16.13.0",
-    "react-router-dom": "5.1.2",
-    "socket.io-client": "2.3.0"
+    "@apollo/client": "^3.0.0-rc.10",
+    "@apollo/link-context": "^2.0.0-beta.3",
+    "apollo-server-micro": "^2.15.1",
+    "graphql": "^15.2.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "mongoose": "^5.9.21",
+    "next": "^9.4.4",
+    "next-connect": "^0.8.0",
+    "nprogress": "^0.2.0",
+    "polished": "^3.6.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.1"
   },
-  "devDependencies": {
-    "@types/webrtc": "^0.0.26"
-  }
+  "engines": {
+    "node": "14.x"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@ruman-blog/backend",
+  "scripts": {
+    "build": "next build",
+    "build-storybook": "build-storybook",
+    "dev": "nodemon",
+    "gen:icon": "svg-icon-generate --svgDir ./svgs --destination ./components/Icon.tsx",
+    "start": "next start",
+    "storybook": "start-storybook -p 6006 -s ./public --ci"
+  },
+  "version": "1.0.0"
 }

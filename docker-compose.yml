@@ -8,7 +8,7 @@ services:
     tty: true
     build:
       context: .
-      dockerfile: ./frontend/dev.Dockerfile
+      dockerfile: ./frontend/Dockerfile
       target: dev
     environment:
       - HOST_BACKEND=backend
@@ -19,8 +19,8 @@ services:
       - ./.eslintrc.js:/app/.eslintrc.js
       - ./tsconfig.json:/app/tsconfig.json
       - ./frontend:/app/frontend:rw
-      - /app/node_modules
-      - /app/frontend/node_modules
+      - frontend-deps:/app/node_modules
+      - frontend-nested-deps:/app/frontend/node_modules
     # labels:
     #   # Route config
     #   - "traefik.http.routers.fe-router.rule=Host(`ruman.fi`,`ruman.com`)"
@@ -31,27 +31,6 @@ services:
     #   - "traefik.enable=true"
     ports:
       - 1111:1111
-  #############################################################################
-  frontend-https:
-    container_name: "MONO_FRONTEND_HTTPS"
-    tty: true
-    build:
-      context: .
-      dockerfile: ./frontend/dev.Dockerfile
-      target: dev-https
-    environment:
-      - HOST_BACKEND=backend
-      - NODE_ENV=development
-    volumes:
-      - ./package.json:/app/package.json
-      - ./babel.config.js:/app/babel.config.js
-      - ./.eslintrc.js:/app/.eslintrc.js
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./frontend:/app/frontend:rw
-      - /app/node_modules
-      - /app/frontend/node_modules
-    ports:
-      - 2222:2222
   #############################################################################
   backend:
     tty: true
@@ -91,7 +70,7 @@ services:
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
     volumes:
-      - mongostorage:/data/db
+      - ~/mono/data/db:/data/db
     ports:
       - "27010:27017"
   redis:
@@ -116,7 +95,7 @@ services:
       - "8080:8080" # TRAEFIK DASHBOARD
   # #############################################################################
 volumes:
-  mongostorage:
+  frontend-deps:
+  frontend-nested-deps:
   backend-deps:
   backend-nested-deps:
-  rust-backend-deps:

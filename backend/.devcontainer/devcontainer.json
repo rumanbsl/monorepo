@@ -1,0 +1,18 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.119.0/containers/docker-existing-dockerfile
+{
+	"name": "Backend",
+	"dockerComposeFile": [
+		"../../docker-compose.yml"
+	],
+	"service": "backend",
+	"shutdownAction": "none",
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"kumar-harsh.graphql-for-vscode",
+		"sasa.vscode-sass-format",
+		"stylelint.vscode-stylelint",
+		"jpoissonnier.vscode-styled-components"
+	],
+	"workspaceFolder": "/app/backend"
+}
