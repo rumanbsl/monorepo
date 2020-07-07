@@ -46,8 +46,8 @@ import App, { initializeApolloServer } from "./app";
     console.error(error);
   }
 
-  if (module.hot) {
+  if ((module as any).hot) {
     console.info("HOT SWAPPING");
-    module.hot.accept();
+    (module as any).hot.accept();
   }
 }());

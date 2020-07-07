@@ -37,7 +37,8 @@ services:
     container_name: "MONO_BACKEND"
     build:
       context: .
-      dockerfile: ./backend/dev.Dockerfile
+      dockerfile: ./backend/Dockerfile
+      target: dev
     environment:
       - HOST_DB=database
       - NODE_ENV=development
@@ -49,7 +50,7 @@ services:
       - ./babel.config.js:/app/babel.config.js
       - ./.eslintrc.js:/app/.eslintrc.js
       - ./tsconfig.json:/app/tsconfig.json
-      - ./backend:/app/backend
+      - ./backend:/app/backend:rw
       - backend-deps:/app/node_modules
       - backend-nested-deps:/app/backend/node_modules
     depends_on:

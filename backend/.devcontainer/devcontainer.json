@@ -10,9 +10,6 @@
 	"extensions": [
 		"dbaeumer.vscode-eslint",
 		"kumar-harsh.graphql-for-vscode",
-		"sasa.vscode-sass-format",
-		"stylelint.vscode-stylelint",
-		"jpoissonnier.vscode-styled-components"
 	],
-	"workspaceFolder": "/app/backend"
+	"workspaceFolder": "/app"
 }

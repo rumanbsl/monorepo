@@ -24,9 +24,11 @@
       "node_modules/@types"
     ],
     "types": [
-      "webpack-env",
       "jest",
       "node"
     ]
-  }
+  },
+  "include": [
+    "./.eslintrc.js",
+  ]
 }

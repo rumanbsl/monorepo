@@ -8,7 +8,6 @@ module.exports = {
     "react-app",
     "airbnb",
     "airbnb/hooks",
-    "plugin:@typescript-eslint/recommended",
     "../.eslintrc",
   ],
   globals  : { React: "writable" },
@@ -51,25 +50,13 @@ module.exports = {
           ],
         ],
       },
-      "eslint-import-resolver-typescript" : true,
-      node                                : true,
-      webpack                             : {
-        config: {
-          resolve: {
-            extensions: [
-              ".ts",
-              ".js",
-              ".tsx",
-              ".jsx",
-            ],
-          },
-        },
-      },
+      "eslint-import-resolver-typescript": true,
     },
   },
   rules: {
-    "jsx-a11y/anchor-is-valid"                         : 0,
-    "react/jsx-filename-extension"                     : [
+    "import/no-extraneous-dependencies"                   : [ "error", { packageDir: ["./", "../"] }],
+    "jsx-a11y/anchor-is-valid"     : 0,
+    "react/jsx-filename-extension" : [
       2,
       {
         extensions: [

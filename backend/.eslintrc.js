@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: [
     "airbnb-base",
-    "plugin:@typescript-eslint/recommended",
     "../.eslintrc",
   ],
+  rules: { "import/no-extraneous-dependencies": ["error", { packageDir: ["./", "../"] }] },
 };

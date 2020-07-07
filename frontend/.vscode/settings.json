@@ -9,10 +9,7 @@
     "html",
   ],
   "emmet.includeLanguages": {
-    "javascript": "javascriptreact",
-    "xml": {
-      "attr_quotes": "single"
-    }
+    "javascript": "javascriptreact"
   },
   "emmet.triggerExpansionOnTab": true,
   "sassFormat.indent": 2,

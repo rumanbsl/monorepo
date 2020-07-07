@@ -2,10 +2,6 @@
   "dependencies": {
     "@apollo/client": "^3.0.0-rc.10",
     "@apollo/link-context": "^2.0.0-beta.3",
-    "apollo-server-micro": "^2.15.1",
-    "graphql": "^15.2.0",
-    "isomorphic-unfetch": "^3.0.0",
-    "mongoose": "^5.9.21",
     "next": "^9.4.4",
     "next-connect": "^0.8.0",
     "nprogress": "^0.2.0",
@@ -14,19 +10,45 @@
     "react-dom": "^16.13.1",
     "styled-components": "^5.1.1"
   },
+  "devDependencies": {
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-docs": "^5.3.19",
+    "@storybook/addon-knobs": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/preset-typescript": "^3.0.0",
+    "@storybook/react": "^5.3.19",
+    "@types/nprogress": "^0.2.0",
+    "@types/react": "^16.9.41",
+    "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^5.1.0",
+    "@zeit/next-css": "^1.0.1",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.5",
+    "react-svg-icon-generator": "rumanbsl/react-svg-icon-generator.git#fork",
+    "stylelint": "^13.6.1",
+    "stylelint-config-lost": "^0.0.3",
+    "stylelint-config-sass-guidelines": "^7.0.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-webpack-plugin": "^2.1.0"
+  },
   "engines": {
     "node": "14.x"
   },
   "license": "MIT",
   "main": "index.js",
-  "name": "@ruman-blog/backend",
+  "name": "@ruman-blog/frontend",
   "scripts": {
     "build": "next build",
     "build-storybook": "build-storybook",
     "dev": "nodemon",
     "gen:icon": "svg-icon-generate --svgDir ./svgs --destination ./components/Icon.tsx",
     "start": "next start",
-    "storybook": "start-storybook -p 6006 -s ./public --ci"
+    "storybook": "start-storybook -p 6006 -s ./public --ci",
+    "clean": "rm -rf node_modules ./frontend/node_modules ./backend/node_modules"
   },
   "version": "1.0.0"
 }

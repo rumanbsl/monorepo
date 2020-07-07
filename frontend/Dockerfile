@@ -1,9 +1,10 @@
 FROM node:14-alpine as base
 WORKDIR /app
-COPY ./package*.json \
-  babel.config.js\
-  .eslintrc.js\
-  tsconfig.json ./
+COPY ./package*.json ./yarn*lock\
+  ./babel.config.js\
+  ./.eslintrc.js\
+  ./tsconfig.json ./
+RUN mkdir frontend
 COPY ./frontend/package.json ./frontend/yarn*lock ./frontend/
 RUN apk add --no-cache --virtual .build-deps make gcc g++ python && yarn
 ENV PATH=/app/node_modules/.bin:$PATH

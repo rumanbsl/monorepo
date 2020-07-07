@@ -18,12 +18,6 @@ export type Scalars = {
 
 
 
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-};
-
-
 export type InputCreateCustomer = {
   name: Scalars['String'];
   email: Scalars['String'];
@@ -62,12 +56,6 @@ export enum Plan {
   Super = 'SUPER'
 }
 
-export type Query = {
-  __typename?: 'Query';
-  USER_GET?: Maybe<User>;
-  _?: Maybe<Scalars['String']>;
-};
-
 export type Team = {
   __typename?: 'Team';
   _id: Scalars['String'];
@@ -78,6 +66,13 @@ export type Team = {
   users: Array<User>;
 };
 
+export enum UserRole {
+  SystemAdmin = 'SYSTEM_ADMIN',
+  Admin = 'ADMIN',
+  Editor = 'EDITOR',
+  Viewer = 'VIEWER'
+}
+
 export type User = {
   __typename?: 'User';
   _id: Scalars['String'];
@@ -86,22 +81,20 @@ export type User = {
   role: UserRole;
 };
 
-export enum UserRole {
-  SystemAdmin = 'SYSTEM_ADMIN',
-  Admin = 'ADMIN',
-  Editor = 'EDITOR',
-  Viewer = 'VIEWER'
-}
+export type Query = {
+  __typename?: 'Query';
+  USER_GET?: Maybe<User>;
+  _?: Maybe<Scalars['String']>;
+};
+
+
+export type AdditionalEntityFields = {
+  path?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
 
 
 import { ObjectID } from 'mongodb';
-export type UserDbObject = {
-  _id: ObjectID,
-  email: string,
-  password: string,
-  role: UserRole,
-};
-
 export type TeamDbObject = {
   _id: ObjectID,
   plan: Plan,
@@ -109,4 +102,11 @@ export type TeamDbObject = {
   createdAt: Date,
   updatedAt: Date,
   users: Array<UserDbObject['_id']>,
+};
+
+export type UserDbObject = {
+  _id: ObjectID,
+  email: string,
+  password: string,
+  role: UserRole,
 };

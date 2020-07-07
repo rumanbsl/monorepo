@@ -10,9 +10,6 @@
   ],
   "emmet.includeLanguages": {
     "javascript": "javascriptreact",
-    "xml": {
-      "attr_quotes": "single"
-    }
   },
   "emmet.triggerExpansionOnTab": true,
   "sassFormat.indent": 2,
@@ -34,5 +31,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
-  }
+  },
+  "eslint.workingDirectories": [
+    "./frontend",
+    "./backend"
+  ]
 }

@@ -14,5 +14,5 @@
 		"stylelint.vscode-stylelint",
 		"jpoissonnier.vscode-styled-components"
 	],
-	"workspaceFolder": "/app/frontend"
+	"workspaceFolder": "/app"
 }

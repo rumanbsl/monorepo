@@ -8,10 +8,12 @@ const Wrapper = styled.div`
 `;
 
 addDecorator(s => (
-<ThemeProvider theme={theme}>
-  <Wrapper>
-    {s()}
-  </Wrapper>
-  <BaseStyle />
+  <ThemeProvider theme={theme}>
+    <Wrapper>
+      {s()}
+    </Wrapper>
+    <BaseStyle />
   </ThemeProvider>)
 );
+
+const a = "";
