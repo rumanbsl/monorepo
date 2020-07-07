@@ -28,7 +28,7 @@ export const isAuthenticatedResolver = baseResolver.createResolver(
     if (!user) throw ApolloError({ type: "NotFoundInDBError" });
     req.user = user;
   },
-) as Resolver<any>;
+);
 
 export const isAdminResolver = isAuthenticatedResolver.createResolver(
   // Extract the user and make sure they are an admin

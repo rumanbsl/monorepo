@@ -2,7 +2,7 @@
   "extends": "../tsconfig",
   "include": [
     "**/*.ts",
-    "./.eslintrc.js",
+    ".eslintrc.js",
   ],
   "exclude": [
     "node_modules"

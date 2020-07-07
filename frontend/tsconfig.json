@@ -37,7 +37,7 @@
   ],
   "extends": "../tsconfig",
   "include": [
-    "./.eslintrc.js",
+    ".eslintrc.js",
     "next-env.d.ts",
     "**/**/*.ts",
     "**/**/*.tsx"

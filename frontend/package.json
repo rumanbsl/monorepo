@@ -47,8 +47,7 @@
     "dev": "nodemon",
     "gen:icon": "svg-icon-generate --svgDir ./svgs --destination ./components/Icon.tsx",
     "start": "next start",
-    "storybook": "start-storybook -p 6006 -s ./public --ci",
-    "clean": "rm -rf node_modules ./frontend/node_modules ./backend/node_modules"
+    "storybook": "start-storybook -p 6006 -s ./public --ci"
   },
   "version": "1.0.0"
 }

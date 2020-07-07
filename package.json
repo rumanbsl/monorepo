@@ -58,7 +58,8 @@
     "lint": "lerna run lint --stream",
     "start": "docker-compose up --remove-orphans frontend backend",
     "test": "lerna run test --stream",
-    "version:bump": "lerna version --conventional-commits --yes"
+    "version:bump": "lerna version --conventional-commits --yes",
+    "clean": "rm -rf ./node_modules ./frontend/node_modules ./backend/node_modules"
   },
   "version": "1.0.0",
   "workspaces": [

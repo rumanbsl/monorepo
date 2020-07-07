@@ -34,6 +34,8 @@ module.exports = {
     "no-throw-literal"                                    : 0,
     "func-names"                                          : 0,
     "import/no-cycle"                                     : 0,
+    "@typescript-eslint/require-await"                    : 0,
+    "@typescript-eslint/no-unsafe-return"                 : 0,
     "@typescript-eslint/explicit-module-boundary-types"   : 0,
     "@typescript-eslint/no-unsafe-member-access"          : 0,
     "@typescript-eslint/no-unsafe-call"                   : 0,

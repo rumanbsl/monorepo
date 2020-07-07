@@ -6,20 +6,16 @@ import { baseResolver } from "../Base";
 import sendActivationEmail from "./sendActivationEmail";
 
 const Mutation: Mutations = {
-  createCustomer: baseResolver.createResolver(async (_, { token }: {token: string}, { models }) => {
+  createCustomer: baseResolver.createResolver(async (_, { token }: { token: string }, { models }) => {
     const { name, email, password } = jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION) as InputCreateCustomer;
     const { Team, User } = models;
-    const user = await User.create({
-      email,
-      password,
-    });
-    await Team.create({
-      name,
-      users: [user._id],
-    });
+    // @ts-expect-error
+    const user = await User.create({ email, password });
+    // @ts-expect-error
+    await Team.create({ name, users: [user._id] });
     return "Customer create succesfully, return token when ready";
   }),
-  beforeCreateCustomer: baseResolver.createResolver(async (_, { input }: {input: InputCreateCustomer}, { models }) => {
+  beforeCreateCustomer: baseResolver.createResolver(async (_, { input }: { input: InputCreateCustomer }, { models }) => {
     // check name is taken ?
     const { Team, User } = models;
     const TeamExists = await Team.countDocuments({ name: input.name.toUpperCase() }).limit(1);
