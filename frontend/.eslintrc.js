@@ -54,9 +54,9 @@ module.exports = {
     },
   },
   rules: {
-    "import/no-extraneous-dependencies"                   : [ "error", { packageDir: ["./", "../"] }],
-    "jsx-a11y/anchor-is-valid"     : 0,
-    "react/jsx-filename-extension" : [
+    "import/no-extraneous-dependencies" : ["error", { packageDir: ["./", "../"] }],
+    "jsx-a11y/anchor-is-valid"          : 0,
+    "react/jsx-filename-extension"      : [
       2,
       {
         extensions: [

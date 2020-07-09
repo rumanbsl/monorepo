@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ProgressBar from "nprogress";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
+import Routes from "utils/Routes";
 
 Router.events.on("routeChangeStart", () => { ProgressBar.start(); });
 Router.events.on("routeChangeComplete", () => { ProgressBar.done(); });
@@ -58,8 +59,7 @@ const Navigation = styled.nav`
 
 export default function MainComponent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const routes = ["/", "/keyframes"] as const;
-  const className = (route: typeof routes[number]) => {
+  const className = (route: typeof Routes[number]) => {
     const returnable: string[] = [];
     if (route === "/") returnable.push("home");
     if (router.pathname === route) returnable.push("active");
@@ -68,7 +68,7 @@ export default function MainComponent({ children }: { children: React.ReactNode 
   return (
     <Main>
       <Navigation>
-        {routes.map((route, i) => (
+        {Routes.map((route, i) => (
           <Link href={route} key={i}>
             <a className={className(route)}>{route === "/" ? "home" : route.substring(1)}</a>
           </Link>

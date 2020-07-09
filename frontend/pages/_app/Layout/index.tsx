@@ -3,7 +3,6 @@ import styled, { ThemeProvider } from "styled-components";
 import theme from "styles";
 import Header from "./header";
 import Main from "./main";
-import Hero from "./hero";
 
 const Layout = styled.div`
   display: flex;
@@ -12,22 +11,11 @@ const Layout = styled.div`
   max-width: 111rem;
 `;
 
-const LoggedIn = false;
-
 export default (({ children }) => (
   <ThemeProvider theme={theme}>
     <Layout>
-      { LoggedIn ? (
-        <>
-          <Header />
-          <Hero />
-          <Main>{children}</Main>
-        </>
-      ) : (
-        <div>
-          {children}
-        </div>
-      ) }
+      <Header />
+      <Main>{children}</Main>
     </Layout>
   </ThemeProvider>
 )) as NextPage;
