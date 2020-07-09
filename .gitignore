@@ -1,6 +1,7 @@
 SECRETS/**
 **/dist
 **/node_modules
+mongo/**
 # Logs
 logs
 *.log
@@ -14,8 +15,7 @@ rust-backend/Cargo.lock
 target
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
+report*.json
 # Runtime data
 pids
 *.pid
@@ -83,7 +83,7 @@ typings/
 .cache
 
 # next.js build output
-.next
+/frontend/.next
 
 # nuxt.js build output
 .nuxt

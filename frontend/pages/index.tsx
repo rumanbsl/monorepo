@@ -1,4 +1,3 @@
-import Provider from "utils/Provider";
 import Icon from "../components/Icon";
 
 const Component = () => (
@@ -10,8 +9,6 @@ const Component = () => (
 
 export default function Index() {
   return (
-    <Provider>
-      <Component />
-    </Provider>
+    <Component />
   );
 }
