@@ -1,6 +1,7 @@
 const { resolve } = require("path");
 const StylelintPlugin = require('stylelint-webpack-plugin');
 
+
 module.exports = {
   stories: ['../components/**/*.(story|stories).(tsx|mdx)'],
   addons: [
@@ -20,8 +21,7 @@ module.exports = {
       ],
       exclude: /node_modules/,
     });
-    config.resolve.alias.components = resolve(__dirname,"..", "components");
-    config.resolve.alias.styles = resolve(__dirname,"..", "styles");
+    config.resolve.alias["@"] = resolve(__dirname,"..","src");
     return config;
   },
 };

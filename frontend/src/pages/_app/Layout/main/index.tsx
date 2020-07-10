@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ProgressBar from "nprogress";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
-import Routes from "utils/Routes";
+import Routes from "@/utils/Routes";
 
 Router.events.on("routeChangeStart", () => { ProgressBar.start(); });
 Router.events.on("routeChangeComplete", () => { ProgressBar.done(); });

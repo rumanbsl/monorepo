@@ -29,24 +29,8 @@ module.exports = {
         ],
         map: [
           [
-            "components",
-            "./components/",
-          ],
-          [
-            "pages",
-            "./pages/",
-          ],
-          [
-            "styles",
-            "./styles/",
-          ],
-          [
-            "utils",
-            "./utils/",
-          ],
-          [
-            "Interfaces",
-            "./Interfaces/",
+            "@",
+            "./src/",
           ],
         ],
       },

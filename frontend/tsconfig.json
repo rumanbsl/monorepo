@@ -12,21 +12,9 @@
       ".storybook/*": [
         "./.storybook/*"
       ],
-      "components/*": [
-        "./components/*"
+      "@/*": [
+        "./src/*"
       ],
-      "Interfaces/*": [
-        "./Interfaces/*"
-      ],
-      "pages/*": [
-        "./pages/*"
-      ],
-      "styles/*": [
-        "./styles/*"
-      ],
-      "utils/*": [
-        "./utils/*"
-      ]
     },
     "target": "es5",
     "allowJs": true,
@@ -39,6 +27,7 @@
   "include": [
     ".eslintrc.js",
     "next-env.d.ts",
+    "*.js",
     "**/**/*.ts",
     "**/**/*.tsx"
   ]

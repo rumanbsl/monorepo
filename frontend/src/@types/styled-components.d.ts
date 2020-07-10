@@ -1,4 +1,4 @@
-import { MyTheme } from "styles/index";
+import { MyTheme } from "@/styles";
 
 declare module "styled-components" {
   // eslint-disable-next-line

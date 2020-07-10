@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Icon, { IconName } from "components/Icon";
+import Icon, { IconName } from "@/components/Icon";
 import { InputHTMLAttributes } from "react";
 
 const Input = styled.div`
@@ -91,7 +91,7 @@ export default (prop: Partial<PropTypes>) => {
     <Input>
       <div>
         <input
-          style={{ width, }}
+          style={{ width }}
           type={prop.type || "text"}
           placeholder={prop.placeholder || ""}
           value={prop.value || ""}

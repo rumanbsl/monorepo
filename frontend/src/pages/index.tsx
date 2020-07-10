@@ -2,7 +2,7 @@ import Icon from "../components/Icon";
 
 const Component = () => (
   <div>
-    Hello!!
+    Noni
     <Icon name="heart" width={10} />
   </div>
 );

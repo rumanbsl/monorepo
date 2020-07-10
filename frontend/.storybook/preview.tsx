@@ -1,7 +1,7 @@
 import { addDecorator } from '@storybook/react';
-import BaseStyle from '../styles/base';
+import BaseStyle from '../src/styles/base';
 import styled, { ThemeProvider } from "styled-components";
-import theme from "../styles";
+import theme from "../src/styles";
 
 const Wrapper = styled.div`
   margin: 2rem;

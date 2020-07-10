@@ -1,7 +1,7 @@
 import React from "react";
 import NextApp from "next/app";
-import BaseStyle from "styles/base";
-import Provider from "utils/Provider";
+import BaseStyle from "@/styles/base";
+import Provider from "@/utils/Provider";
 import Layout from "./Layout";
 import Meta from "./Meta";
 /**
