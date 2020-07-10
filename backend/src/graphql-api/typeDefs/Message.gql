@@ -1,0 +1,8 @@
+type Message @entity(embedded: true) {
+  _id: String! @id
+  text: String! @column
+  chat: Chat! @embedded
+  user: User! @embedded
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String @column(overrideType: "Date")
+}

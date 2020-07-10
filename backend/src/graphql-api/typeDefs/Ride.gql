@@ -1,0 +1,32 @@
+enum RideStatus {
+  ACCEPTED
+  FINISHED
+  CANCELED
+  REQUESTING
+  ON_ROUTE
+}
+
+type PickupInfo {
+  lat: Float!
+  lng: Float!
+  address: String!
+}
+
+type DropOffInfo {
+  lat: Float!
+  lng: Float!
+}
+
+type Ride @entity {
+  _id: String! @id
+  status: RideStatus!
+  pickupInfo: PickupInfo! @column
+  dropOffInfo: DropOffInfo! @column
+  price: Float! @column
+  duration: String! @column
+  distance: String! @column
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String @column(overrideType: "Date")
+  driver: User! @embedded
+  passenger: User! @embedded
+}

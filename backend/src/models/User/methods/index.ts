@@ -1,16 +1,14 @@
-import crypto from "crypto";
+import bcrypt from "bcrypt";
 import { IuserSchema } from "..";
 
 const methods = {
-  authenticate(this: IuserSchema, passwordPlain: string) {
-    return (this as any).encryptPassword(passwordPlain) === this.password;
+  authenticate(this: IuserSchema, password: string) {
+    if (!this._password) return false;
+    return bcrypt.compareSync(password, this._password);
   },
   encryptPassword(this: IuserSchema, password: string) {
     if (!password) return "";
-    const hashed = crypto
-      .createHmac("sha1", this._salt)
-      .update(password)
-      .digest("hex");
+    const hashed = bcrypt.hashSync(password, process.env.BCRYPT_SAL_ROUNDS);
     return hashed;
   },
 };

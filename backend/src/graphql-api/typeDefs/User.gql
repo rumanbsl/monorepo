@@ -1,22 +1,29 @@
-enum UserRole {
-  SYSTEM_ADMIN
-  ADMIN
-  EDITOR
-  VIEWER
+type LastPosition {
+  lat: Float
+  lng: Float
+  orientation: Float
 }
 
 type User @entity(embedded: true) {
   _id: String! @id
-  email: String! @column
-  password: String! @column
-  role: UserRole! @column
+  email: String @column
+  verifiedEmail: Boolean! @column
+  name: String! @column
+  age: Int @column
+  password: String @column
+  phoneNumber: String @column
+  verifiedPhoneNumber: Boolean! @column
+  profilePhoto: String @column
+  isDriving: Boolean! @column
+  isRiding: Boolean! @column
+  isTaken: Boolean! @column
+  lastPosition: LastPosition @column
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String! @column(overrideType: "Date")
+  chat: Chat @embedded
+  messages: [Message] @embedded
+  verifications: [Verification] @embedded
+  ridesAsPassenger: [Ride] @embedded
+  ridesAsDriver: [Ride] @embedded
 }
 
-extend type Query {
-  USER_GET: User
-}
-
-extend type Mutation {
-  USER_LOGIN(email: String!,password: String!): String!
-  USER_LOGOUT: Boolean
-}

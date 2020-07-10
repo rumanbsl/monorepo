@@ -1,0 +1,10 @@
+type Place @entity {
+  _id: String! @id
+  name: String! @column
+  lat: Float! @column
+  lng: Float! @column
+  address: String! @column
+  isFav: Boolean! @column
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String @column(overrideType: "Date")
+}

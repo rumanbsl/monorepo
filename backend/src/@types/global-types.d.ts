@@ -8,6 +8,7 @@ declare global {
       SENDGRID_API_KEY: string;
       SITE_URL: string;
       SESSION_SECRET: string;
+      BCRYPT_SAL_ROUNDS: string;
     }
   }
 }
