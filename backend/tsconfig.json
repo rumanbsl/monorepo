@@ -1,26 +1,26 @@
 {
-  "extends": "../tsconfig",
-  "include": [
-    "**/*.ts",
-    ".eslintrc.js",
-  ],
-  "exclude": [
-    "node_modules"
-  ],
   "compilerOptions": {
-    "module": "ESNext",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
+    "baseUrl": "..",
     "lib": [
       "es5",
       "es2015.promise",
       "es2017",
       "es6",
       "esnext"
-    ]
-  }
+    ],
+    "module": "ESNext",
+    "paths": {
+      "@/*": [
+        "backend/src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "../tsconfig",
+  "include": [
+    "**/*.ts",
+    ".eslintrc.js"
+  ]
 }

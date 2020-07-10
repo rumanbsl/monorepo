@@ -2,11 +2,6 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "paths": {
-      "common/*": [
-        "./common/*"
-      ]
-    },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
@@ -31,7 +26,12 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "paths": {
+      "common/*": [
+        "./common/*"
+      ]
+    }
   },
   "include": [
     ".eslintrc.js",

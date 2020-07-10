@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { TeamDbObject } from "@/Interfaces/gql-definitions";
+import { TeamDbObject } from "common/Interfaces/gql-definitions";
 
 const TeamSchema = new mongoose.Schema({
   plan: {

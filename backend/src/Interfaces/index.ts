@@ -1,4 +1,4 @@
-import { Mutation, Query } from "@/Interfaces/gql-definitions";
+import { Mutation, Query } from "common/Interfaces/gql-definitions";
 import { Types } from "mongoose";
 import { context } from "@/app";
 import { Request } from "express";

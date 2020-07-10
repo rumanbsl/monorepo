@@ -1,5 +1,5 @@
 import { Queries, Mutations } from "@/Interfaces";
-import { MutationUser_LoginArgs } from "@/Interfaces/gql-definitions";
+import { MutationUser_LoginArgs } from "common/Interfaces/gql-definitions";
 import apolloError from "@/utils/apolloError";
 import jwt from "jsonwebtoken";
 import { isAuthenticatedResolver, baseResolver } from "../Base";

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Mutations } from "@/Interfaces";
-import { InputCreateCustomer, Plan } from "@/Interfaces/gql-definitions";
+import { InputCreateCustomer, Plan } from "common/Interfaces/gql-definitions";
 import ApolloError from "@/utils/apolloError";
 import { baseResolver } from "../Base";
 import sendActivationEmail from "./sendActivationEmail";

@@ -18,6 +18,9 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
     "@babel/register": "^7.10.4",
+    "@graphql-codegen/cli": "1.16.3",
+    "@graphql-codegen/typescript": "^1.16.3",
+    "@graphql-codegen/typescript-operations": "^1.16.3",
     "@types/graphql-iso-date": "3.3.0",
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.18",
@@ -53,13 +56,13 @@
   "private": true,
   "scripts": {
     "backend:merge": "package-merge ./package.json ./backend/package.json > package.json",
+    "clean": "rm -rf ./node_modules ./frontend/node_modules ./backend/node_modules",
     "frontend:dev": "lerna run dev --scope=@ruman-blog/frontend --stream",
     "frontend:merge": "package-merge ./package.json ./frontend/package.json > package.json",
     "lint": "lerna run lint --stream",
     "start": "docker-compose up --remove-orphans frontend backend",
     "test": "lerna run test --stream",
-    "version:bump": "lerna version --conventional-commits --yes",
-    "clean": "rm -rf ./node_modules ./frontend/node_modules ./backend/node_modules"
+    "version:bump": "lerna version --conventional-commits --yes"
   },
   "version": "1.0.0",
   "workspaces": [

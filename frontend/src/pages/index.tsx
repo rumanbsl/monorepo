@@ -1,5 +1,5 @@
 import { Awesome } from "common";
-import Icon from "../components/Icon";
+import Icon from "@/components/Icon";
 
 const a:Awesome = { hello: "HI" };
 

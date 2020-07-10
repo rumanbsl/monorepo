@@ -7,7 +7,7 @@ config:
   enumsAsString: false
   useIndexSignature: true
 generates:
-  ./src/Interfaces/gql-definitions.ts:
+  ../common/Interfaces/gql-definitions.ts:
     plugins:
       - typescript
       - typescript-operations

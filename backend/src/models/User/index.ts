@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { UserDbObject } from "@/Interfaces/gql-definitions";
+import { UserDbObject } from "common/Interfaces/gql-definitions";
 import { v4 as uuid } from "uuid";
 import { ObjectID } from "@/Interfaces";
 import methods, { UserSchemaWithMethods } from "./methods";

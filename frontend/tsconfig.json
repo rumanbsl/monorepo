@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": ".",
+    "baseUrl": "..",
     "jsx": "preserve",
     "lib": [
       "dom",
@@ -11,10 +11,10 @@
     "noEmit": true,
     "paths": {
       ".storybook/*": [
-        "./.storybook/*"
+        "./frontend/.storybook/*"
       ],
       "@/*": [
-        "./src/*"
+        "./frontend/src/*"
       ]
     },
     "target": "ES5"

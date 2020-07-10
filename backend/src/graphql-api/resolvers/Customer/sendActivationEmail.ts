@@ -1,7 +1,7 @@
 import sendGrid from "@sendgrid/mail";
 import jwt from "jsonwebtoken";
 
-import { InputCreateCustomer } from "@/Interfaces/gql-definitions";
+import { InputCreateCustomer } from "common/Interfaces/gql-definitions";
 
 sendGrid.setApiKey(process.env.SENDGRID_API_KEY);
 
