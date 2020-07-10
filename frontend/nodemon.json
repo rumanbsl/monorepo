@@ -2,10 +2,13 @@
   "verbose": false,
   "watch": [
     "next.config.js",
+    ".stylelintrc",
     ".eslintrc.js",
-    ".babelrc",
+    "babel.config.js",
     "tsconfig.json",
-    ".stylelintrc"
+    "../.eslintrc.js",
+    "../babel.config.js",
+    "../tsconfig.json"
   ],
   "exec": "rm -rf .next && next -p 1111 -H 0.0.0.0",
   "ext": "ts js yaml json gql graphql"

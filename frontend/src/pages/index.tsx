@@ -1,4 +1,7 @@
+import { Awesome } from "common";
 import Icon from "../components/Icon";
+
+const a:Awesome = { hello: "HI" };
 
 const Component = () => (
   <div>
@@ -8,6 +11,7 @@ const Component = () => (
 );
 
 export default function Index() {
+  console.log(a);
   return (
     <Component />
   );

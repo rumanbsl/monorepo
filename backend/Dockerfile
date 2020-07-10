@@ -18,12 +18,12 @@ RUN yarn
 
 FROM base as dev
 WORKDIR /app/backend
-COPY ./backend .
 COPY --from=base /app/backend .
 CMD [ "yarn", "start" ]
 
 FROM base as build
 WORKDIR /app/backend
+COPY ./common /app/common
 COPY ./backend .
 COPY --from=base /app/backend .
 RUN yarn build

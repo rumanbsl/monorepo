@@ -2,11 +2,16 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "paths": {
+      "common/*": [
+        "./common/*"
+      ]
+    },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
     "importHelpers": true,
-    "module": "ES2015",
+    "isolatedModules": true,
+    "module": "ESNext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
@@ -29,6 +34,7 @@
     ]
   },
   "include": [
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "common/**/*.ts"
   ]
 }

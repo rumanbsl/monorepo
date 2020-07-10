@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "allowJs": true,
+    "baseUrl": ".",
     "jsx": "preserve",
     "lib": [
       "dom",
@@ -14,11 +15,9 @@
       ],
       "@/*": [
         "./src/*"
-      ],
+      ]
     },
-    "target": "es5",
-    "allowJs": true,
-    "module": "esnext"
+    "target": "ES5"
   },
   "exclude": [
     "node_modules"
