@@ -12,6 +12,7 @@
     "jsonwebtoken": "8.5.1",
     "mongoose": "^5.9.22",
     "passport": "0.4.1",
+    "twilio": "3.48.0",
     "uuid": "8.2.0"
   },
   "devDependencies": {
@@ -22,6 +23,7 @@
     "@types/jsonwebtoken": "8.5.0",
     "@types/mongoose": "^5.7.30",
     "@types/passport": "1.0.4",
+    "@types/twilio": "0.0.9",
     "@types/uuid": "8.0.0",
     "graphql-tag": "^2.10.4",
     "node-hot-loader": "^1.20.0",

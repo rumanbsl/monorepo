@@ -8,10 +8,11 @@ const methods = {
   },
   encryptPassword(this: IuserSchema, password: string) {
     if (!password) return "";
-    const hashed = bcrypt.hashSync(password, process.env.BCRYPT_SAL_ROUNDS);
+    const hashed = bcrypt.hashSync(password, process.env.BCRYPT_SALT_ROUNDS);
     return hashed;
   },
 };
 
-export type UserSchemaWithMethods = IuserSchema & typeof methods;
+type Methods = typeof methods;
+export interface UserSchemaWithMethods extends IuserSchema, Methods {}
 export default methods as UserSchemaWithMethods;

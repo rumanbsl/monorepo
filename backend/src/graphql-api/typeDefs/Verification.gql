@@ -1,17 +1,16 @@
 # verify email | phone by sending verification key to him
 
-enum Target {
+enum VerificationTarget {
   PHONE
   EMAIL
 }
 
 type Verification @entity {
   _id: String! @id
-  target: Target! @column
+  target: VerificationTarget! @column
   payload: String! @column
   key: String! @column
-  used: Boolean! @column
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String! @column(overrideType: "Date")
-  user: User! @embedded
+  # user: User! @embedded
 }

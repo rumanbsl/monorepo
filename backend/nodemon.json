@@ -1,16 +1,17 @@
 {
   "verbose": false,
   "watch": [
-    "webpack.config.js",
-    "typeGen.yml",
-    ".eslintrc.js",
-    "babel.config.js",
-    "tsconfig.json",
+    "./webpack.config.js",
+    "./typeGen.yml",
+    "./.eslintrc.js",
+    "./babel.config.js",
+    "./tsconfig.json",
     "../.eslintrc.js",
     "../babel.config.js",
     "../tsconfig.json",
     "src/models/",
-    "src/Interfaces/"
+    "src/Interfaces/",
+    "src/graphql-api/typeDefs/"
   ],
   "exec": "BUILD=development node-hot --logLevel none & yarn type-gen",
   "ext": "ts js yaml json gql graphql"

@@ -2,11 +2,6 @@ const production = process.env.NODE_ENV === "production";
 const devRules = production ? { "no-console": "warn" } : { "no-console": 0 };
 
 module.exports = {
-  "parser"        : "@typescript-eslint/parser",
-  "parserOptions" : { "project": "./tsconfig.json" },
-  "plugins"       : [
-    "import"
-  ],
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
@@ -29,23 +24,25 @@ module.exports = {
       }
     }
   ],
+  "parser"        : "@typescript-eslint/parser",
+  "parserOptions" : { "project": "./tsconfig.json" },
+  "plugins"       : [
+    "import"
+  ],
   "root"  : true,
   "rules" : {
-    "no-throw-literal"                                    : 0,
-    "func-names"                                          : 0,
-    "import/no-cycle"                                     : 0,
-    "@typescript-eslint/require-await"                    : 0,
-    "@typescript-eslint/no-unsafe-return"                 : 0,
-    "@typescript-eslint/explicit-module-boundary-types"   : 0,
-    "@typescript-eslint/no-unsafe-member-access"          : 0,
-    "@typescript-eslint/no-unsafe-call"                   : 0,
-    "@typescript-eslint/no-unsafe-assignment"             : 0,
     "@typescript-eslint/ban-ts-comment"                   : 0,
     "@typescript-eslint/camelcase"                        : 0,
+    "@typescript-eslint/explicit-module-boundary-types"   : 0,
     "@typescript-eslint/indent"                           : 0,
     "@typescript-eslint/no-explicit-any"                  : 0,
     "@typescript-eslint/no-object-literal-type-assertion" : 0,
     "@typescript-eslint/no-this-alias"                    : 0,
+    "@typescript-eslint/no-unsafe-assignment"             : 0,
+    "@typescript-eslint/no-unsafe-call"                   : 0,
+    "@typescript-eslint/no-unsafe-member-access"          : 0,
+    "@typescript-eslint/no-unsafe-return"                 : 0,
+    "@typescript-eslint/require-await"                    : 0,
     "camelcase"                                           : 0,
     "comma-dangle"                                        : 2,
     "comma-spacing"                                       : [
@@ -55,7 +52,9 @@ module.exports = {
         "before" : false
       }
     ],
+    "func-names"                 : 0,
     "import/extensions"          : 0,
+    "import/no-cycle"            : 0,
     "import/no-named-as-default" : 0,
     "import/no-unresolved"       : 0,
     "indent"                     : [
@@ -87,6 +86,7 @@ module.exports = {
       }
     ],
     "no-param-reassign"    : 0,
+    "no-throw-literal"     : 0,
     "no-trailing-spaces"   : "error",
     "no-underscore-dangle" : 0,
     "no-unused-vars"       : 0,

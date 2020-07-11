@@ -6,6 +6,7 @@ type LastPosition {
 
 type User @entity(embedded: true) {
   _id: String! @id
+  fbid: String @column
   email: String @column
   verifiedEmail: Boolean! @column
   name: String! @column
@@ -22,8 +23,21 @@ type User @entity(embedded: true) {
   updatedAt: String! @column(overrideType: "Date")
   chat: Chat @embedded
   messages: [Message] @embedded
-  verifications: [Verification] @embedded
+  # verifications: [Verification] @embedded
   ridesAsPassenger: [Ride] @embedded
   ridesAsDriver: [Ride] @embedded
 }
 
+input fbConnectInput {
+  name: String!
+  email: String
+  fbid: String!
+}
+
+extend type Mutation {
+  USER_FB_CONNECT(input: fbConnectInput): String
+  # output is token
+  USER_EMAIL_SIGN_IN(email: String!, password: String!): String!
+  # output is token
+  USER_START_PHONE_VERIFICATION(phoneNumber: String!, withWhatsApp: Boolean): Boolean
+}

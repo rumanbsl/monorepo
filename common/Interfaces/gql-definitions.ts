@@ -95,6 +95,7 @@ export type LastPosition = {
 export type User = {
   __typename?: 'User';
   _id: Scalars['String'];
+  fbid?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   verifiedEmail: Scalars['Boolean'];
   name: Scalars['String'];
@@ -111,12 +112,42 @@ export type User = {
   updatedAt: Scalars['String'];
   chat?: Maybe<Chat>;
   messages?: Maybe<Array<Maybe<Message>>>;
-  verifications?: Maybe<Array<Maybe<Verification>>>;
   ridesAsPassenger?: Maybe<Array<Maybe<Ride>>>;
   ridesAsDriver?: Maybe<Array<Maybe<Ride>>>;
 };
 
-export enum Target {
+export type FbConnectInput = {
+  name: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  fbid: Scalars['String'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  USER_EMAIL_SIGN_IN: Scalars['String'];
+  USER_FB_CONNECT?: Maybe<Scalars['String']>;
+  USER_START_PHONE_VERIFICATION?: Maybe<Scalars['Boolean']>;
+  _?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationUser_Email_Sign_InArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationUser_Fb_ConnectArgs = {
+  input?: Maybe<FbConnectInput>;
+};
+
+
+export type MutationUser_Start_Phone_VerificationArgs = {
+  phoneNumber: Scalars['String'];
+  withWhatsApp?: Maybe<Scalars['Boolean']>;
+};
+
+export enum VerificationTarget {
   Phone = 'PHONE',
   Email = 'EMAIL'
 }
@@ -124,23 +155,16 @@ export enum Target {
 export type Verification = {
   __typename?: 'Verification';
   _id: Scalars['String'];
-  target: Target;
+  target: VerificationTarget;
   payload: Scalars['String'];
   key: Scalars['String'];
-  used: Scalars['Boolean'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  user: User;
 };
 
 
 export type Query = {
   __typename?: 'Query';
-  _?: Maybe<Scalars['String']>;
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
   _?: Maybe<Scalars['String']>;
 };
 
@@ -194,6 +218,7 @@ export type RideDbObject = {
 
 export type UserDbObject = {
   _id: ObjectID,
+  fbid?: Maybe<string>,
   email?: Maybe<string>,
   verifiedEmail: boolean,
   name: string,
@@ -210,18 +235,15 @@ export type UserDbObject = {
   updatedAt: Date,
   chat?: Maybe<ChatDbObject>,
   messages?: Maybe<Array<Maybe<MessageDbObject>>>,
-  verifications?: Maybe<Array<Maybe<VerificationDbObject>>>,
   ridesAsPassenger?: Maybe<Array<Maybe<RideDbObject>>>,
   ridesAsDriver?: Maybe<Array<Maybe<RideDbObject>>>,
 };
 
 export type VerificationDbObject = {
   _id: ObjectID,
-  target: Target,
+  target: VerificationTarget,
   payload: string,
   key: string,
-  used: boolean,
   createdAt: Date,
   updatedAt: Date,
-  user: UserDbObject,
 };

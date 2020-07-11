@@ -1,22 +1,21 @@
 {
-  "editor.formatOnSave": false,
-  "eslint.autoFixOnSave": true,
+  "eslint.packageManager": "yarn",
   "eslint.enable": true,
   "eslint.validate": [
-    {
-      "language": "typescript",
-      "autoFix": true
-    },
+    "javascript",
+    "typescript"
   ],
-  "git.rebaseWhenSync": true,
-  "editor.snippetSuggestions": "top",
-  "docthis.includeDescriptionTag": true,
-  "javascript.suggest.completeJSDocs": true,
-  "better-comments.highlightPlainText": true,
-  "jest.autoEnable": false,
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": false,
+  },
+  "[typescript]": {
+    "editor.formatOnSave": false,
+  },
   "typescript.tsdk": "../node_modules/typescript/lib",
-  "jest.pathToJest": "../node_modules/.bin/jest",
+  "editor.wordWrapColumn": 160,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
   }
 }

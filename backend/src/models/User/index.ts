@@ -5,16 +5,15 @@ import methods, { UserSchemaWithMethods } from "./methods";
 
 export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id"|"password"> {
   _id: ObjectID
-  _password: string;
+  _password?: string;
 }
 
-const UserSchema = new mongoose.Schema<IuserSchema>({
-  chat                : { type: mongoose.Types.ObjectId, ref: "Chat", required: false },
-  messages            : [{ type: mongoose.Types.ObjectId, ref: "Message", required: false }],
-  verifications       : [{ type: mongoose.Types.ObjectId, ref: "Verification", required: false }],
-  ridesAsPassenger    : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
-  ridesAsDriver       : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
-  email               : { type: String, lowercase: true, trim: true, unique: true },
+const UserSchema = new mongoose.Schema({
+  age                 : Number,
+  fbid                : String,
+  phoneNumber         : String,
+  _password           : String,
+  profilePhoto        : String,
   name                : { type: String, required: true },
   verifiedEmail       : { type: Boolean, default: false },
   verifiedPhoneNumber : { type: Boolean, default: false },
@@ -22,10 +21,12 @@ const UserSchema = new mongoose.Schema<IuserSchema>({
   isRiding            : { type: Boolean, default: false },
   isTaken             : { type: Boolean, default: false },
   lastPosition        : { lat: Number, lng: Number, orientation: Number },
-  age                 : Number,
-  phoneNumber         : String,
-  _password           : String,
-  profilePhoto        : String,
+  email               : { type: String, lowercase: true, trim: true, unique: true, required: false },
+  chat                : { type: mongoose.Types.ObjectId, ref: "Chat", required: false },
+  messages            : [{ type: mongoose.Types.ObjectId, ref: "Message", required: false }],
+  // verifications       : [{ type: mongoose.Types.ObjectId, ref: "Verification", required: false }],
+  ridesAsPassenger    : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
+  ridesAsDriver       : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
 }, { timestamps: true });
 
 UserSchema

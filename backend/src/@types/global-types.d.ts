@@ -8,7 +8,11 @@ declare global {
       SENDGRID_API_KEY: string;
       SITE_URL: string;
       SESSION_SECRET: string;
-      BCRYPT_SAL_ROUNDS: string;
+      BCRYPT_SALT_ROUNDS: string;
+      TWILIO_AUTH_TOKEN: string;
+      TWILIO_ACCOUNT_SID: string;
+      TWILIO_WHATSAPP_NUMBER: string;
+      TWILIO_MY_PHONE_NUMBER: string;
     }
   }
 }

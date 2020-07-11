@@ -1,5 +1,5 @@
 import { ApolloServer, PubSub } from "apollo-server-express";
-
+import Twilio from "twilio";
 import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import { GraphQLError } from "graphql";
@@ -11,8 +11,9 @@ import useVendorMiddlewares from "./middlewares/vendors";
 import models from "./models";
 import Routes from "./routes";
 
-const HOST_DB = process.env.HOST_DB || "localhost";
+const { HOST_DB = "localhost", TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 const MONGO_PORT = HOST_DB === "database" ? 27017 : 27010;
+const TwilioClient = Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 export const DB_URL = `mongodb://${HOST_DB}:${MONGO_PORT}/jooo`;
 
 /**
@@ -37,6 +38,7 @@ class App{
 export const context = (pl: {req: Request; res: Response}) => ({
   ...pl,
   models,
+  TwilioClient,
   pubSub: new PubSub(),
 });
 
