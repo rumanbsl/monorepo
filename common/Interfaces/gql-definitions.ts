@@ -116,17 +116,15 @@ export type User = {
   ridesAsDriver?: Maybe<Array<Maybe<Ride>>>;
 };
 
-export type FbConnectInput = {
-  name: Scalars['String'];
-  email?: Maybe<Scalars['String']>;
-  fbid: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   USER_EMAIL_SIGN_IN: Scalars['String'];
-  USER_FB_CONNECT?: Maybe<Scalars['String']>;
-  USER_START_PHONE_VERIFICATION?: Maybe<Scalars['Boolean']>;
+  USER_EMAIL_SIGN_UP: Scalars['String'];
+  USER_FB_CONNECT: Scalars['String'];
+  VERIFICATION_EMAIL_COMPLETE: Scalars['Boolean'];
+  VERIFICATION_EMAIL_START: Scalars['Boolean'];
+  VERIFICATION_PHONE_COMPLETE?: Maybe<Scalars['String']>;
+  VERIFICATION_PHONE_START?: Maybe<Scalars['Boolean']>;
   _?: Maybe<Scalars['String']>;
 };
 
@@ -137,14 +135,43 @@ export type MutationUser_Email_Sign_InArgs = {
 };
 
 
-export type MutationUser_Fb_ConnectArgs = {
-  input?: Maybe<FbConnectInput>;
+export type MutationUser_Email_Sign_UpArgs = {
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  profilePhoto: Scalars['String'];
+  age: Scalars['Int'];
+  phoneNumber: Scalars['String'];
 };
 
 
-export type MutationUser_Start_Phone_VerificationArgs = {
+export type MutationUser_Fb_ConnectArgs = {
+  name: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  fbid: Scalars['String'];
+};
+
+
+export type MutationVerification_Email_CompleteArgs = {
+  key: Scalars['String'];
+};
+
+
+export type MutationVerification_Phone_CompleteArgs = {
+  phoneNumber: Scalars['String'];
+  key: Scalars['String'];
+};
+
+
+export type MutationVerification_Phone_StartArgs = {
   phoneNumber: Scalars['String'];
   withWhatsApp?: Maybe<Scalars['Boolean']>;
+};
+
+export type Query = {
+  __typename?: 'Query';
+  GET_USER?: Maybe<User>;
+  _?: Maybe<Scalars['String']>;
 };
 
 export enum VerificationTarget {
@@ -158,15 +185,11 @@ export type Verification = {
   target: VerificationTarget;
   payload: Scalars['String'];
   key: Scalars['String'];
+  verified: Scalars['Boolean'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
-
-export type Query = {
-  __typename?: 'Query';
-  _?: Maybe<Scalars['String']>;
-};
 
 export type AdditionalEntityFields = {
   path?: Maybe<Scalars['String']>;
@@ -244,6 +267,7 @@ export type VerificationDbObject = {
   target: VerificationTarget,
   payload: string,
   key: string,
+  verified: boolean,
   createdAt: Date,
   updatedAt: Date,
 };

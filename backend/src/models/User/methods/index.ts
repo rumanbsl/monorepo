@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import apolloError from "@/utils/apolloError";
 import { IuserSchema } from "..";
 
 const methods = {
@@ -7,8 +8,8 @@ const methods = {
     return bcrypt.compareSync(password, this._password);
   },
   encryptPassword(this: IuserSchema, password: string) {
-    if (!password) return "";
-    const hashed = bcrypt.hashSync(password, process.env.BCRYPT_SALT_ROUNDS);
+    if (!password) throw apolloError({ type: "InvalidInputError", data: { password } });
+    const hashed = bcrypt.hashSync(password, parseInt(process.env.BCRYPT_SALT_ROUNDS, 10));
     return hashed;
   },
 };

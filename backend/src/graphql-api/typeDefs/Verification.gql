@@ -10,7 +10,17 @@ type Verification @entity {
   target: VerificationTarget! @column
   payload: String! @column
   key: String! @column
+  verified: Boolean! @column
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String! @column(overrideType: "Date")
-  # user: User! @embedded
+}
+
+
+extend type Mutation {
+  # nullable return
+  VERIFICATION_PHONE_START(phoneNumber: String!, withWhatsApp: Boolean): Boolean
+  # return token if exists
+  VERIFICATION_PHONE_COMPLETE(phoneNumber: String!, key: String!): String
+  VERIFICATION_EMAIL_START: Boolean!
+  VERIFICATION_EMAIL_COMPLETE(key: String!): Boolean!
 }

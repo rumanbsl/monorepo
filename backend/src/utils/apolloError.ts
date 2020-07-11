@@ -4,11 +4,13 @@ import { createError, ErrorConfig } from "apollo-errors";
 type ErrorType = "UnknownError"
   | "ForbiddenError"
   | "AuthenticationRequiredError"
-  | "TeamExistsError"
-  | "OnlyOneIndividualTeamError"
+  | "AlreadyExistsError"
+  | "InvalidInputError"
   | "ValidationError"
   | "NotFoundInDBError"
-  | "AuthenticationFailed";
+  | "InvalidTokenError"
+  | "PhoneNotVerifiedError"
+  | "AuthenticationFailedError";
 
 interface ErrConfig extends Omit<ErrorConfig, "message"> {
   type: ErrorType;
@@ -28,20 +30,26 @@ export default function apolloError(errorConfig: ErrConfig) {
     case "AuthenticationRequiredError":
       msg = "You must be logged in to do this";
       break;
-    case "AuthenticationFailed":
+    case "AuthenticationFailedError":
       msg = "Username and password missmatch!";
       break;
-    case "TeamExistsError":
-      msg = "Team already exists";
+    case "AlreadyExistsError":
+      msg = "Records already exists";
       break;
-    case "OnlyOneIndividualTeamError":
-      msg = "Only One Individual Team allowed";
+    case "InvalidInputError":
+      msg = "Input is not valid";
       break;
     case "ValidationError":
       msg = "Invalid input";
       break;
     case "NotFoundInDBError":
       msg = "Record do not exists!";
+      break;
+    case "InvalidTokenError":
+      msg = "Token is not valid";
+      break;
+    case "PhoneNotVerifiedError":
+      msg = "Phone number is not verified";
       break;
 
     default:

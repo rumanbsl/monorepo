@@ -10,15 +10,17 @@ const { Phone, Email } = VerificationTarget;
 
 const VerificationSchema = new mongoose.Schema({
   // user    : { type: mongoose.Types.ObjectId, ref: "User", required: false },
-  target  : { type: String, required: true, enum: [Phone, Email] },
-  payload : { type: String, required: true },
+  target   : { type: String, required: true, enum: [Phone, Email] },
+  payload  : { type: String, required: true },
+  key      : { type: String, required: true },
+  verified : { type: Boolean, default: false },
 }, { timestamps: true });
-
-VerificationSchema.pre("save", function (this: IVerificationSchema) {
+// https://stackoverflow.com/questions/30141492/mongoose-presave-does-not-trigger
+VerificationSchema.pre("validate", async function (this: IVerificationSchema) {
   if (this.target === Phone) {
-    this.key = (Math.floor(Math.random() * 10_000)).toString();
+    this.key = (Math.floor(Math.random() * 100_00_00)).toString();
   } else if (this.target === Email) {
-    this.key = Math.floor(Math.random()).toString(36);
+    this.key = Math.random().toString(36).substring(2);
   }
 });
 

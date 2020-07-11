@@ -13,7 +13,7 @@ interface RequestWithUser extends Request {
 export interface ContextWithReqUser extends Context {
   req: RequestWithUser;
 }
-export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => Promise<T> | T;
+export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => Required<Promise<T> | T>;
 
 export interface ObjectID extends Types.ObjectId {
   toString: () => string;
@@ -23,9 +23,5 @@ export interface IanyObject {
   [key: string]: unknown;
 }
 
-export type Mutations = Omit<Partial<{
-  [key in keyof Mutation]: ResolverFn<Mutation[key]>;
-}>, "__typename" | "_">
-export type Queries = Omit<Partial<{
-  [key in keyof Query]: ResolverFn<Query[key]>;
-}>, "__typename" | "_">
+export type Mutations = Omit<{ [key in keyof Mutation]?: ResolverFn<Mutation[key]>}, "__typename" | "_">
+export type Queries = Omit<{ [key in keyof Query]?: ResolverFn<Query[key]>}, "__typename" | "_">

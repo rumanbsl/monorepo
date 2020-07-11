@@ -1,8 +1,8 @@
 import { createResolver } from "apollo-resolvers";
 import { isInstance } from "apollo-errors";
-import { Context, ObjectID, ContextWithReqUser } from "@/Interfaces";
+import { Context, ContextWithReqUser } from "@/Interfaces";
 import ApolloError from "@/utils/apolloError";
-import jwt from "jsonwebtoken";
+import { decodeJWT } from "@/utils/jwt";
 import { Resolver } from "./Interfaces";
 
 export const baseResolver = createResolver(
@@ -23,12 +23,12 @@ export const isAuthenticatedResolver = baseResolver.createResolver(
     const { req, models } = ctx;
     const [, authToken] = (req.headers.authorization || "").split(" ").filter(Boolean);
     if (!authToken) throw ApolloError({ type: "AuthenticationRequiredError" });
-    const { _id } = jwt.verify(authToken, process.env.JWT_ACCOUNT_ACTIVATION) as {_id: ObjectID};
+    const _id = decodeJWT(authToken);
     const user = await models.User.findById(_id);
     if (!user) throw ApolloError({ type: "NotFoundInDBError" });
     req.user = user;
   },
-);
+) as Resolver<any, ContextWithReqUser>;
 
 export const isAdminResolver = isAuthenticatedResolver.createResolver(
   // Extract the user and make sure they are an admin

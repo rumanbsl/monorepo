@@ -1,5 +1,6 @@
 import { ApolloServer, PubSub } from "apollo-server-express";
 import Twilio from "twilio";
+import sgMail from "@sendgrid/mail";
 import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import { GraphQLError } from "graphql";
@@ -13,8 +14,11 @@ import Routes from "./routes";
 
 const { HOST_DB = "localhost", TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 const MONGO_PORT = HOST_DB === "database" ? 27017 : 27010;
-const TwilioClient = Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 export const DB_URL = `mongodb://${HOST_DB}:${MONGO_PORT}/jooo`;
+
+/* Service Providers */
+const TwilioClient = Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 /**
  * @description This is everything
@@ -35,9 +39,10 @@ class App{
   }
 }
 
-export const context = (pl: {req: Request; res: Response}) => ({
+export const context = (pl: {req: Omit<Request, "user">; res: Response}) => ({
   ...pl,
   models,
+  sgMail,
   TwilioClient,
   pubSub: new PubSub(),
 });
@@ -64,6 +69,11 @@ export function initializeApolloServer(): ApolloServer {
 }
 
 export default async (): Promise<App> => {
-  await mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(DB_URL, {
+    useNewUrlParser    : true,
+    useUnifiedTopology : true,
+    useCreateIndex     : true,
+    useFindAndModify   : false,
+  });
   return new App();
 };
