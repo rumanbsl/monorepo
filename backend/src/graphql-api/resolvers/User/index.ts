@@ -1,5 +1,10 @@
 import { Queries, Mutations } from "@/Interfaces";
-import { VerificationTarget, MutationUser_Fb_ConnectArgs, MutationUser_Email_Sign_UpArgs } from "common/Interfaces/gql-definitions";
+import {
+  VerificationTarget,
+  MutationUser_Fb_ConnectArgs,
+  MutationUser_Email_Sign_UpArgs,
+  MutationUser_Update_ProfileArgs,
+} from "common/Interfaces/gql-definitions";
 import { CreateUserArg } from "common";
 import apolloError from "@/utils/apolloError";
 import { createJWT } from "@/utils/jwt";
@@ -21,7 +26,6 @@ const Mutation: Mutations = {
 
     const newUser = await User.create<CreateUserArg>({
       ...input,
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       profilePhoto: `https://graph.facebook.com/${input.fbid}/picture?type=square`,
     });
     const token = createJWT(newUser._id);
@@ -51,6 +55,19 @@ const Mutation: Mutations = {
 
     const token = createJWT(newUser._id);
     return token;
+  }),
+  USER_UPDATE_PROFILE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Update_ProfileArgs, ctx) => {
+    const { models: { User }, req } = ctx;
+    type inputKeys = keyof typeof input;
+    type Truthy<T extends inputKeys = inputKeys> = NonNullable<typeof input[T]>;
+    const nonNulls = {} as { [key in inputKeys]: Truthy<key> };
+
+    (Object.keys(input) as inputKeys[]).forEach((key) => {
+      if (input[key]) nonNulls[key] = input[key] as Truthy;
+    });
+
+    const user = await User.findByIdAndUpdate(req.user._id, nonNulls, { new: true });
+    return user?.toJSON();
   }),
 };
 

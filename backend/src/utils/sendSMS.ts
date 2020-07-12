@@ -11,7 +11,6 @@ export async function sendSMS({ to, body, TwilioClient, withWhatsApp }: TwilioPa
   const { TWILIO_MY_PHONE_NUMBER, TWILIO_WHATSAPP_NUMBER } = process.env;
   const twilioBody = {
     to   : withWhatsApp ? `whatsapp:${to}` : to,
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     from : withWhatsApp ? `whatsapp:${TWILIO_WHATSAPP_NUMBER}` : TWILIO_MY_PHONE_NUMBER,
     body,
   };

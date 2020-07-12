@@ -43,6 +43,7 @@ module.exports = {
     "@typescript-eslint/no-unsafe-member-access"          : 0,
     "@typescript-eslint/no-unsafe-return"                 : 0,
     "@typescript-eslint/require-await"                    : 0,
+    "@typescript-eslint/restrict-template-expressions"    : 0,
     "camelcase"                                           : 0,
     "comma-dangle"                                        : 2,
     "comma-spacing"                                       : [

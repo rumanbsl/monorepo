@@ -121,6 +121,7 @@ export type Mutation = {
   USER_EMAIL_SIGN_IN: Scalars['String'];
   USER_EMAIL_SIGN_UP: Scalars['String'];
   USER_FB_CONNECT: Scalars['String'];
+  USER_UPDATE_PROFILE: User;
   VERIFICATION_EMAIL_COMPLETE: Scalars['Boolean'];
   VERIFICATION_EMAIL_START: Scalars['Boolean'];
   VERIFICATION_PHONE_COMPLETE?: Maybe<Scalars['String']>;
@@ -149,6 +150,13 @@ export type MutationUser_Fb_ConnectArgs = {
   name: Scalars['String'];
   email?: Maybe<Scalars['String']>;
   fbid: Scalars['String'];
+};
+
+
+export type MutationUser_Update_ProfileArgs = {
+  name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  profilePhoto?: Maybe<Scalars['String']>;
 };
 
 
