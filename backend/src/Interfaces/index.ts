@@ -23,5 +23,5 @@ export interface IanyObject {
   [key: string]: unknown;
 }
 
-export type Mutations = Omit<{ [key in keyof Mutation]?: ResolverFn<Mutation[key]>}, "__typename" | "_">
-export type Queries = Omit<{ [key in keyof Query]?: ResolverFn<Query[key]>}, "__typename" | "_">
+export type RootMutation = Omit<{ [key in keyof Mutation]: ResolverFn<Mutation[key]>}, "__typename" | "_">
+export type RootQuery = Omit<{ [key in keyof Query]: ResolverFn<Query[key]>}, "__typename" | "_">
