@@ -1,13 +1,8 @@
 - Frontend:
-  - [X] Vue Project
-  - [X] TailwindCSS
-  - [-] Vuera for React interop
-  - [-] Cypress for E2E
+  - [X] Next JS
 
 - Backend
-  - [X] typescript
   - [X] Graphql server (Express)
-  - [-] Prisma
 
 - Project Overall
   - [X] typescript

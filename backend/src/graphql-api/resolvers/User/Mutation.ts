@@ -4,17 +4,26 @@ import {
   MutationUser_Fb_ConnectArgs,
   MutationUser_Email_Sign_UpArgs,
   MutationUser_Update_ProfileArgs,
+  MutationUser_Report_MovementArgs,
 } from "common/Interfaces/gql-definitions";
 import { CreateUserArg } from "common";
 import apolloError from "@/utils/apolloError";
 import { createJWT } from "@/utils/jwt";
 import { sendVerificationEMail } from "@/utils/sendEmail";
+import nonNullable from "@/utils/getNonNullable";
 import { isAuthenticatedResolver, baseResolver } from "../Base";
 
 const { createResolver: baseCreateResolver } = baseResolver;
 const { createResolver: isAuthenticatedCreateResolver } = isAuthenticatedResolver;
 
-type Mutations = Pick<RootMutation, "USER_FB_CONNECT" | "USER_EMAIL_SIGN_IN" | "USER_EMAIL_SIGN_UP" | "USER_UPDATE_PROFILE">
+type Mutations = Pick<RootMutation,
+  | "USER_FB_CONNECT"
+  | "USER_EMAIL_SIGN_IN"
+  | "USER_EMAIL_SIGN_UP"
+  | "USER_UPDATE_PROFILE"
+  | "USER_TOGGLE_DRIVING_MODE"
+  | "USER_REPORT_MOVEMENT"
+>
 
 const Mutation: Mutations = {
   USER_FB_CONNECT: baseCreateResolver(async (_, input: MutationUser_Fb_ConnectArgs, { models }) => {
@@ -48,7 +57,7 @@ const Mutation: Mutations = {
     const phoneVerification = await Verification.findOne({ payload: input.phoneNumber, verified: true });
     if (!phoneVerification) throw apolloError({ type: "PhoneNotVerifiedError" });
     const newUser = await User.create<CreateUserArg>(input);
-    const emailVerification = await Verification.create<{payload: string; target: "EMAIL"}>({
+    const emailVerification = await Verification.create<{ payload: string; target: "EMAIL" }>({
       payload : input.email,
       target  : VerificationTarget.Email,
     });
@@ -59,16 +68,20 @@ const Mutation: Mutations = {
   }),
   USER_UPDATE_PROFILE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Update_ProfileArgs, ctx) => {
     const { models: { User }, req } = ctx;
-    type inputKeys = keyof typeof input;
-    type Truthy<T extends inputKeys = inputKeys> = NonNullable<typeof input[T]>;
-    const nonNulls = {} as { [key in inputKeys]: Truthy<key> };
-
-    (Object.keys(input) as inputKeys[]).forEach((key) => {
-      if (input[key]) nonNulls[key] = input[key] as Truthy;
-    });
-
+    const nonNulls = nonNullable(input);
     const user = await User.findByIdAndUpdate(req.user._id, nonNulls, { new: true });
     return user?.toJSON();
+  }),
+  USER_TOGGLE_DRIVING_MODE: isAuthenticatedCreateResolver(async (_, __, { req }) => {
+    const { user } = req;
+    user.isDriving = !user.isDriving;
+    await user.save();
+    return null;
+  }),
+  USER_REPORT_MOVEMENT: isAuthenticatedCreateResolver(async (_, input: MutationUser_Report_MovementArgs, { req }) => {
+    const nonNulls = nonNullable(input);
+    const u = await req.user.updateOne(nonNulls);
+    return u;
   }),
 };
 

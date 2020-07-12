@@ -13,6 +13,8 @@ declare global {
       TWILIO_ACCOUNT_SID: string;
       TWILIO_WHATSAPP_NUMBER: string;
       TWILIO_MY_PHONE_NUMBER: string;
+      REDIS_HOST: string;
+      REDIS_PORT: string;
     }
   }
 }

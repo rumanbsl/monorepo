@@ -1,5 +1,7 @@
-import { ApolloServer, PubSub } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
+import { RedisPubSub } from "graphql-redis-subscriptions";
 import Twilio from "twilio";
+import Redis from "ioredis";
 import sgMail from "@sendgrid/mail";
 import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
@@ -12,13 +14,32 @@ import useVendorMiddlewares from "./middlewares/vendors";
 import models from "./models";
 import Routes from "./routes";
 
-const { HOST_DB = "localhost", TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
+const {
+  NODE_ENV,
+  HOST_DB,
+  TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN,
+  REDIS_HOST,
+  REDIS_PORT,
+} = process.env;
 const MONGO_PORT = HOST_DB === "database" ? 27017 : 27010;
 export const DB_URL = `mongodb://${HOST_DB}:${MONGO_PORT}/jooo`;
 
 /* Service Providers */
 const TwilioClient = Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const options = {
+  host : REDIS_HOST,
+  port : parseInt(REDIS_PORT, 10),
+  // https://github.com/davidyaha/graphql-redis-subscriptions
+  // reconnect after
+  ...(NODE_ENV === "production" ? { retryStrategy: (times: number) => Math.min(times * 50, 2000) } : {}),
+};
+
+const pubSub = new RedisPubSub({
+  publisher  : new Redis(options),
+  subscriber : new Redis(options),
+});
 
 /**
  * @description This is everything
@@ -44,7 +65,7 @@ export const context = (pl: {req: Omit<Request, "user">; res: Response}) => ({
   models,
   sgMail,
   TwilioClient,
-  pubSub: new PubSub(),
+  pubSub,
 });
 
 function formatError(error: GraphQLError) {

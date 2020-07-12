@@ -10,8 +10,7 @@
     "../babel.config.js",
     "../tsconfig.json",
     "src/models/",
-    "src/Interfaces/",
-    "src/graphql-api/typeDefs/"
+    "src/Interfaces/"
   ],
   "exec": "BUILD=development node-hot --logLevel none & yarn type-gen",
   "ext": "ts js yaml json gql graphql"

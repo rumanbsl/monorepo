@@ -35,6 +35,8 @@ extend type Mutation {
   # output is token
   USER_EMAIL_SIGN_UP(name: String!,email: String!,password: String!,profilePhoto: String!,age: Int!,phoneNumber: String!): String!
   USER_UPDATE_PROFILE(name: String,email: String,profilePhoto: String): User!
+  USER_TOGGLE_DRIVING_MODE: Boolean
+  USER_REPORT_MOVEMENT(lat: Float, lng: Float, orientation: Float): LastPosition!
 }
 
 extend type Query {
