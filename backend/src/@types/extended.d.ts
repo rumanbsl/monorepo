@@ -1,4 +1,5 @@
 
+
 declare module "chalk-console" {
   function log(...arg): void
   function warn(...arg): void
@@ -6,3 +7,8 @@ declare module "chalk-console" {
   function info(...arg): void
 }
 
+declare module "bson" {
+  interface ObjectId {
+    toString:()=>string
+  }
+}

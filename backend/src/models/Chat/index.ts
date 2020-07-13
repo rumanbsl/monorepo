@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 import { ChatDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectID } from "@/Interfaces";
 
 export interface IChatSchema extends mongoose.Document, Omit<ChatDbObject, "_id"> {
-  _id: ObjectID
+  _id: mongoose.Types.ObjectId
 }
 
 const ChatSchema = new mongoose.Schema({
@@ -11,4 +10,4 @@ const ChatSchema = new mongoose.Schema({
   participants : [{ type: mongoose.Types.ObjectId, ref: "User", required: true }],
 }, { timestamps: true });
 
-export default mongoose.model("Chat", ChatSchema, "Chats");
+export default mongoose.model<IChatSchema>("Chat", ChatSchema, "Chats");

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { ObjectID } from "@/Interfaces";
+
 import { VerificationDbObject, VerificationTarget } from "common/Interfaces/gql-definitions";
 
 export interface IVerificationSchema extends mongoose.Document, Omit<VerificationDbObject, "_id"> {
-  _id: ObjectID
+  _id: mongoose.Types.ObjectId
 }
 
 const { Phone, Email } = VerificationTarget;

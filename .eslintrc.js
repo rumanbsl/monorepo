@@ -36,6 +36,7 @@ module.exports = {
     "@typescript-eslint/explicit-module-boundary-types"   : 0,
     "@typescript-eslint/indent"                           : 0,
     "@typescript-eslint/no-explicit-any"                  : 0,
+    "@typescript-eslint/no-misused-promises"              : 0,
     "@typescript-eslint/no-object-literal-type-assertion" : 0,
     "@typescript-eslint/no-this-alias"                    : 0,
     "@typescript-eslint/no-unsafe-assignment"             : 0,

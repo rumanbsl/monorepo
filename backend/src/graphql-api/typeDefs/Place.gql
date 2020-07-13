@@ -5,6 +5,7 @@ type Place @entity {
   lng: Float! @column
   address: String! @column
   isFav: Boolean! @column
+  user: User! @link
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String @column(overrideType: "Date")
 }

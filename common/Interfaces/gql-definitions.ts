@@ -21,8 +21,8 @@ export type Scalars = {
 export type Chat = {
   __typename?: 'Chat';
   _id: Scalars['String'];
-  messages: Array<Maybe<Message>>;
-  participants: Array<Maybe<User>>;
+  messages: Array<Message>;
+  participants: Array<User>;
   createdAt: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
 };
@@ -45,6 +45,7 @@ export type Place = {
   lng: Scalars['Float'];
   address: Scalars['String'];
   isFav: Scalars['Boolean'];
+  user: User;
   createdAt: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
 };
@@ -111,24 +112,44 @@ export type User = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   chat?: Maybe<Chat>;
-  messages?: Maybe<Array<Maybe<Message>>>;
-  ridesAsPassenger?: Maybe<Array<Maybe<Ride>>>;
-  ridesAsDriver?: Maybe<Array<Maybe<Ride>>>;
+  places: Array<Place>;
+  messages: Array<Message>;
+  ridesAsPassenger: Array<Ride>;
+  ridesAsDriver: Array<Ride>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  USER_ADD_PLACE: Scalars['Boolean'];
+  USER_EDIT_PLACE: Scalars['Boolean'];
   USER_EMAIL_SIGN_IN: Scalars['String'];
   USER_EMAIL_SIGN_UP: Scalars['String'];
   USER_FB_CONNECT: Scalars['String'];
+  USER_REMOVE_PLACE: Scalars['Boolean'];
   USER_REPORT_MOVEMENT: LastPosition;
-  USER_TOGGLE_DRIVING_MODE?: Maybe<Scalars['Boolean']>;
+  USER_TOGGLE_DRIVING_MODE: Scalars['Boolean'];
   USER_UPDATE_PROFILE: User;
   VERIFICATION_EMAIL_COMPLETE: Scalars['Boolean'];
   VERIFICATION_EMAIL_START: Scalars['Boolean'];
   VERIFICATION_PHONE_COMPLETE?: Maybe<Scalars['String']>;
   VERIFICATION_PHONE_START?: Maybe<Scalars['Boolean']>;
   _?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationUser_Add_PlaceArgs = {
+  name: Scalars['String'];
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  address: Scalars['String'];
+  isFav: Scalars['Boolean'];
+};
+
+
+export type MutationUser_Edit_PlaceArgs = {
+  placeId: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  isFav?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -152,6 +173,11 @@ export type MutationUser_Fb_ConnectArgs = {
   name: Scalars['String'];
   email?: Maybe<Scalars['String']>;
   fbid: Scalars['String'];
+};
+
+
+export type MutationUser_Remove_PlaceArgs = {
+  placeId: Scalars['String'];
 };
 
 
@@ -187,7 +213,8 @@ export type MutationVerification_Phone_StartArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  GET_USER?: Maybe<User>;
+  USER_GET?: Maybe<User>;
+  USER_GET_PLACES: Array<Maybe<Place>>;
   _?: Maybe<Scalars['String']>;
 };
 
@@ -217,8 +244,8 @@ export type AdditionalEntityFields = {
 import { ObjectID } from 'mongodb';
 export type ChatDbObject = {
   _id: ObjectID,
-  messages: Array<Maybe<MessageDbObject>>,
-  participants: Array<Maybe<UserDbObject>>,
+  messages: Array<MessageDbObject['_id']>,
+  participants: Array<UserDbObject['_id']>,
   createdAt: Date,
   updatedAt?: Date,
 };
@@ -226,8 +253,8 @@ export type ChatDbObject = {
 export type MessageDbObject = {
   _id: ObjectID,
   text: string,
-  chat: ChatDbObject,
-  user: UserDbObject,
+  chat: ChatDbObject['_id'],
+  user: UserDbObject['_id'],
   createdAt: Date,
   updatedAt?: Date,
 };
@@ -239,6 +266,7 @@ export type PlaceDbObject = {
   lng: number,
   address: string,
   isFav: boolean,
+  user: UserDbObject['_id'],
   createdAt: Date,
   updatedAt?: Date,
 };
@@ -252,8 +280,8 @@ export type RideDbObject = {
   distance: string,
   createdAt: Date,
   updatedAt?: Date,
-  driver: UserDbObject,
-  passenger: UserDbObject,
+  driver: UserDbObject['_id'],
+  passenger: UserDbObject['_id'],
 };
 
 export type UserDbObject = {
@@ -273,10 +301,11 @@ export type UserDbObject = {
   lastPosition?: Maybe<LastPosition>,
   createdAt: Date,
   updatedAt: Date,
-  chat?: Maybe<ChatDbObject>,
-  messages?: Maybe<Array<Maybe<MessageDbObject>>>,
-  ridesAsPassenger?: Maybe<Array<Maybe<RideDbObject>>>,
-  ridesAsDriver?: Maybe<Array<Maybe<RideDbObject>>>,
+  chat?: Maybe<ChatDbObject['_id']>,
+  places: Array<PlaceDbObject['_id']>,
+  messages: Array<MessageDbObject['_id']>,
+  ridesAsPassenger: Array<RideDbObject['_id']>,
+  ridesAsDriver: Array<RideDbObject['_id']>,
 };
 
 export type VerificationDbObject = {

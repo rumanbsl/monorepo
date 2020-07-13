@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import { UserDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectID } from "@/Interfaces";
+
 import methods, { UserSchemaWithMethods } from "./methods";
 
 export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id"|"password"> {
-  _id: ObjectID
+  _id: mongoose.Types.ObjectId
   _password?: string;
 }
 
@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
   email               : { type: String, lowercase: true, trim: true, unique: true, required: false },
   chat                : { type: mongoose.Types.ObjectId, ref: "Chat", required: false },
   messages            : [{ type: mongoose.Types.ObjectId, ref: "Message", required: false }],
+  places              : [{ type: mongoose.Types.ObjectId, ref: "Place", required: false }],
   // verifications       : [{ type: mongoose.Types.ObjectId, ref: "Verification", required: false }],
   ridesAsPassenger    : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
   ridesAsDriver       : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],

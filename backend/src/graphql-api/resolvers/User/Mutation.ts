@@ -5,8 +5,12 @@ import {
   MutationUser_Email_Sign_UpArgs,
   MutationUser_Update_ProfileArgs,
   MutationUser_Report_MovementArgs,
+  MutationUser_Add_PlaceArgs,
+  LastPosition,
+  MutationUser_Edit_PlaceArgs,
+  MutationUser_Remove_PlaceArgs,
 } from "common/Interfaces/gql-definitions";
-import { CreateUserArg } from "common";
+import { CreateUserArg, CreatePlaceArg } from "common";
 import apolloError from "@/utils/apolloError";
 import { createJWT } from "@/utils/jwt";
 import { sendVerificationEMail } from "@/utils/sendEmail";
@@ -23,6 +27,9 @@ type Mutations = Pick<RootMutation,
   | "USER_UPDATE_PROFILE"
   | "USER_TOGGLE_DRIVING_MODE"
   | "USER_REPORT_MOVEMENT"
+  | "USER_ADD_PLACE"
+  | "USER_EDIT_PLACE"
+  | "USER_REMOVE_PLACE"
 >
 
 const Mutation: Mutations = {
@@ -76,12 +83,32 @@ const Mutation: Mutations = {
     const { user } = req;
     user.isDriving = !user.isDriving;
     await user.save();
-    return null;
+    return true;
   }),
-  USER_REPORT_MOVEMENT: isAuthenticatedCreateResolver(async (_, input: MutationUser_Report_MovementArgs, { req }) => {
+  USER_REPORT_MOVEMENT: isAuthenticatedCreateResolver(async (_, input: MutationUser_Report_MovementArgs, ctx) => {
+    const { req, models: { User } } = ctx;
     const nonNulls = nonNullable(input);
-    const u = await req.user.updateOne(nonNulls);
-    return u;
+    const user = await User.findByIdAndUpdate(req.user._id, nonNulls, { lean: true });
+    return user.lastPosition as LastPosition;
+  }),
+  USER_ADD_PLACE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Add_PlaceArgs, ctx) => {
+    const { req: { user }, models: { Place } } = ctx;
+    await Place.create<CreatePlaceArg>({ user: user._id, ...input });
+    return true;
+  }),
+  USER_EDIT_PLACE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Edit_PlaceArgs, ctx) => {
+    const { req: { user }, models: { Place } } = ctx;
+    const place = await Place.findOne({ _id: input.placeId });
+    if (!place) throw apolloError({ type: "NotFoundInDBError", data: { input } });
+    if (place.user.toString() !== user._id.toString()) throw apolloError({ type: "ForbiddenError" });
+    await place.updateOne(nonNullable(input));
+    return true;
+  }),
+  USER_REMOVE_PLACE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Remove_PlaceArgs, ctx) => {
+    const { req: { user }, models: { Place } } = ctx;
+    const removed = await Place.deleteOne({ _id: input.placeId, user: user._id });
+    if (!removed) throw apolloError({ type: "NotFoundInDBError", data: { input }, message: "Either place does not exist or you do not havee proper right" });
+    return true;
   }),
 };
 

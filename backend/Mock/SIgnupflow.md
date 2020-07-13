@@ -32,3 +32,39 @@ query {
 }
 
 ```
+
+
+```jsonc
+// codegen
+type User @entity {
+  id: String! @id
+  username: String! @column
+  email: String! @column
+  profile: Profile! @link
+  friendsCount: Int! # this field won't get a generated MongoDB field
+  friends: [User]! @link
+}
+
+type Profile @entity(embedded: true) {
+  name: String! @column
+  age: Int! @column
+}
+```
+
+will transform into
+```jsonc
+import { ObjectID } from 'mongodb';
+
+export interface UserDbObject {
+  _id: mongoose.Types.ObjectId;
+  username: string;
+  email: string;
+  profile: ProfileDbObject;
+  friends: ObjectID[];
+}
+
+export interface ProfileDbObject {
+  name: string;
+  age: string;
+}
+```

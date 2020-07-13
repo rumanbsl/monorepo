@@ -1,5 +1,4 @@
 import { Mutation, Query } from "common/Interfaces/gql-definitions";
-import { Types } from "mongoose";
 import { context } from "@/app";
 import { Request } from "express";
 import { UserSchemaWithMethods } from "@/models/User/methods";
@@ -14,10 +13,6 @@ export interface ContextWithReqUser extends Context {
   req: RequestWithUser;
 }
 export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => Required<Promise<T> | T>;
-
-export interface ObjectID extends Types.ObjectId {
-  toString: () => string;
-}
 
 export interface IanyObject {
   [key: string]: unknown;

@@ -27,6 +27,6 @@ type Ride @entity {
   distance: String! @column
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String @column(overrideType: "Date")
-  driver: User! @embedded
-  passenger: User! @embedded
+  driver: User! @link
+  passenger: User! @link
 }

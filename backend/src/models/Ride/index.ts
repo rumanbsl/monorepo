@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 import { RideDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectID } from "@/Interfaces";
 
 export interface IRideSchema extends mongoose.Document, Omit<RideDbObject, "_id"> {
-  _id: ObjectID
+  _id: mongoose.Types.ObjectId
 }
 
 const RideSchema = new mongoose.Schema({
@@ -24,4 +23,4 @@ const RideSchema = new mongoose.Schema({
   distance : { type: String, required: true },
 }, { timestamps: true });
 
-export default mongoose.model("Ride", RideSchema, "rides");
+export default mongoose.model<IRideSchema>("Ride", RideSchema, "rides");

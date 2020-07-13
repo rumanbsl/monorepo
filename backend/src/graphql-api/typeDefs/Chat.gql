@@ -1,7 +1,7 @@
 type Chat @entity {
   _id: String! @id
-  messages: [Message]! @embedded
-  participants: [User]! @embedded
+  messages: [Message!]! @link
+  participants: [User!]! @link
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String @column(overrideType: "Date")
 }

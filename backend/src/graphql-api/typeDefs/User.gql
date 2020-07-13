@@ -21,11 +21,12 @@ type User @entity(embedded: true) {
   lastPosition: LastPosition @column
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String! @column(overrideType: "Date")
-  chat: Chat @embedded
-  messages: [Message] @embedded
-  # verifications: [Verification] @embedded
-  ridesAsPassenger: [Ride] @embedded
-  ridesAsDriver: [Ride] @embedded
+  chat: Chat @link
+  places: [Place!]! @link
+  messages: [Message!]! @link
+  # verifications: [Verification] @link
+  ridesAsPassenger: [Ride!]! @link
+  ridesAsDriver: [Ride!]! @link
 }
 
 extend type Mutation {
@@ -35,10 +36,14 @@ extend type Mutation {
   # output is token
   USER_EMAIL_SIGN_UP(name: String!,email: String!,password: String!,profilePhoto: String!,age: Int!,phoneNumber: String!): String!
   USER_UPDATE_PROFILE(name: String,email: String,profilePhoto: String): User!
-  USER_TOGGLE_DRIVING_MODE: Boolean
+  USER_TOGGLE_DRIVING_MODE: Boolean!
   USER_REPORT_MOVEMENT(lat: Float, lng: Float, orientation: Float): LastPosition!
+  USER_ADD_PLACE(name: String!, lat: Float!, lng: Float!, address: String!, isFav: Boolean!): Boolean!
+  USER_EDIT_PLACE(placeId: String!, name: String, isFav: Boolean): Boolean!
+  USER_REMOVE_PLACE(placeId: String!): Boolean!
 }
 
 extend type Query {
-  GET_USER: User
+  USER_GET: User
+  USER_GET_PLACES: [Place]!
 }

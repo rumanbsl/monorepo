@@ -23,11 +23,6 @@ const {
   REDIS_PORT,
 } = process.env;
 const MONGO_PORT = HOST_DB === "database" ? 27017 : 27010;
-export const DB_URL = `mongodb://${HOST_DB}:${MONGO_PORT}/jooo`;
-
-/* Service Providers */
-const TwilioClient = Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const options = {
   host : REDIS_HOST,
   port : parseInt(REDIS_PORT, 10),
@@ -35,11 +30,16 @@ const options = {
   // reconnect after
   ...(NODE_ENV === "production" ? { retryStrategy: (times: number) => Math.min(times * 50, 2000) } : {}),
 };
+export const DB_URL = `mongodb://${HOST_DB}:${MONGO_PORT}/jooo`;
 
+/* ---------------------------------------- Service Providers ---------------------------------------- */
+const TwilioClient = Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const pubSub = new RedisPubSub({
   publisher  : new Redis(options),
   subscriber : new Redis(options),
 });
+/* ---------------------------------------- EOL Service Providers ------------------------------------ */
 
 /**
  * @description This is everything
