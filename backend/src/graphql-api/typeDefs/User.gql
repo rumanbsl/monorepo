@@ -41,6 +41,7 @@ extend type Mutation {
   USER_ADD_PLACE(name: String!, lat: Float!, lng: Float!, address: String!, isFav: Boolean!): Boolean!
   USER_EDIT_PLACE(placeId: String!, name: String, isFav: Boolean): Boolean!
   USER_REMOVE_PLACE(placeId: String!): Boolean!
+  USER_GET_NEARBY_DRIVERS: [User]!
 }
 
 extend type Query {

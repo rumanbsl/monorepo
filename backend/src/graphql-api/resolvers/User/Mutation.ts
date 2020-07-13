@@ -30,6 +30,7 @@ type Mutations = Pick<RootMutation,
   | "USER_ADD_PLACE"
   | "USER_EDIT_PLACE"
   | "USER_REMOVE_PLACE"
+  | "USER_GET_NEARBY_DRIVERS"
 >
 
 const Mutation: Mutations = {
@@ -110,6 +111,20 @@ const Mutation: Mutations = {
     if (!removed) throw apolloError({ type: "NotFoundInDBError", data: { input }, message: "Either place does not exist or you do not havee proper right" });
     return true;
   }),
+  USER_GET_NEARBY_DRIVERS: isAuthenticatedCreateResolver(async (_, __, ctx) => {
+    const { req: { user: { lastPosition } }, models: { User } } = ctx;
+    if (typeof lastPosition?.lat !== "number" || typeof lastPosition?.lng !== "number") {
+      return [];
+    }
+    const drivers = await User.find({
+      isDriving          : true,
+      "lastPosition.lat" : { $gte: lastPosition.lat - 0.05, $lte: lastPosition.lat + 0.05 },
+      "lastPosition.lng" : { $gte: lastPosition.lng - 0.05, $lte: lastPosition.lng + 0.05 },
+    });
+
+    return drivers.map((d) => d.toJSON());
+  }),
+
 };
 
 export default Mutation;
