@@ -78,7 +78,8 @@ const Mutation: Mutations = {
     const { models: { User }, req } = ctx;
     const nonNulls = nonNullable(input);
     const user = await User.findByIdAndUpdate(req.user._id, nonNulls, { new: true });
-    return user?.toJSON();
+    if (!user) throw apolloError({ type: "NotFoundInDBError", data: { input } });
+    return user.toJSON();
   }),
   USER_TOGGLE_DRIVING_MODE: isAuthenticatedCreateResolver(async (_, __, { req }) => {
     const { user } = req;
@@ -88,8 +89,10 @@ const Mutation: Mutations = {
   }),
   USER_REPORT_MOVEMENT: isAuthenticatedCreateResolver(async (_, input: MutationUser_Report_MovementArgs, ctx) => {
     const { req, models: { User } } = ctx;
-    const nonNulls = nonNullable(input);
-    const user = await User.findByIdAndUpdate(req.user._id, nonNulls, { lean: true });
+    const lastPosition = nonNullable(input, "lastPosition");
+    const user = await User.findByIdAndUpdate(req.user._id, { ...lastPosition }, { lean: true, new: true });
+    // eslint-disable-next-line
+    ctx.pubSub.publish("driversUpdate", { USER_DRIVERS_GET: user });
     return user.lastPosition as LastPosition;
   }),
   USER_ADD_PLACE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Add_PlaceArgs, ctx) => {

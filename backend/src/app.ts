@@ -3,10 +3,11 @@ import { RedisPubSub } from "graphql-redis-subscriptions";
 import Twilio from "twilio";
 import Redis from "ioredis";
 import sgMail from "@sendgrid/mail";
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request } from "express";
 import mongoose from "mongoose";
 import { GraphQLError } from "graphql";
 import { isInstance as isApolloErrorInstance, formatError as formatApolloError, ApolloError } from "apollo-errors";
+import { ExpressContext } from "apollo-server-express/dist/ApolloServer";
 import resolvers from "./graphql-api/resolvers";
 import typeDefs from "./graphql-api/typeDefs";
 import useCustomMiddlewares from "./middlewares/custom";
@@ -59,8 +60,10 @@ class App{
     Routes(this.app);
   }
 }
-
-export const context = (pl: {req: Omit<Request, "user">; res: Response}) => ({
+interface ExpressShape extends Omit<ExpressContext, "req"> {
+  req: Omit<Request, "user">
+}
+export const context = (pl: ExpressShape) => ({
   ...pl,
   models,
   sgMail,

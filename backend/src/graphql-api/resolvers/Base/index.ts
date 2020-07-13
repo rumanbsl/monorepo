@@ -5,6 +5,10 @@ import ApolloError from "@/utils/apolloError";
 import { decodeJWT } from "@/utils/jwt";
 import { Resolver } from "./Interfaces";
 
+interface ContextWithUser extends Omit<ContextWithReqUser, "req"> {
+  req?: ContextWithReqUser["req"]
+}
+
 export const baseResolver = createResolver(
   null,
   (_, __, ___, error) => {
@@ -18,15 +22,22 @@ export const baseResolver = createResolver(
 ) as Resolver<any>;
 
 export const isAuthenticatedResolver = baseResolver.createResolver(
-  // @ts-ignore
-  async (_, __, ctx: ContextWithReqUser) => {
-    const { req, models } = ctx;
-    const [, authToken] = (req.headers.authorization || "").split(" ").filter(Boolean);
+  // @ts-expect-error
+  async (_, __, ctx: ContextWithUser) => {
+    let { req } = ctx;
+    const { models, connection } = ctx;
+    const { authorization } = connection?.context || req?.headers || "";
+    const [, authToken] = authorization.split(" ").filter(Boolean);
     if (!authToken) throw ApolloError({ type: "AuthenticationRequiredError" });
     const _id = decodeJWT(authToken);
     const user = await models.User.findById(_id);
     if (!user) throw ApolloError({ type: "NotFoundInDBError" });
-    req.user = user;
+    if (req) {
+      req.user = user;
+    } else {
+      // @ts-expect-error
+      req = { user };
+    }
   },
 ) as Resolver<any, ContextWithReqUser>;
 

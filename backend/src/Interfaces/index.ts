@@ -1,4 +1,4 @@
-import { Mutation, Query } from "common/Interfaces/gql-definitions";
+import { Mutation, Query, Subscription } from "common/Interfaces/gql-definitions";
 import { context } from "@/app";
 import { Request } from "express";
 import { UserSchemaWithMethods } from "@/models/User/methods";
@@ -12,7 +12,7 @@ interface RequestWithUser extends Request {
 export interface ContextWithReqUser extends Context {
   req: RequestWithUser;
 }
-export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => Required<Promise<T> | T>;
+export type ResolverFn<T> = (rootValue: any, args: any, context: Context, info?: any) => Promise<T> | T;
 
 export interface IanyObject {
   [key: string]: unknown;
@@ -20,3 +20,4 @@ export interface IanyObject {
 
 export type RootMutation = Required<Omit<{ [key in keyof Mutation]: ResolverFn<Mutation[key]>}, "__typename" | "_">>
 export type RootQuery = Required<Omit<{ [key in keyof Query]: ResolverFn<Query[key]>}, "__typename" | "_">>
+export type RootSubscription = Required<Omit<{ [key in keyof Subscription]: { subscribe: ResolverFn<AsyncIterator<unknown>> }}, "__typename" | "_">>

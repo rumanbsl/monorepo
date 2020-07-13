@@ -1,8 +1,9 @@
-import mongoose from "mongoose";
-import { MessageDbObject } from "common/Interfaces/gql-definitions";
+import mongoose, { DocumentToObjectOptions } from "mongoose";
+import { MessageDbObject, Message as Shape } from "common/Interfaces/gql-definitions";
 
 export interface IMessageSchema extends mongoose.Document, Omit<MessageDbObject, "_id"> {
-  _id: mongoose.Types.ObjectId
+  _id: mongoose.Types.ObjectId;
+  toJSON: (options?: DocumentToObjectOptions) => Shape;
 }
 
 const MessageSchema = new mongoose.Schema({

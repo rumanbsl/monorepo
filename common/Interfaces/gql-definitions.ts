@@ -219,6 +219,12 @@ export type Query = {
   _?: Maybe<Scalars['String']>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  USER_DRIVERS_GET: Array<Maybe<User>>;
+  _?: Maybe<Scalars['String']>;
+};
+
 export enum VerificationTarget {
   Phone = 'PHONE',
   Email = 'EMAIL'

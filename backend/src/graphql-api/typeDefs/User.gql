@@ -48,3 +48,7 @@ extend type Query {
   USER_GET: User
   USER_GET_PLACES: [Place]!
 }
+
+extend type Subscription {
+  USER_DRIVERS_GET: [User]!
+}

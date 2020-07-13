@@ -1,11 +1,12 @@
-import mongoose from "mongoose";
-import { UserDbObject } from "common/Interfaces/gql-definitions";
+import mongoose, { DocumentToObjectOptions } from "mongoose";
+import { UserDbObject, User as Shape } from "common/Interfaces/gql-definitions";
 
 import methods, { UserSchemaWithMethods } from "./methods";
 
 export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id"|"password"> {
   _id: mongoose.Types.ObjectId
   _password?: string;
+  toJSON:(options?:DocumentToObjectOptions) => Shape;
 }
 
 const UserSchema = new mongoose.Schema({

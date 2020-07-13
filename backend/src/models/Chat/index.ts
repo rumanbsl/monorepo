@@ -1,8 +1,9 @@
-import mongoose from "mongoose";
-import { ChatDbObject } from "common/Interfaces/gql-definitions";
+import mongoose, { DocumentToObjectOptions } from "mongoose";
+import { ChatDbObject, Chat as Shape } from "common/Interfaces/gql-definitions";
 
 export interface IChatSchema extends mongoose.Document, Omit<ChatDbObject, "_id"> {
-  _id: mongoose.Types.ObjectId
+  _id: mongoose.Types.ObjectId;
+  toJSON:(options?:DocumentToObjectOptions) => Shape
 }
 
 const ChatSchema = new mongoose.Schema({

@@ -1,8 +1,9 @@
-import mongoose from "mongoose";
-import { RideDbObject } from "common/Interfaces/gql-definitions";
+import mongoose, { DocumentToObjectOptions } from "mongoose";
+import { RideDbObject, Ride as Shape } from "common/Interfaces/gql-definitions";
 
 export interface IRideSchema extends mongoose.Document, Omit<RideDbObject, "_id"> {
-  _id: mongoose.Types.ObjectId
+  _id: mongoose.Types.ObjectId;
+  toJSON:(options?:DocumentToObjectOptions) => Shape;
 }
 
 const RideSchema = new mongoose.Schema({
