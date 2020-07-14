@@ -19,7 +19,7 @@ type DropOffInfo {
 
 type Ride @entity {
   _id: String! @id
-  status: RideStatus!
+  status: RideStatus! @column
   pickupInfo: PickupInfo! @column
   dropOffInfo: DropOffInfo! @column
   price: Float! @column
@@ -27,6 +27,26 @@ type Ride @entity {
   distance: String! @column
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String @column(overrideType: "Date")
-  driver: User! @link
+  driver: User @link
   passenger: User! @link
+}
+
+
+input PickupInput {
+  lat: Float!
+  lng: Float!
+  address: String!
+}
+
+input DropOffInput {
+  lat: Float!
+  lng: Float!
+}
+
+extend type Mutation {
+  RIDE_REQUEST(pickupInfo: PickupInput!, dropOffInfo: DropOffInput!, price: Float!, duration: String!, distance: String!): Ride!
+}
+
+extend type Query {
+  RIDE_GET_NEARBY: [Ride]
 }

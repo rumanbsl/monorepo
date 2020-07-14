@@ -8,12 +8,12 @@ interface Shape extends Omit<Ride, "_id"> {
 
 export interface IRideSchema extends mongoose.Document, Omit<RideDbObject, "_id"> {
   _id: mongoose.Types.ObjectId;
-  toJSON:(options?:DocumentToObjectOptions) => Shape;
+  toJSON:(options?:DocumentToObjectOptions) => Ride;
 }
 
 const RideSchema = new mongoose.Schema({
-  status     : { type: String, required: true, enum: ["ACCEPTED", "FINISHED", "CANCELED", "REQUESTING", "ON_ROUTE"] },
-  driver     : { type: mongoose.Types.ObjectId, ref: "User", required: true },
+  status     : { type: String, default: "ACCEPTED", enum: ["ACCEPTED", "FINISHED", "CANCELED", "REQUESTING", "ON_ROUTE"] },
+  driver     : { type: mongoose.Types.ObjectId, ref: "User", required: false },
   passenger  : { type: mongoose.Types.ObjectId, ref: "User", required: true },
   pickupInfo : {
     lat     : { type: Number, required: true },

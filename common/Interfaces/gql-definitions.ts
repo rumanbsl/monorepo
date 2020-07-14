@@ -82,44 +82,24 @@ export type Ride = {
   distance: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
-  driver: User;
+  driver?: Maybe<User>;
   passenger: User;
 };
 
-export type LastPosition = {
-  __typename?: 'LastPosition';
-  lat?: Maybe<Scalars['Float']>;
-  lng?: Maybe<Scalars['Float']>;
-  orientation?: Maybe<Scalars['Float']>;
+export type PickupInput = {
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  address: Scalars['String'];
 };
 
-export type User = {
-  __typename?: 'User';
-  _id: Scalars['String'];
-  fbid?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  verifiedEmail: Scalars['Boolean'];
-  name: Scalars['String'];
-  age?: Maybe<Scalars['Int']>;
-  password?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
-  verifiedPhoneNumber: Scalars['Boolean'];
-  profilePhoto?: Maybe<Scalars['String']>;
-  isDriving: Scalars['Boolean'];
-  isRiding: Scalars['Boolean'];
-  isTaken: Scalars['Boolean'];
-  lastPosition?: Maybe<LastPosition>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  chat?: Maybe<Array<Chat>>;
-  places: Array<Place>;
-  messages: Array<Message>;
-  ridesAsPassenger: Array<Ride>;
-  ridesAsDriver: Array<Ride>;
+export type DropOffInput = {
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  RIDE_REQUEST: Ride;
   USER_ADD_PLACE: Scalars['Boolean'];
   USER_EDIT_PLACE: Scalars['Boolean'];
   USER_EMAIL_SIGN_IN: Scalars['String'];
@@ -135,6 +115,15 @@ export type Mutation = {
   VERIFICATION_PHONE_COMPLETE?: Maybe<Scalars['String']>;
   VERIFICATION_PHONE_START?: Maybe<Scalars['Boolean']>;
   _?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationRide_RequestArgs = {
+  pickupInfo: PickupInput;
+  dropOffInfo: DropOffInput;
+  price: Scalars['Float'];
+  duration: Scalars['String'];
+  distance: Scalars['String'];
 };
 
 
@@ -214,9 +203,42 @@ export type MutationVerification_Phone_StartArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  RIDE_GET_NEARBY?: Maybe<Array<Maybe<Ride>>>;
   USER_GET?: Maybe<User>;
   USER_GET_PLACES: Array<Maybe<Place>>;
   _?: Maybe<Scalars['String']>;
+};
+
+export type LastPosition = {
+  __typename?: 'LastPosition';
+  lat?: Maybe<Scalars['Float']>;
+  lng?: Maybe<Scalars['Float']>;
+  orientation?: Maybe<Scalars['Float']>;
+};
+
+export type User = {
+  __typename?: 'User';
+  _id: Scalars['String'];
+  fbid?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  verifiedEmail: Scalars['Boolean'];
+  name: Scalars['String'];
+  age?: Maybe<Scalars['Int']>;
+  password?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
+  verifiedPhoneNumber: Scalars['Boolean'];
+  profilePhoto?: Maybe<Scalars['String']>;
+  isDriving: Scalars['Boolean'];
+  isRiding: Scalars['Boolean'];
+  isTaken: Scalars['Boolean'];
+  lastPosition?: Maybe<LastPosition>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  chat?: Maybe<Array<Chat>>;
+  places: Array<Place>;
+  messages: Array<Message>;
+  ridesAsPassenger: Array<Ride>;
+  ridesAsDriver: Array<Ride>;
 };
 
 export type Subscription = {
@@ -280,6 +302,7 @@ export type PlaceDbObject = {
 
 export type RideDbObject = {
   _id: ObjectID,
+  status: RideStatus,
   pickupInfo: PickupInfo,
   dropOffInfo: DropOffInfo,
   price: number,
@@ -287,7 +310,7 @@ export type RideDbObject = {
   distance: string,
   createdAt: Date,
   updatedAt?: Date,
-  driver: UserDbObject['_id'],
+  driver?: Maybe<UserDbObject['_id']>,
   passenger: UserDbObject['_id'],
 };
 

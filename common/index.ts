@@ -1,4 +1,4 @@
-import { UserDbObject, VerificationDbObject, PlaceDbObject } from "./Interfaces/gql-definitions";
+import { UserDbObject, VerificationDbObject, PlaceDbObject, RideDbObject } from "./Interfaces/gql-definitions";
 
 export interface CreateUserArg extends Partial<UserDbObject> {
   name: UserDbObject["name"]
@@ -13,3 +13,5 @@ export interface CreatePlaceArg extends Partial<PlaceDbObject> {
   lng: PlaceDbObject["lng"]
   address: PlaceDbObject["address"]
 }
+
+export type CreateRideArg = Omit<RideDbObject, "createdAt" | "status">
