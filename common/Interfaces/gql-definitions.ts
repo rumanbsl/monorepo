@@ -111,7 +111,7 @@ export type User = {
   lastPosition?: Maybe<LastPosition>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  chat?: Maybe<Chat>;
+  chat?: Maybe<Array<Chat>>;
   places: Array<Place>;
   messages: Array<Message>;
   ridesAsPassenger: Array<Ride>;
@@ -221,7 +221,7 @@ export type Query = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  USER_DRIVERS_GET: Array<Maybe<User>>;
+  USER_DRIVERS_GET: User;
   _?: Maybe<Scalars['String']>;
 };
 
@@ -308,7 +308,7 @@ export type UserDbObject = {
   lastPosition?: Maybe<LastPosition>,
   createdAt: Date,
   updatedAt: Date,
-  chat?: Maybe<ChatDbObject['_id']>,
+  chat?: Maybe<Array<ChatDbObject['_id']>>,
   places: Array<PlaceDbObject['_id']>,
   messages: Array<MessageDbObject['_id']>,
   ridesAsPassenger: Array<RideDbObject['_id']>,

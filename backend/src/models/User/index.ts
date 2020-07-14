@@ -2,11 +2,15 @@ import mongoose, { DocumentToObjectOptions } from "mongoose";
 import { UserDbObject, User as Shape } from "common/Interfaces/gql-definitions";
 
 import methods, { UserSchemaWithMethods } from "./methods";
+import Chat from "../Chat";
+import Message from "../Message";
+import Place from "../Place";
+import Ride from "../Ride";
 
-export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id"|"password"> {
+export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id" | "password"> {
   _id: mongoose.Types.ObjectId
   _password?: string;
-  toJSON:(options?:DocumentToObjectOptions) => Shape;
+  toJSON: (options?: DocumentToObjectOptions) => Shape;
 }
 
 const UserSchema = new mongoose.Schema({
@@ -23,10 +27,9 @@ const UserSchema = new mongoose.Schema({
   isTaken             : { type: Boolean, default: false },
   lastPosition        : { lat: Number, lng: Number, orientation: Number },
   email               : { type: String, lowercase: true, trim: true, unique: true, required: false },
-  chat                : { type: mongoose.Types.ObjectId, ref: "Chat", required: false },
+  chat                : [{ type: mongoose.Types.ObjectId, ref: "Chat", required: false }],
   messages            : [{ type: mongoose.Types.ObjectId, ref: "Message", required: false }],
   places              : [{ type: mongoose.Types.ObjectId, ref: "Place", required: false }],
-  // verifications       : [{ type: mongoose.Types.ObjectId, ref: "Verification", required: false }],
   ridesAsPassenger    : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
   ridesAsDriver       : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
 }, { timestamps: true });
@@ -39,5 +42,21 @@ UserSchema
   .get(function (this: UserSchemaWithMethods) {
     return this._password;
   });
+
+UserSchema.post("deleteOne", async function (this: { getFilter: () => Partial<Shape> }) {
+  const args = this.getFilter();
+  const chatIds = args.chat || [];
+  const placeIds = args.places || [];
+  const ridesAsDriverIds = args.ridesAsDriver || [];
+  const ridesAsPassengerIds = args.ridesAsPassenger || [];
+
+  await Promise.all([
+    Chat.deleteMany({ _id: { $in: chatIds } }),
+    Message.deleteMany({ chat: { $in: chatIds }, user: args._id }),
+    Place.deleteMany({ _id: { $in: placeIds }, user: args._id }),
+    Ride.deleteMany({ _id: { $in: ridesAsDriverIds.concat(ridesAsPassengerIds) }, $or: [{ passenger: args._id }, { driver: args._id }] }),
+  ]);
+});
+
 UserSchema.methods = methods;
 export default mongoose.model<UserSchemaWithMethods>("User", UserSchema, "users");

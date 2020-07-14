@@ -14,6 +14,7 @@ import useCustomMiddlewares from "./middlewares/custom";
 import useVendorMiddlewares from "./middlewares/vendors";
 import models from "./models";
 import Routes from "./routes";
+import { decodeJWTAndGetUser } from "./utils/jwt";
 
 const {
   NODE_ENV,
@@ -89,6 +90,13 @@ export function initializeApolloServer(): ApolloServer {
     context,
     // @ts-ignore
     formatError,
+    subscriptions: {
+      async onConnect(meta: {authorization?:string}) {
+        const { authorization } = meta;
+        if (!authorization) return {};
+        return { user: await decodeJWTAndGetUser(authorization) };
+      },
+    },
   });
 }
 

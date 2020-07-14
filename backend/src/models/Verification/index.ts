@@ -10,7 +10,6 @@ export interface IVerificationSchema extends mongoose.Document, Omit<Verificatio
 const { Phone, Email } = VerificationTarget;
 
 const VerificationSchema = new mongoose.Schema({
-  // user    : { type: mongoose.Types.ObjectId, ref: "User", required: false },
   target   : { type: String, required: true, enum: [Phone, Email] },
   payload  : { type: String, required: true },
   key      : { type: String, required: true },

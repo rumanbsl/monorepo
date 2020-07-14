@@ -1,5 +1,10 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { RideDbObject, Ride as Shape } from "common/Interfaces/gql-definitions";
+import { RideDbObject, Ride } from "common/Interfaces/gql-definitions";
+import User from "../User";
+
+interface Shape extends Omit<Ride, "_id"> {
+  _id: mongoose.Types.ObjectId;
+}
 
 export interface IRideSchema extends mongoose.Document, Omit<RideDbObject, "_id"> {
   _id: mongoose.Types.ObjectId;
@@ -23,5 +28,18 @@ const RideSchema = new mongoose.Schema({
   duration : { type: String, required: true },
   distance : { type: String, required: true },
 }, { timestamps: true });
+
+RideSchema.post("deleteOne", async function (this: { getFilter: () => Partial<Shape> }) {
+  const args = this.getFilter();
+  const users = [args.driver, args.passenger].filter(Boolean);
+  if (users.length > 0 && args._id) {
+    await Promise.all([
+      args.driver ? User.updateOne({ _id: args.driver }, { $pull: { ridesAsDriver: args.driver } }) : undefined,
+      args.passenger ? User.updateOne({ _id: args.passenger }, { $pull: { ridesAsPassenger: args.passenger } }) : undefined,
+    ].filter(Boolean));
+  } else {
+    console.warn("Rides deleted without proper arguments, make sure to clean up");
+  }
+});
 
 export default mongoose.model<IRideSchema>("Ride", RideSchema, "rides");
