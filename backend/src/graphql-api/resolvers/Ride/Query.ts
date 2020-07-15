@@ -28,7 +28,6 @@ const Query: Queries = {
     if (ride.driver?.toString() !== user._id.toString() && ride.passenger.toString() !== user._id.toString()) {
       throw apolloError({ type: "ForbiddenError" });
     }
-    console.log("called");
     return ride.getGraph();
   }),
 };

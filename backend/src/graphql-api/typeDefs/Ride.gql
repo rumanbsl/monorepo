@@ -44,7 +44,7 @@ input DropOffInput {
 }
 
 extend type Mutation {
-  RIDE_REQUEST(pickupInfo: PickupInput!, dropOffInfo: DropOffInput!, price: Float!, duration: String!, distance: String!): Ride!
+  RIDE_REQUEST_BY_PASSENGER(pickupInfo: PickupInput!, dropOffInfo: DropOffInput!, price: Float!, duration: String!, distance: String!): Ride!
   RIDE_UPDATE_STATUS_BY_DRIVER(rideId: String! ,status: RideStatus!): Boolean!
 }
 
@@ -54,5 +54,6 @@ extend type Query {
 }
 
 extend type Subscription {
-  RIDE_DRIVER_CURRENT_LOCATION: Ride
+  RIDE_PASSENGER_BROADCAST: Ride
+  RIDE_STATUS_UPDATE_BY_DRIVER: Ride
 }

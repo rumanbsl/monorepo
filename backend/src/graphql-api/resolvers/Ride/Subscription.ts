@@ -1,15 +1,15 @@
 import { RootSubscription, Context, ContextWithSubscribedUser } from "@/Interfaces";
 import { withFilter } from "apollo-server-express";
-import { IRideSchema } from "@/models/Ride";
+import { Ride } from "common/Interfaces/gql-definitions";
 
-type Subscriptions = Pick<RootSubscription, "RIDE_DRIVER_CURRENT_LOCATION">
+type Subscriptions = Pick<RootSubscription, "RIDE_PASSENGER_BROADCAST"|"RIDE_STATUS_UPDATE_BY_DRIVER">
 
 const Subscription: Subscriptions = {
-  RIDE_DRIVER_CURRENT_LOCATION: {
+  RIDE_PASSENGER_BROADCAST: {
     subscribe: withFilter(
       (_, __, ctx: Context) => ctx.pubSub.asyncIterator("rideRequest"),
-      ({ RIDE_DRIVER_CURRENT_LOCATION }: { RIDE_DRIVER_CURRENT_LOCATION: IRideSchema }, __, ctx: ContextWithSubscribedUser) => {
-        const passengerPos = RIDE_DRIVER_CURRENT_LOCATION.pickupInfo;
+      ({ RIDE_PASSENGER_BROADCAST }: { RIDE_PASSENGER_BROADCAST: Ride }, __, ctx: ContextWithSubscribedUser) => {
+        const passengerPos = RIDE_PASSENGER_BROADCAST.pickupInfo;
         const driverPos = ctx.connection.context.user?.lastPosition;
         if (
           typeof passengerPos?.lat !== "number"
@@ -24,6 +24,16 @@ const Subscription: Subscriptions = {
           && passengerPos.lng >= driverPos.lng - 0.5
           && passengerPos.lng <= driverPos.lng + 0.5
         );
+      },
+    ),
+  },
+  RIDE_STATUS_UPDATE_BY_DRIVER: {
+    subscribe: withFilter(
+      (_, __, ctx: Context) => ctx.pubSub.asyncIterator("rideUpdate"),
+      ({ RIDE_STATUS_UPDATE_BY_DRIVER }: {RIDE_STATUS_UPDATE_BY_DRIVER: Ride}, __, ctx: ContextWithSubscribedUser) => {
+        const { user } = ctx.connection.context;
+        const { passenger, driver } = RIDE_STATUS_UPDATE_BY_DRIVER;
+        return user?._id.toString() === driver?._id.toString() || user?._id.toString() === passenger._id.toString();
       },
     ),
   },
