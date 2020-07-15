@@ -6,9 +6,3 @@ declare module "chalk-console" {
   function error(...arg): void
   function info(...arg): void
 }
-
-declare module "bson" {
-  interface ObjectId {
-    toString:()=>string
-  }
-}

@@ -6,8 +6,8 @@ import apolloError from "./apolloError";
  * @param {string} str
  * @returns {boolean}
  */
-export default function $validBson(str: any): boolean {
+export default function validBson(str: any): boolean {
   if (typeof str !== "string") throw apolloError({ type: "InvalidInputError", message: "Not a valid object id" });
-  const validBson = /^[a-fA-F0-9]{24}$/;
-  return validBson.test(str);
+  const bsonRegEx = /^[a-fA-F0-9]{24}$/;
+  return bsonRegEx.test(str);
 }

@@ -18,7 +18,7 @@ import nonNullable from "@/utils/getNonNullable";
 import { isAuthenticatedResolver, baseResolver } from "../Base";
 
 const { createResolver: baseCreateResolver } = baseResolver;
-const { createResolver: isAuthenticatedCreateResolver } = isAuthenticatedResolver;
+const { createResolver: loggedIn } = isAuthenticatedResolver;
 
 type Mutations = Pick<RootMutation,
   | "USER_FB_CONNECT"
@@ -74,20 +74,20 @@ const Mutation: Mutations = {
     const token = createJWT(newUser._id);
     return token;
   }),
-  USER_UPDATE_PROFILE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Update_ProfileArgs, ctx) => {
+  USER_UPDATE_PROFILE: loggedIn(async (_, input: MutationUser_Update_ProfileArgs, ctx) => {
     const { models: { User }, req } = ctx;
     const nonNulls = nonNullable(input);
     const user = await User.findByIdAndUpdate(req.user._id, nonNulls, { new: true });
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: { input } });
     return user.toJSON();
   }),
-  USER_TOGGLE_DRIVING_MODE: isAuthenticatedCreateResolver(async (_, __, { req }) => {
+  USER_TOGGLE_DRIVING_MODE: loggedIn(async (_, __, { req }) => {
     const { user } = req;
     user.isDriving = !user.isDriving;
     await user.save();
     return true;
   }),
-  USER_REPORT_MOVEMENT: isAuthenticatedCreateResolver(async (_, input: MutationUser_Report_MovementArgs, ctx) => {
+  USER_REPORT_MOVEMENT: loggedIn(async (_, input: MutationUser_Report_MovementArgs, ctx) => {
     const { req, models: { User } } = ctx;
     const lastPosition = nonNullable(input, "lastPosition");
     const user = await User.findByIdAndUpdate(req.user._id, { ...lastPosition }, { lean: true, new: true });
@@ -95,12 +95,12 @@ const Mutation: Mutations = {
     ctx.pubSub.publish("driversUpdate", { USER_DRIVERS_GET: user });
     return user.lastPosition as LastPosition;
   }),
-  USER_ADD_PLACE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Add_PlaceArgs, ctx) => {
+  USER_ADD_PLACE: loggedIn(async (_, input: MutationUser_Add_PlaceArgs, ctx) => {
     const { req: { user }, models: { Place } } = ctx;
     await Place.create<CreatePlaceArg>({ user: user._id, ...input });
     return true;
   }),
-  USER_EDIT_PLACE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Edit_PlaceArgs, ctx) => {
+  USER_EDIT_PLACE: loggedIn(async (_, input: MutationUser_Edit_PlaceArgs, ctx) => {
     const { req: { user }, models: { Place } } = ctx;
     const place = await Place.findOne({ _id: input.placeId });
     if (!place) throw apolloError({ type: "NotFoundInDBError", data: { input } });
@@ -108,13 +108,13 @@ const Mutation: Mutations = {
     await place.updateOne(nonNullable(input));
     return true;
   }),
-  USER_REMOVE_PLACE: isAuthenticatedCreateResolver(async (_, input: MutationUser_Remove_PlaceArgs, ctx) => {
+  USER_REMOVE_PLACE: loggedIn(async (_, input: MutationUser_Remove_PlaceArgs, ctx) => {
     const { req: { user }, models: { Place } } = ctx;
     const removed = await Place.deleteOne({ _id: input.placeId, user: user._id });
     if (!removed) throw apolloError({ type: "NotFoundInDBError", data: { input }, message: "Either place does not exist or you do not havee proper right" });
     return true;
   }),
-  USER_GET_NEARBY_DRIVERS: isAuthenticatedCreateResolver(async (_, __, ctx) => {
+  USER_GET_NEARBY_DRIVERS: loggedIn(async (_, __, ctx) => {
     const { req: { user: { lastPosition } }, models: { User } } = ctx;
     if (typeof lastPosition?.lat !== "number" || typeof lastPosition?.lng !== "number") {
       return [];

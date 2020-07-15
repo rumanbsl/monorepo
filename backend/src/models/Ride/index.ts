@@ -1,18 +1,13 @@
-import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { RideDbObject, Ride } from "common/Interfaces/gql-definitions";
+import mongoose from "mongoose";
+import { RideDbObject } from "common/Interfaces/gql-definitions";
 import User from "../User";
-
-interface Shape extends Omit<Ride, "_id"> {
-  _id: mongoose.Types.ObjectId;
-}
 
 export interface IRideSchema extends mongoose.Document, Omit<RideDbObject, "_id"> {
   _id: mongoose.Types.ObjectId;
-  toJSON:(options?:DocumentToObjectOptions) => Ride;
 }
 
 const RideSchema = new mongoose.Schema({
-  status     : { type: String, default: "ACCEPTED", enum: ["ACCEPTED", "FINISHED", "CANCELED", "REQUESTING", "ON_ROUTE"] },
+  status     : { type: String, default: "REQUESTING", enum: ["ACCEPTED", "FINISHED", "CANCELED", "REQUESTING", "ON_ROUTE"] },
   driver     : { type: mongoose.Types.ObjectId, ref: "User", required: false },
   passenger  : { type: mongoose.Types.ObjectId, ref: "User", required: true },
   pickupInfo : {
@@ -29,7 +24,7 @@ const RideSchema = new mongoose.Schema({
   distance : { type: String, required: true },
 }, { timestamps: true });
 
-RideSchema.post("deleteOne", async function (this: { getFilter: () => Partial<Shape> }) {
+RideSchema.post("deleteOne", async function (this: { getFilter: () => Partial<IRideSchema> }) {
   const args = this.getFilter();
   const users = [args.driver, args.passenger].filter(Boolean);
   if (users.length > 0 && args._id) {

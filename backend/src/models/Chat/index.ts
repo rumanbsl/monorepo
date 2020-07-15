@@ -1,14 +1,11 @@
-import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { ChatDbObject, Chat } from "common/Interfaces/gql-definitions";
+import mongoose from "mongoose";
+import { ChatDbObject } from "common/Interfaces/gql-definitions";
+import { ObjectID } from "@/Interfaces";
 import Message from "../Message";
 import User from "../User";
 
-interface Shape extends Omit<Chat, "_id"> {
-  _id: mongoose.Types.ObjectId;
-}
 export interface IChatSchema extends mongoose.Document, Omit<ChatDbObject, "_id"> {
-  _id: mongoose.Types.ObjectId;
-  toJSON:(options?:DocumentToObjectOptions) => Shape
+  _id: ObjectID;
 }
 
 const ChatSchema = new mongoose.Schema({
@@ -16,7 +13,7 @@ const ChatSchema = new mongoose.Schema({
   participants : [{ type: mongoose.Types.ObjectId, ref: "User", required: true }],
 }, { timestamps: true });
 
-ChatSchema.post("deleteOne", async function (this: { getFilter: () => Partial<Shape> }) {
+ChatSchema.post("deleteOne", async function (this: { getFilter: () => Partial<IChatSchema> }) {
   const args = this.getFilter();
 
   if (args._id) {

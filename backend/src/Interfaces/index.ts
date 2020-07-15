@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { ObjectID as bsonID } from "bson";
 import { Mutation, Query, Subscription } from "common/Interfaces/gql-definitions";
 import { context } from "@/app";
 import { Request } from "express";
@@ -5,11 +7,12 @@ import { UserSchemaWithMethods } from "@/models/User/methods";
 import { FilterFn } from "apollo-server-express";
 // type UnPromisify<T> = T extends Promise<infer U> ? U : T;
 export type Context = ReturnType<typeof context>
-interface RequestWithUser extends Request {
-  user: UserSchemaWithMethods;
+export interface ObjectID extends bsonID {
+  toString: () => string;
 }
 type Connection = NonNullable<Context["connection"]>;
 type ConnectionContext = Connection["context"];
+interface RequestWithUser extends Request { user: UserSchemaWithMethods; }
 interface ExtendedConnectionContext extends ConnectionContext { user?: UserSchemaWithMethods; }
 interface ExtendedConnection extends Connection {context: ExtendedConnectionContext}
 export interface ContextWithSubscribedUser extends Context {

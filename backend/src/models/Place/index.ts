@@ -1,15 +1,10 @@
-import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { PlaceDbObject, Place } from "common/Interfaces/gql-definitions";
+import mongoose from "mongoose";
+import { PlaceDbObject } from "common/Interfaces/gql-definitions";
+import { ObjectID } from "@/Interfaces";
 import User from "../User";
 
-interface Shape extends Omit<Place, "_id"> {
-  _id: mongoose.Types.ObjectId;
-}
-
 export interface IPlaceSchema extends mongoose.Document, Omit<PlaceDbObject, "_id"> {
-  _id: mongoose.Types.ObjectId;
-  user: mongoose.Types.ObjectId;
-  toJSON: (options?: DocumentToObjectOptions) => Place;
+  _id: ObjectID;
 }
 
 const PlaceSchema = new mongoose.Schema({
@@ -29,7 +24,7 @@ PlaceSchema
    *  deleteOne hook does not have the Document as 'this', this.getFilter() returns arguments for Document.deleteOne(ARGUMENTS) only
    * https://stackoverflow.com/questions/59147493/mongoose-deleteone-middleware-for-cascading-delete-not-working
   */
-  .post("deleteOne", async function (this: { getFilter: () => Partial<Shape> }) {
+  .post("deleteOne", async function (this: { getFilter: () => Partial<PlaceDbObject> }) {
     const args = this.getFilter();
     if (args._id && args.user) {
       await User.updateOne({ _id: args.user }, { $pull: { places: args._id } });

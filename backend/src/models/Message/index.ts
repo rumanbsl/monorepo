@@ -1,14 +1,11 @@
-import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { MessageDbObject, Message } from "common/Interfaces/gql-definitions";
+import mongoose from "mongoose";
+import { MessageDbObject } from "common/Interfaces/gql-definitions";
+import { ObjectID } from "@/Interfaces";
 import User from "../User";
 import Chat from "../Chat";
 
-interface Shape extends Omit<Message, "_id"> {
-  _id: mongoose.Types.ObjectId;
-}
 export interface IMessageSchema extends mongoose.Document, Omit<MessageDbObject, "_id"> {
-  _id: mongoose.Types.ObjectId;
-  toJSON: (options?: DocumentToObjectOptions) => Shape;
+  _id: ObjectID;
 }
 
 const MessageSchema = new mongoose.Schema({
@@ -17,7 +14,7 @@ const MessageSchema = new mongoose.Schema({
   user : { type: mongoose.Types.ObjectId, ref: "User", required: true },
 }, { timestamps: true });
 
-MessageSchema.post("deleteOne", async function (this: { getFilter: () => Partial<Shape> }) {
+MessageSchema.post("deleteOne", async function (this: { getFilter: () => Partial<IMessageSchema> }) {
   const args = this.getFilter();
   if (args.user && args._id) {
     await Promise.all([

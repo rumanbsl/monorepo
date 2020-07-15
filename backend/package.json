@@ -35,7 +35,8 @@
     "webpack-cli": "^3.3.12",
     "webpack-dashboard": "^3.2.0",
     "webpack-merge": "^5.0.9",
-    "webpack-node-externals": "^2.3.0"
+    "webpack-node-externals": "^2.3.0",
+    "@fimbul/wotan": "0.21.1"
   },
   "license": "MIT",
   "name": "@ruman-blog/backend",
@@ -45,6 +46,7 @@
     "start": "nodemon",
     "test": "jest --passWithNoTests",
     "type-gen": "graphql-codegen -c typeGen.yml --watch",
+    "typecheck": "wotan -p tsconfig.json -r && :",
     "watch": "nodemon dist/main.js"
   },
   "version": "1.0.0"

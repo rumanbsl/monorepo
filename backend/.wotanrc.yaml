@@ -1,0 +1,7 @@
+rules:
+  # your other rules go here
+  syntaxcheck: error # could also be 'warning'
+  typecheck: error # could also be 'warning'
+project: tsconfig.json
+exclude:
+  - "**/*.d.ts"

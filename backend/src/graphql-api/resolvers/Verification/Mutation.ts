@@ -13,7 +13,7 @@ import { sendVerificationEMail } from "@/utils/sendEmail";
 import { baseResolver, isAuthenticatedResolver } from "../Base";
 
 const { createResolver: baseCreateResolver } = baseResolver;
-const { createResolver: isAuthenticatedCreateResolver } = isAuthenticatedResolver;
+const { createResolver: loggedIn } = isAuthenticatedResolver;
 
 type Mutations = Pick<RootMutation, "VERIFICATION_PHONE_START" | "VERIFICATION_PHONE_COMPLETE" | "VERIFICATION_EMAIL_START" | "VERIFICATION_EMAIL_COMPLETE">
 
@@ -43,7 +43,7 @@ const Mutation: Mutations = {
     const token = createJWT(user._id);
     return token;
   }),
-  VERIFICATION_EMAIL_START: isAuthenticatedCreateResolver(async (_, __, ctx) => {
+  VERIFICATION_EMAIL_START: loggedIn(async (_, __, ctx) => {
     const { req: { user }, models: { Verification }, sgMail } = ctx;
     const { email, verifiedEmail } = user;
     // Skipping verification process if email is verified already or email does not exists
@@ -55,7 +55,7 @@ const Mutation: Mutations = {
     await sendVerificationEMail({ sgMail, key, to: email });
     return true;
   }),
-  VERIFICATION_EMAIL_COMPLETE: isAuthenticatedCreateResolver(async (_, { key }: MutationVerification_Email_CompleteArgs, ctx) => {
+  VERIFICATION_EMAIL_COMPLETE: loggedIn(async (_, { key }: MutationVerification_Email_CompleteArgs, ctx) => {
     const { req: { user }, models: { Verification } } = ctx;
     const { email } = user;
 

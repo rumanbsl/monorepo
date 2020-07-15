@@ -100,6 +100,7 @@ export type DropOffInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   RIDE_REQUEST: Ride;
+  RIDE_UPDATE_STATUS_BY_DRIVER: Scalars['Boolean'];
   USER_ADD_PLACE: Scalars['Boolean'];
   USER_EDIT_PLACE: Scalars['Boolean'];
   USER_EMAIL_SIGN_IN: Scalars['String'];
@@ -124,6 +125,12 @@ export type MutationRide_RequestArgs = {
   price: Scalars['Float'];
   duration: Scalars['String'];
   distance: Scalars['String'];
+};
+
+
+export type MutationRide_Update_Status_By_DriverArgs = {
+  rideId: Scalars['String'];
+  status: RideStatus;
 };
 
 
@@ -203,10 +210,16 @@ export type MutationVerification_Phone_StartArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  RIDE_GET_INFORMATION?: Maybe<Ride>;
   RIDE_GET_NEARBY_DRIVER?: Maybe<Ride>;
   USER_GET?: Maybe<User>;
   USER_GET_PLACES: Array<Maybe<Place>>;
   _?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryRide_Get_InformationArgs = {
+  rideId: Scalars['String'];
 };
 
 export type Subscription = {
