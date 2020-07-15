@@ -203,9 +203,16 @@ export type MutationVerification_Phone_StartArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  RIDE_GET_NEARBY?: Maybe<Array<Maybe<Ride>>>;
+  RIDE_GET_NEARBY_DRIVER?: Maybe<Ride>;
   USER_GET?: Maybe<User>;
   USER_GET_PLACES: Array<Maybe<Place>>;
+  _?: Maybe<Scalars['String']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  RIDE_DRIVER_CURRENT_LOCATION?: Maybe<Ride>;
+  USER_DRIVERS_GET: User;
   _?: Maybe<Scalars['String']>;
 };
 
@@ -239,12 +246,6 @@ export type User = {
   messages: Array<Message>;
   ridesAsPassenger: Array<Ride>;
   ridesAsDriver: Array<Ride>;
-};
-
-export type Subscription = {
-  __typename?: 'Subscription';
-  USER_DRIVERS_GET: User;
-  _?: Maybe<Scalars['String']>;
 };
 
 export enum VerificationTarget {

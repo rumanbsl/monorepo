@@ -48,5 +48,9 @@ extend type Mutation {
 }
 
 extend type Query {
-  RIDE_GET_NEARBY: [Ride]
+  RIDE_GET_NEARBY_DRIVER: Ride
+}
+
+extend type Subscription {
+  RIDE_DRIVER_CURRENT_LOCATION: Ride
 }
