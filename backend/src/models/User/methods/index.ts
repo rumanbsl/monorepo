@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import apolloError from "@/utils/apolloError";
+import { User } from "common/Interfaces/gql-definitions";
+import uniqueArray from "@/utils/uniqueArray";
 import { IuserSchema } from "..";
 
 const methods = {
@@ -11,6 +13,10 @@ const methods = {
     if (!password) throw apolloError({ type: "InvalidInputError", data: { password } });
     const hashed = bcrypt.hashSync(password, parseInt(process.env.BCRYPT_SALT_ROUNDS, 10));
     return hashed;
+  },
+  async getGraph(this: IuserSchema, ...fields: ("chats"|"messages"|"places"|"ridesAsPassenger"|"ridesAsDriver")[]) {
+    const models = fields.length ? uniqueArray(fields).join(" ") : ["chats", "messages", "places", "ridesAsPassenger", "ridesAsDriver"].join(" ");
+    return this.populate(models).execPopulate() as unknown as User;
   },
 };
 

@@ -1,10 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { DocumentToObjectOptions } from "mongoose";
 import { PlaceDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectID } from "@/Interfaces";
+import { ObjectID, ObjectToString } from "@/Interfaces";
 import User from "../User";
+import { PlaceSchemaWithMethods } from "./methods";
 
 export interface IPlaceSchema extends mongoose.Document, Omit<PlaceDbObject, "_id"> {
   _id: ObjectID;
+  toJSON:(options?:DocumentToObjectOptions) => ObjectToString<PlaceDbObject>
 }
 
 const PlaceSchema = new mongoose.Schema({
@@ -33,4 +35,4 @@ PlaceSchema
     }
   });
 
-export default mongoose.model<IPlaceSchema>("Place", PlaceSchema, "places");
+export default mongoose.model<PlaceSchemaWithMethods>("Place", PlaceSchema, "places");

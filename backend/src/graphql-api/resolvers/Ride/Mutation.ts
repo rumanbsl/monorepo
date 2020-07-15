@@ -25,7 +25,7 @@ const Mutation: Mutations = {
     ]);
     // eslint-disable-next-line
     pubSub.publish("rideRequest", { RIDE_DRIVER_CURRENT_LOCATION: ride });
-    return ride.toJSON();
+    return ride.getGraph();
   }),
   RIDE_UPDATE_STATUS_BY_DRIVER: loggedIn(async (_, input: MutationRide_Update_Status_By_DriverArgs, ctx) => {
     const { req: { user }, models: { Ride } } = ctx;

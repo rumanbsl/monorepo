@@ -79,7 +79,7 @@ const Mutation: Mutations = {
     const nonNulls = nonNullable(input);
     const user = await User.findByIdAndUpdate(req.user._id, nonNulls, { new: true });
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: { input } });
-    return user.toJSON();
+    return user.getGraph();
   }),
   USER_TOGGLE_DRIVING_MODE: loggedIn(async (_, __, { req }) => {
     const { user } = req;
@@ -125,7 +125,7 @@ const Mutation: Mutations = {
       "lastPosition.lng" : { $gte: lastPosition.lng - 0.05, $lte: lastPosition.lng + 0.05 },
     });
 
-    return drivers.map((d) => d.toJSON());
+    return Promise.all(drivers.map((d) => d.getGraph()));
   }),
 
 };

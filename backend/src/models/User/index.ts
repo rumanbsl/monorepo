@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { DocumentToObjectOptions } from "mongoose";
 import { UserDbObject } from "common/Interfaces/gql-definitions";
 
-import { ObjectID } from "@/Interfaces";
+import { ObjectID, ObjectToString } from "@/Interfaces";
 import methods, { UserSchemaWithMethods } from "./methods";
 import Chat from "../Chat";
 import Message from "../Message";
@@ -11,6 +11,7 @@ import Ride from "../Ride";
 export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id" | "password"> {
   _id: ObjectID
   _password?: string;
+  toJSON:(options?:DocumentToObjectOptions) => ObjectToString<UserDbObject>
 }
 
 const UserSchema = new mongoose.Schema({
@@ -27,7 +28,7 @@ const UserSchema = new mongoose.Schema({
   isTaken             : { type: Boolean, default: false },
   lastPosition        : { lat: Number, lng: Number, orientation: Number },
   email               : { type: String, lowercase: true, trim: true, unique: true, required: false },
-  chat                : [{ type: mongoose.Types.ObjectId, ref: "Chat", required: false }],
+  chats               : [{ type: mongoose.Types.ObjectId, ref: "Chat", required: false }],
   messages            : [{ type: mongoose.Types.ObjectId, ref: "Message", required: false }],
   places              : [{ type: mongoose.Types.ObjectId, ref: "Place", required: false }],
   ridesAsPassenger    : [{ type: mongoose.Types.ObjectId, ref: "Ride", required: false }],
@@ -45,7 +46,7 @@ UserSchema
 
 UserSchema.post("deleteOne", async function (this: { getFilter: () => Partial<UserDbObject> }) {
   const args = this.getFilter();
-  const chatIds = args.chat || [];
+  const chatIds = args.chats || [];
   const placeIds = args.places || [];
   const ridesAsDriverIds = args.ridesAsDriver || [];
   const ridesAsPassengerIds = args.ridesAsPassenger || [];

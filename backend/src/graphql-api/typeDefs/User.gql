@@ -21,7 +21,7 @@ type User @entity(embedded: true) {
   lastPosition: LastPosition @column
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String! @column(overrideType: "Date")
-  chat: [Chat!] @link
+  chats: [Chat!] @link
   places: [Place!]! @link
   messages: [Message!]! @link
   # verifications: [Verification] @link

@@ -19,7 +19,7 @@ const Query: Queries = {
       "pickupInfo.lat" : { $gte: lastPosition.lat - 0.05, $lte: lastPosition.lat + 0.05 },
       "pickupInfo.lng" : { $gte: lastPosition.lng - 0.05, $lte: lastPosition.lng + 0.05 },
     });
-    return ride ? ride.toJSON() : null;
+    return ride ? ride.getGraph() : null;
   }),
   RIDE_GET_INFORMATION: loggedIn(async (_, input: QueryRide_Get_InformationArgs, ctx) => {
     const { req: { user }, models: { Ride } } = ctx;
@@ -28,7 +28,8 @@ const Query: Queries = {
     if (ride.driver?.toString() !== user._id.toString() && ride.passenger.toString() !== user._id.toString()) {
       throw apolloError({ type: "ForbiddenError" });
     }
-    return ride.toJSON();
+    console.log("called");
+    return ride.getGraph();
   }),
 };
 

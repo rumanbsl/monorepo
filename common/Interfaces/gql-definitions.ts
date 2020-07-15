@@ -254,7 +254,7 @@ export type User = {
   lastPosition?: Maybe<LastPosition>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  chat?: Maybe<Array<Chat>>;
+  chats?: Maybe<Array<Chat>>;
   places: Array<Place>;
   messages: Array<Message>;
   ridesAsPassenger: Array<Ride>;
@@ -345,7 +345,7 @@ export type UserDbObject = {
   lastPosition?: Maybe<LastPosition>,
   createdAt: Date,
   updatedAt: Date,
-  chat?: Maybe<Array<ChatDbObject['_id']>>,
+  chats?: Maybe<Array<ChatDbObject['_id']>>,
   places: Array<PlaceDbObject['_id']>,
   messages: Array<MessageDbObject['_id']>,
   ridesAsPassenger: Array<RideDbObject['_id']>,

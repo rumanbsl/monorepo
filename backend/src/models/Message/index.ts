@@ -1,11 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { DocumentToObjectOptions } from "mongoose";
 import { MessageDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectID } from "@/Interfaces";
+import { ObjectToString, ObjectID } from "@/Interfaces";
 import User from "../User";
 import Chat from "../Chat";
+import methods, { MessageSchemaWithMethods } from "./methods";
 
-export interface IMessageSchema extends mongoose.Document, Omit<MessageDbObject, "_id"> {
+export interface IMessageSchema extends mongoose.Document, Omit<MessageDbObject, "_id">{
   _id: ObjectID;
+  toJSON:(options?:DocumentToObjectOptions) => ObjectToString<MessageDbObject>
 }
 
 const MessageSchema = new mongoose.Schema({
@@ -25,5 +27,5 @@ MessageSchema.post("deleteOne", async function (this: { getFilter: () => Partial
     console.warn("Message deleted without proper arguments, make sure to clean up");
   }
 });
-
-export default mongoose.model<IMessageSchema>("Message", MessageSchema, "messages");
+MessageSchema.methods = methods;
+export default mongoose.model<MessageSchemaWithMethods>("Message", MessageSchema, "messages");
