@@ -92,6 +92,7 @@ module.exports = {
     "no-trailing-spaces"   : "error",
     "no-underscore-dangle" : 0,
     "no-unused-vars"       : 0,
+    "no-void"              : 0,
     "object-curly-newline" : [
       "error",
       { "multiline": true }

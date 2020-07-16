@@ -25,9 +25,8 @@ const Mutation: Mutations = {
         passenger: user._id,
       }),
     ]);
-    const RIDE_PASSENGER_BROADCAST = await ride.toJSON();
-    // eslint-disable-next-line
-    pubSub.publish("rideRequest", { RIDE_PASSENGER_BROADCAST });
+    const RIDE_PASSENGER_BROADCAST = ride.toJSON();
+    void pubSub.publish("rideRequest", { RIDE_PASSENGER_BROADCAST });
     return RIDE_PASSENGER_BROADCAST;
   }),
   RIDE_UPDATE_STATUS_BY_DRIVER: loggedIn(async (_, input: MutationRide_Update_Status_By_DriverArgs, ctx) => {
@@ -51,8 +50,7 @@ const Mutation: Mutations = {
     })();
     if (!ride) throw apolloError({ type: "NotFoundInDBError", message: "ride not found" });
     const RIDE_STATUS_UPDATE_BY_DRIVER = await ride.getGraph();
-    // eslint-disable-next-line
-    pubSub.publish("rideUpdate", { RIDE_STATUS_UPDATE_BY_DRIVER });
+    void pubSub.publish("rideUpdate", { RIDE_STATUS_UPDATE_BY_DRIVER });
     return true;
   }),
 };

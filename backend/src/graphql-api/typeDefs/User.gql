@@ -4,7 +4,10 @@ type LastPosition {
   orientation: Float
 }
 
-type User implements Base @entity {
+type User @entity {
+  _id: ID! @id
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String @column(overrideType: "Date")
   fbid: String @column
   email: String @column
   verifiedEmail: Boolean! @column
@@ -26,7 +29,10 @@ type User implements Base @entity {
   chatsAsDriver: [Chat!]! @link
 }
 
-type UserOutput implements Base {
+type UserOutput {
+  _id: ID
+  createdAt: String!
+  updatedAt: String
   fbid: String
   email: String
   verifiedEmail: Boolean!

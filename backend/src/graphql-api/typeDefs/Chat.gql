@@ -1,11 +1,17 @@
-type ChatOutput implements Base {
+type ChatOutput {
+  _id: ID
+  createdAt: String!
+  updatedAt: String
   messages: String! @id
   passenger: ID! @id
   driver: ID! @id
   ride: ID! @id
 }
 
-type Chat implements Base @entity {
+type Chat @entity {
+  _id: ID! @id
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String @column(overrideType: "Date")
   messages: [Message!]! @link
   passenger: User @link
   driver: User @link

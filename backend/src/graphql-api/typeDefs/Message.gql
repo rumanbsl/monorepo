@@ -1,11 +1,18 @@
-type Message implements Base @entity {
+type MessageOutput {
+  _id: ID
+  createdAt: String!
+  updatedAt: String
+  text: String!
+  chat: ID!
+  user: ID!
+}
+
+type Message @entity {
+  _id: ID! @id
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String @column(overrideType: "Date")
   text: String! @column
   chat: Chat! @link
   user: User! @link
 }
 
-type MessageOutput implements Base {
-  text: String!
-  chat: ID!
-  user: ID!
-}

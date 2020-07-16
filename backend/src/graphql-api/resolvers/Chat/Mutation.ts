@@ -14,8 +14,7 @@ const Mutation: Mutations = {
     const chat = await Chat.findOne({ _id: OID(input.chatId), $or: [{ passenger: user._id }, { driver: user._id }] });
     if (!chat) throw apolloError({ type: "NotFoundInDBError" });
     const message = await Message.create<CreateMessageArg>({ chat: chat._id, user: user._id, text: input.text });
-    // eslint-disable-next-line
-    pubSub.publish("newChatMessage", { ON_MESSAGE: message })
+    void pubSub.publish("newChatMessage", { ON_MESSAGE: message });
 
     return message.toJSON();
   }),

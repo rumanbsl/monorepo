@@ -18,14 +18,20 @@ export type Scalars = {
 
 
 
-export type ChatOutput = Base & {
+export type ChatOutput = {
+  _id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   messages: Scalars['String'];
   passenger: Scalars['ID'];
   driver: Scalars['ID'];
   ride: Scalars['ID'];
 };
 
-export type Chat = Base & {
+export type Chat = {
+  _id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   messages: Array<Message>;
   passenger?: Maybe<User>;
   driver?: Maybe<User>;
@@ -176,34 +182,46 @@ export type Subscription = {
   _?: Maybe<Scalars['String']>;
 };
 
-export type Message = Base & {
-  text: Scalars['String'];
-  chat: Chat;
-  user: User;
-};
-
-export type MessageOutput = Base & {
+export type MessageOutput = {
+  _id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   text: Scalars['String'];
   chat: Scalars['ID'];
   user: Scalars['ID'];
 };
 
-export type Place = Base & {
-  name: Scalars['String'];
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
-  address: Scalars['String'];
-  isFav: Scalars['Boolean'];
+export type Message = {
+  _id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
+  text: Scalars['String'];
+  chat: Chat;
   user: User;
 };
 
-export type PlaceOutput = Base & {
+export type PlaceOutput = {
+  _id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   lat: Scalars['Float'];
   lng: Scalars['Float'];
   address: Scalars['String'];
   isFav: Scalars['Boolean'];
   user: Scalars['ID'];
+};
+
+export type Place = {
+  _id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  address: Scalars['String'];
+  isFav: Scalars['Boolean'];
+  user: User;
 };
 
 export enum RideStatus {
@@ -225,7 +243,10 @@ export type DropOffInfo = {
   lng: Scalars['Float'];
 };
 
-export type RideOutput = Base & {
+export type RideOutput = {
+  _id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   status: RideStatus;
   pickupInfo: PickupInfo;
   dropOffInfo: DropOffInfo;
@@ -237,7 +258,10 @@ export type RideOutput = Base & {
   chat?: Maybe<Scalars['ID']>;
 };
 
-export type Ride = Base & {
+export type Ride = {
+  _id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   status: RideStatus;
   pickupInfo: PickupInfo;
   dropOffInfo: DropOffInfo;
@@ -266,7 +290,10 @@ export type LastPosition = {
   orientation?: Maybe<Scalars['Float']>;
 };
 
-export type User = Base & {
+export type User = {
+  _id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   fbid?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   verifiedEmail: Scalars['Boolean'];
@@ -288,7 +315,10 @@ export type User = Base & {
   chatsAsDriver: Array<Chat>;
 };
 
-export type UserOutput = Base & {
+export type UserOutput = {
+  _id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   fbid?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   verifiedEmail: Scalars['Boolean'];
@@ -315,26 +345,26 @@ export enum VerificationTarget {
   Email = 'EMAIL'
 }
 
-export type Verification = Base & {
+export type VerificationOutput = {
+  _id?: Maybe<Scalars['ID']>;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
   target: VerificationTarget;
   payload: Scalars['String'];
   key: Scalars['String'];
   verified: Scalars['Boolean'];
 };
 
-export type VerificationOutput = Base & {
-  target: VerificationTarget;
-  payload: Scalars['String'];
-  key: Scalars['String'];
-  verified: Scalars['Boolean'];
-};
-
-
-export type Base = {
+export type Verification = {
   _id: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
+  target: VerificationTarget;
+  payload: Scalars['String'];
+  key: Scalars['String'];
+  verified: Scalars['Boolean'];
 };
+
 
 export type AdditionalEntityFields = {
   path?: Maybe<Scalars['String']>;
@@ -343,20 +373,29 @@ export type AdditionalEntityFields = {
 
 
 import { ObjectID } from 'mongodb';
-export type ChatDbObject = BaseDbInterface & {
+export type ChatDbObject = {
+  _id: ObjectID,
+  createdAt: Date,
+  updatedAt?: Date,
   messages: Array<MessageDbObject['_id']>,
   passenger?: Maybe<UserDbObject['_id']>,
   driver?: Maybe<UserDbObject['_id']>,
   ride: RideDbObject['_id'],
 };
 
-export type MessageDbObject = BaseDbInterface & {
+export type MessageDbObject = {
+  _id: ObjectID,
+  createdAt: Date,
+  updatedAt?: Date,
   text: string,
   chat: ChatDbObject['_id'],
   user: UserDbObject['_id'],
 };
 
-export type PlaceDbObject = BaseDbInterface & {
+export type PlaceDbObject = {
+  _id: ObjectID,
+  createdAt: Date,
+  updatedAt?: Date,
   name: string,
   lat: number,
   lng: number,
@@ -365,7 +404,10 @@ export type PlaceDbObject = BaseDbInterface & {
   user: UserDbObject['_id'],
 };
 
-export type RideDbObject = BaseDbInterface & {
+export type RideDbObject = {
+  _id: ObjectID,
+  createdAt: Date,
+  updatedAt?: Date,
   status: RideStatus,
   pickupInfo: PickupInfo,
   dropOffInfo: DropOffInfo,
@@ -377,7 +419,10 @@ export type RideDbObject = BaseDbInterface & {
   chat?: Maybe<ChatDbObject['_id']>,
 };
 
-export type UserDbObject = BaseDbInterface & {
+export type UserDbObject = {
+  _id: ObjectID,
+  createdAt: Date,
+  updatedAt?: Date,
   fbid?: Maybe<string>,
   email?: Maybe<string>,
   verifiedEmail: boolean,
@@ -399,16 +444,12 @@ export type UserDbObject = BaseDbInterface & {
   chatsAsDriver: Array<ChatDbObject['_id']>,
 };
 
-export type VerificationDbObject = BaseDbInterface & {
+export type VerificationDbObject = {
+  _id: ObjectID,
+  createdAt: Date,
+  updatedAt?: Date,
   target: VerificationTarget,
   payload: string,
   key: string,
   verified: boolean,
-};
-
-export type BaseDbInterface = {
-  _id: ObjectID,
-  createdAt: Date,
-  updatedAt?: Date,
-  _?: string,
 };
