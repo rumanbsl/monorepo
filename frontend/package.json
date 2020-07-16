@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@apollo/client": "^3.0.0-rc.10",
+    "@apollo/client": "^3.0.1",
     "@apollo/link-context": "^2.0.0-beta.3",
     "next": "^9.4.4",
     "next-connect": "^0.8.0",

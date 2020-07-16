@@ -22,6 +22,7 @@ export const cache:InMemoryCache = new InMemoryCache({ typePolicies: {} });
 const client = new ApolloClient({
   ssrMode : true,
   cache,
+  // @ts-expect-error
   link    : authLink.concat(httpLink),
 });
 

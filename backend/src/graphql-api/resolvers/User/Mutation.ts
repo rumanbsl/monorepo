@@ -34,12 +34,13 @@ type Mutations = Pick<RootMutation,
 >
 
 const Mutation: Mutations = {
-  USER_FB_CONNECT: baseCreateResolver(async (_, input: MutationUser_Fb_ConnectArgs, { models }) => {
+  USER_FB_CONNECT: baseCreateResolver(async (_, input: MutationUser_Fb_ConnectArgs, { models, res }) => {
     const { User } = models;
     const foundUser = await User.findOne({ fbid: input.fbid });
     if (foundUser) {
       const token = createJWT(foundUser._id);
-      return token;
+      res.cookie("access-token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+      return null;
     }
 
     const newUser = await User.create<CreateUserArg>({
@@ -47,19 +48,22 @@ const Mutation: Mutations = {
       profilePhoto: `https://graph.facebook.com/${input.fbid}/picture?type=square`,
     });
     const token = createJWT(newUser._id);
-    return token;
+    res.cookie("access-token", token);
+    return null;
   }),
-  USER_EMAIL_SIGN_IN: baseCreateResolver(async (_, arg: { email: string; password: string }, { models: { User } }) => {
+  USER_EMAIL_SIGN_IN: baseCreateResolver(async (_, arg: { email: string; password: string }, ctx) => {
+    const { models: { User }, res } = ctx;
     const { email, password } = arg;
     const user = await User.findOne({ email });
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: { email } });
     const isMatchPassword = user.authenticate(password);
     if (!isMatchPassword) throw apolloError({ type: "AuthenticationFailedError" });
     const token = createJWT(user._id);
-    return token;
+    res.cookie("access-token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+    return null;
   }),
   USER_EMAIL_SIGN_UP: baseCreateResolver(async (_, input: MutationUser_Email_Sign_UpArgs, ctx) => {
-    const { models: { User, Verification }, sgMail } = ctx;
+    const { models: { User, Verification }, sgMail, res } = ctx;
     const userExists = await User.findOne({ email: input.email });
     if (userExists) throw apolloError({ type: "AlreadyExistsError", data: { email: input.email } });
     const phoneVerification = await Verification.findOne({ payload: input.phoneNumber, verified: true });
@@ -72,7 +76,8 @@ const Mutation: Mutations = {
     await sendVerificationEMail({ sgMail, key: emailVerification.key, to: input.email });
 
     const token = createJWT(newUser._id);
-    return token;
+    res.cookie("access-token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+    return null;
   }),
   USER_UPDATE_PROFILE: loggedIn(async (_, input: MutationUser_Update_ProfileArgs, ctx) => {
     const { models: { User }, req } = ctx;

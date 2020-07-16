@@ -2,7 +2,8 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: "development" | "production";
-      JWT_SECRET_KEY: string;
+      JWT_ACCESS_TOKEN: string;
+      JWT_REFRESH_TOKEN: string;
       JWT_ACCOUNT_ACTIVATION: string;
       JWT_REST_PASSWORD: string;
       SENDGRID_API_KEY: string;

@@ -24,8 +24,7 @@ export const baseResolver = createResolver(
 export const isAuthenticatedResolver = baseResolver.createResolver(
   async (_, __, ctx) => {
     const { req } = ctx as ContextWithUser;
-    const { authorization } = req.headers;
-    req.user = await decodeJWTAndGetUser(authorization);
+    req.user = await decodeJWTAndGetUser(req.cookies);
   },
 ) as Resolver<any, ContextWithReqUser>;
 

@@ -22,7 +22,7 @@ export type ChatOutput = {
   _id?: Maybe<Scalars['ID']>;
   createdAt: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
-  messages: Scalars['String'];
+  messages: Array<Maybe<Scalars['ID']>>;
   passenger: Scalars['ID'];
   driver: Scalars['ID'];
   ride: Scalars['ID'];
@@ -63,9 +63,9 @@ export type Mutation = {
   RIDE_UPDATE_STATUS_BY_DRIVER: Scalars['Boolean'];
   USER_ADD_PLACE: Scalars['Boolean'];
   USER_EDIT_PLACE: Scalars['Boolean'];
-  USER_EMAIL_SIGN_IN: Scalars['String'];
-  USER_EMAIL_SIGN_UP: Scalars['String'];
-  USER_FB_CONNECT: Scalars['String'];
+  USER_EMAIL_SIGN_IN?: Maybe<Scalars['Boolean']>;
+  USER_EMAIL_SIGN_UP?: Maybe<Scalars['Boolean']>;
+  USER_FB_CONNECT?: Maybe<Scalars['Boolean']>;
   USER_GET_NEARBY_DRIVERS: Array<Maybe<UserOutput>>;
   USER_REMOVE_PLACE: Scalars['Boolean'];
   USER_REPORT_MOVEMENT: LastPosition;

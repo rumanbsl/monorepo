@@ -2,7 +2,7 @@ type ChatOutput {
   _id: ID
   createdAt: String!
   updatedAt: String
-  messages: String! @id
+  messages: [ID]! @id
   passenger: ID! @id
   driver: ID! @id
   ride: ID! @id
