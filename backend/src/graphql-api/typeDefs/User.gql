@@ -21,12 +21,12 @@ type User @entity(embedded: true) {
   lastPosition: LastPosition @column
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String! @column(overrideType: "Date")
-  chats: [Chat!] @link
   places: [Place!]! @link
   messages: [Message!]! @link
-  # verifications: [Verification] @link
   ridesAsPassenger: [Ride!]! @link
   ridesAsDriver: [Ride!]! @link
+  chatsAsPassenger: [Chat!]! @link
+  chatsAsDriver: [Chat!]! @link
 }
 
 extend type Mutation {

@@ -22,83 +22,36 @@ export type Chat = {
   __typename?: 'Chat';
   _id: Scalars['String'];
   messages: Array<Message>;
-  participants: Array<User>;
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
-};
-
-export type Message = {
-  __typename?: 'Message';
-  _id: Scalars['String'];
-  text: Scalars['String'];
-  chat: Chat;
-  user: User;
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
-};
-
-export type Place = {
-  __typename?: 'Place';
-  _id: Scalars['String'];
-  name: Scalars['String'];
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
-  address: Scalars['String'];
-  isFav: Scalars['Boolean'];
-  user: User;
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
-};
-
-export enum RideStatus {
-  Accepted = 'ACCEPTED',
-  Finished = 'FINISHED',
-  Canceled = 'CANCELED',
-  Requesting = 'REQUESTING',
-  OnRoute = 'ON_ROUTE'
-}
-
-export type PickupInfo = {
-  __typename?: 'PickupInfo';
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
-  address: Scalars['String'];
-};
-
-export type DropOffInfo = {
-  __typename?: 'DropOffInfo';
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
-};
-
-export type Ride = {
-  __typename?: 'Ride';
-  _id: Scalars['String'];
-  status: RideStatus;
-  pickupInfo: PickupInfo;
-  dropOffInfo: DropOffInfo;
-  price: Scalars['Float'];
-  duration: Scalars['String'];
-  distance: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
+  passenger?: Maybe<User>;
   driver?: Maybe<User>;
-  passenger: User;
+  ride: Ride;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
 };
 
-export type PickupInput = {
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
-  address: Scalars['String'];
+export type Query = {
+  __typename?: 'Query';
+  CHAT_GET?: Maybe<Chat>;
+  RIDE_GET_INFORMATION?: Maybe<Ride>;
+  RIDE_GET_NEARBY_DRIVER?: Maybe<Ride>;
+  USER_GET?: Maybe<User>;
+  USER_GET_PLACES: Array<Maybe<Place>>;
+  _?: Maybe<Scalars['String']>;
 };
 
-export type DropOffInput = {
-  lat: Scalars['Float'];
-  lng: Scalars['Float'];
+
+export type QueryChat_GetArgs = {
+  chatId: Scalars['String'];
+};
+
+
+export type QueryRide_Get_InformationArgs = {
+  rideId: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  CHAT_SEND_MESSAGE: Message;
   RIDE_REQUEST_BY_PASSENGER: Ride;
   RIDE_UPDATE_STATUS_BY_DRIVER: Scalars['Boolean'];
   USER_ADD_PLACE: Scalars['Boolean'];
@@ -116,6 +69,12 @@ export type Mutation = {
   VERIFICATION_PHONE_COMPLETE?: Maybe<Scalars['String']>;
   VERIFICATION_PHONE_START?: Maybe<Scalars['Boolean']>;
   _?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationChat_Send_MessageArgs = {
+  chatId: Scalars['String'];
+  text: Scalars['String'];
 };
 
 
@@ -208,26 +167,84 @@ export type MutationVerification_Phone_StartArgs = {
   withWhatsApp?: Maybe<Scalars['Boolean']>;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  RIDE_GET_INFORMATION?: Maybe<Ride>;
-  RIDE_GET_NEARBY_DRIVER?: Maybe<Ride>;
-  USER_GET?: Maybe<User>;
-  USER_GET_PLACES: Array<Maybe<Place>>;
-  _?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryRide_Get_InformationArgs = {
-  rideId: Scalars['String'];
-};
-
 export type Subscription = {
   __typename?: 'Subscription';
+  ON_MESSAGE: Message;
   RIDE_PASSENGER_BROADCAST?: Maybe<Ride>;
   RIDE_STATUS_UPDATE_BY_DRIVER?: Maybe<Ride>;
   USER_DRIVERS_GET: User;
   _?: Maybe<Scalars['String']>;
+};
+
+export type Message = {
+  __typename?: 'Message';
+  _id: Scalars['String'];
+  text: Scalars['String'];
+  chat: Chat;
+  user: User;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
+};
+
+export type Place = {
+  __typename?: 'Place';
+  _id: Scalars['String'];
+  name: Scalars['String'];
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  address: Scalars['String'];
+  isFav: Scalars['Boolean'];
+  user: User;
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
+};
+
+export enum RideStatus {
+  Accepted = 'ACCEPTED',
+  Finished = 'FINISHED',
+  Canceled = 'CANCELED',
+  Requesting = 'REQUESTING',
+  OnRoute = 'ON_ROUTE'
+}
+
+export type PickupInfo = {
+  __typename?: 'PickupInfo';
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  address: Scalars['String'];
+};
+
+export type DropOffInfo = {
+  __typename?: 'DropOffInfo';
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+};
+
+export type Ride = {
+  __typename?: 'Ride';
+  _id: Scalars['String'];
+  status: RideStatus;
+  pickupInfo: PickupInfo;
+  dropOffInfo: DropOffInfo;
+  price: Scalars['Float'];
+  duration: Scalars['String'];
+  distance: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
+  driver?: Maybe<User>;
+  passenger: User;
+  chat?: Maybe<Chat>;
+};
+
+export type PickupInput = {
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  address: Scalars['String'];
+};
+
+export type DropOffInput = {
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
 };
 
 export type LastPosition = {
@@ -255,11 +272,12 @@ export type User = {
   lastPosition?: Maybe<LastPosition>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  chats?: Maybe<Array<Chat>>;
   places: Array<Place>;
   messages: Array<Message>;
   ridesAsPassenger: Array<Ride>;
   ridesAsDriver: Array<Ride>;
+  chatsAsPassenger: Array<Chat>;
+  chatsAsDriver: Array<Chat>;
 };
 
 export enum VerificationTarget {
@@ -289,7 +307,9 @@ import { ObjectID } from 'mongodb';
 export type ChatDbObject = {
   _id: ObjectID,
   messages: Array<MessageDbObject['_id']>,
-  participants: Array<UserDbObject['_id']>,
+  passenger?: Maybe<UserDbObject['_id']>,
+  driver?: Maybe<UserDbObject['_id']>,
+  ride: RideDbObject['_id'],
   createdAt: Date,
   updatedAt?: Date,
 };
@@ -327,6 +347,7 @@ export type RideDbObject = {
   updatedAt?: Date,
   driver?: Maybe<UserDbObject['_id']>,
   passenger: UserDbObject['_id'],
+  chat?: Maybe<ChatDbObject['_id']>,
 };
 
 export type UserDbObject = {
@@ -346,11 +367,12 @@ export type UserDbObject = {
   lastPosition?: Maybe<LastPosition>,
   createdAt: Date,
   updatedAt: Date,
-  chats?: Maybe<Array<ChatDbObject['_id']>>,
   places: Array<PlaceDbObject['_id']>,
   messages: Array<MessageDbObject['_id']>,
   ridesAsPassenger: Array<RideDbObject['_id']>,
   ridesAsDriver: Array<RideDbObject['_id']>,
+  chatsAsPassenger: Array<ChatDbObject['_id']>,
+  chatsAsDriver: Array<ChatDbObject['_id']>,
 };
 
 export type VerificationDbObject = {

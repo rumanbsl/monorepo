@@ -1,10 +1,12 @@
 import { RootMutation } from "@/Interfaces";
+import { CreateChatArg, CreateRideArg } from "common";
+
 import {
   MutationRide_Request_By_PassengerArgs,
   MutationRide_Update_Status_By_DriverArgs,
   RideStatus,
 } from "common/Interfaces/gql-definitions";
-import { CreateRideArg } from "common";
+
 import apolloError from "@/utils/apolloError";
 import { isAuthenticatedResolver } from "../Base";
 
@@ -15,9 +17,8 @@ const Mutation: Mutations = {
   RIDE_REQUEST_BY_PASSENGER: loggedIn(async (_, input: MutationRide_Request_By_PassengerArgs, ctx) => {
     const { req: { user }, models: { Ride }, pubSub } = ctx;
     if (user.isRiding) throw apolloError({ type: "ForbiddenError", message: "You cannot request multiple rides" });
-    user.isRiding = true;
+    if (user.isDriving) throw apolloError({ type: "ForbiddenError", message: "You cannot be a passenger if you are driving" });
     const [, ride] = await Promise.all([
-      user.save(),
       Ride.create<CreateRideArg>({
         ...input,
         passenger: user._id,
@@ -29,17 +30,21 @@ const Mutation: Mutations = {
     return RIDE_PASSENGER_BROADCAST;
   }),
   RIDE_UPDATE_STATUS_BY_DRIVER: loggedIn(async (_, input: MutationRide_Update_Status_By_DriverArgs, ctx) => {
-    const { req: { user }, models: { Ride }, pubSub } = ctx;
+    const { req: { user }, models: { Ride, Chat }, pubSub } = ctx;
     if (!user.isDriving) throw apolloError({ type: "ForbiddenError", message: "user is not driver" });
     const ride = await (async () => {
       if (input.status === RideStatus.Accepted) {
-        const returnable = await Ride.findOneAndUpdate(
+        const returnableRide = await Ride.findOneAndUpdate(
           { _id: input.rideId, status: RideStatus.Requesting },
           { status: input.status, driver: user._id },
           { new: true },
         );
-        if (returnable) await user.update({ isTaken: true });
-        return returnable;
+        if (returnableRide) await user.update({ isTaken: true });
+        if (returnableRide?.passenger) {
+          const chat = await Chat.create<CreateChatArg>({ driver: user._id, passenger: returnableRide.passenger, ride: returnableRide._id });
+          await returnableRide.update({ chat: chat._id });
+        }
+        return returnableRide;
       }
       return Ride.findOneAndUpdate({ _id: input.rideId, driver: user._id }, { status: input.status }, { new: true });
     })();

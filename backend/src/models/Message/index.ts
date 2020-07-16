@@ -16,16 +16,21 @@ const MessageSchema = new mongoose.Schema({
   user : { type: mongoose.Types.ObjectId, ref: "User", required: true },
 }, { timestamps: true });
 
-MessageSchema.post("deleteOne", async function (this: { getFilter: () => Partial<IMessageSchema> }) {
-  const args = this.getFilter();
-  if (args.user && args._id) {
-    await Promise.all([
-      User.updateOne({ _id: args.user }, { $pull: { places: args._id } }),
-      Chat.updateOne({ _id: args.chat }, { $pull: { messages: args._id } }),
-    ]);
-  } else {
-    console.warn("Message deleted without proper arguments, make sure to clean up");
-  }
-});
+MessageSchema
+  .post("save", async function (this: IMessageSchema) {
+    await User.updateOne({ _id: this.user }, { $push: { messages: this._id } });
+    await Chat.updateOne({ _id: this.chat }, { $push: { messages: this._id } });
+  })
+  .post("deleteOne", async function (this: { getFilter: () => Partial<IMessageSchema> }) {
+    const args = this.getFilter();
+    if (args.user && args._id) {
+      await Promise.all([
+        User.updateOne({ _id: args.user }, { $pull: { places: args._id } }),
+        Chat.updateOne({ _id: args.chat }, { $pull: { messages: args._id } }),
+      ]);
+    } else {
+      console.warn("Message deleted without proper arguments, make sure to clean up");
+    }
+  });
 MessageSchema.methods = methods;
 export default mongoose.model<MessageSchemaWithMethods>("Message", MessageSchema, "messages");

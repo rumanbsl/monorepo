@@ -1,4 +1,4 @@
-import { UserDbObject, VerificationDbObject, PlaceDbObject, RideDbObject } from "./Interfaces/gql-definitions";
+import { UserDbObject, VerificationDbObject, PlaceDbObject, RideDbObject, ChatDbObject, MessageDbObject } from "./Interfaces/gql-definitions";
 
 export interface CreateUserArg extends Partial<UserDbObject> {
   name: UserDbObject["name"]
@@ -15,3 +15,5 @@ export interface CreatePlaceArg extends Partial<PlaceDbObject> {
 }
 
 export type CreateRideArg = Omit<RideDbObject, "createdAt" | "status">
+export type CreateChatArg = Omit<ChatDbObject, "createdAt" | "messages">
+export type CreateMessageArg = Omit<MessageDbObject, "createdAt">

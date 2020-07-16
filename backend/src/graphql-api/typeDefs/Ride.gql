@@ -29,6 +29,7 @@ type Ride @entity {
   updatedAt: String @column(overrideType: "Date")
   driver: User @link
   passenger: User! @link
+  chat: Chat @link
 }
 
 

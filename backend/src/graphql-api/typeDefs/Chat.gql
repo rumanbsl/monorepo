@@ -1,7 +1,20 @@
 type Chat @entity {
   _id: String! @id
   messages: [Message!]! @link
-  participants: [User!]! @link
+  passenger: User @link
+  driver: User @link
+  ride: Ride! @link
   createdAt: String! @column(overrideType: "Date")
   updatedAt: String @column(overrideType: "Date")
+}
+
+extend type Query {
+  CHAT_GET(chatId: String!): Chat
+}
+extend type Mutation {
+  CHAT_SEND_MESSAGE(chatId: String!, text: String!): Message!
+}
+
+extend type Subscription {
+  ON_MESSAGE: Message!
 }

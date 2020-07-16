@@ -46,16 +46,15 @@ UserSchema
 
 UserSchema.post("deleteOne", async function (this: { getFilter: () => Partial<UserDbObject> }) {
   const args = this.getFilter();
-  const chatIds = args.chats || [];
+  const chatIds = [args.chatsAsDriver, args.chatsAsPassenger].filter(Boolean).flat() as ObjectID[];
+  const rideIds = [args.ridesAsDriver, args.ridesAsPassenger].filter(Boolean).flat() as ObjectID[];
   const placeIds = args.places || [];
-  const ridesAsDriverIds = args.ridesAsDriver || [];
-  const ridesAsPassengerIds = args.ridesAsPassenger || [];
 
   await Promise.all([
     Chat.deleteMany({ _id: { $in: chatIds } }),
     Message.deleteMany({ chat: { $in: chatIds }, user: args._id }),
     Place.deleteMany({ _id: { $in: placeIds }, user: args._id }),
-    Ride.deleteMany({ _id: { $in: ridesAsDriverIds.concat(ridesAsPassengerIds) }, $or: [{ passenger: args._id }, { driver: args._id }] }),
+    Ride.deleteMany({ _id: { $in: rideIds }, $or: [{ passenger: args._id }, { driver: args._id }] }),
   ]);
 });
 
