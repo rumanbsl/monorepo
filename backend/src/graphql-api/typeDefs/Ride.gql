@@ -17,6 +17,18 @@ type DropOffInfo {
   lng: Float!
 }
 
+type RideOutput implements Base {
+  status: RideStatus!
+  pickupInfo: PickupInfo!
+  dropOffInfo: DropOffInfo!
+  price: Float!
+  duration: String!
+  distance: String!
+  driver: ID
+  passenger: ID!
+  chat: ID
+}
+
 type Ride implements Base @entity {
   status: RideStatus! @column
   pickupInfo: PickupInfo! @column
@@ -42,16 +54,16 @@ input DropOffInput {
 }
 
 extend type Mutation {
-  RIDE_REQUEST_BY_PASSENGER(pickupInfo: PickupInput!, dropOffInfo: DropOffInput!, price: Float!, duration: String!, distance: String!): Ride!
+  RIDE_REQUEST_BY_PASSENGER(pickupInfo: PickupInput!, dropOffInfo: DropOffInput!, price: Float!, duration: String!, distance: String!): RideOutput!
   RIDE_UPDATE_STATUS_BY_DRIVER(rideId: String! ,status: RideStatus!): Boolean!
 }
 
 extend type Query {
-  RIDE_GET_NEARBY_DRIVER: Ride
-  RIDE_GET_INFORMATION(rideId: String!): Ride
+  RIDE_GET_NEARBY_DRIVER: RideOutput
+  RIDE_GET_INFORMATION(rideId: String!): RideOutput
 }
 
 extend type Subscription {
-  RIDE_PASSENGER_BROADCAST: Ride
-  RIDE_STATUS_UPDATE_BY_DRIVER: Ride
+  RIDE_PASSENGER_BROADCAST: RideOutput
+  RIDE_STATUS_UPDATE_BY_DRIVER: RideOutput
 }

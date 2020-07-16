@@ -3,3 +3,9 @@ type Message implements Base @entity {
   chat: Chat! @link
   user: User! @link
 }
+
+type MessageOutput implements Base {
+  text: String!
+  chat: ID!
+  user: ID!
+}

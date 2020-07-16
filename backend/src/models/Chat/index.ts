@@ -1,13 +1,13 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { ChatDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectID, ObjectToString } from "@/Interfaces";
+import { ChatDbObject, ChatOutput } from "common/Interfaces/gql-definitions";
+import { ObjectID } from "@/Interfaces";
 import Message from "../Message";
 import User from "../User";
 import methods, { ChatSchemaWithMethods } from "./methods";
 
 export interface IChatSchema extends mongoose.Document, Omit<ChatDbObject, "_id"> {
   _id: ObjectID;
-  toJSON: (options?: DocumentToObjectOptions) => ObjectToString<ChatDbObject>
+  toJSON: (options?: DocumentToObjectOptions) => ChatOutput
 }
 
 const ChatSchema = new mongoose.Schema({

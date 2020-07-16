@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import apolloError from "@/utils/apolloError";
-import { User } from "common/Interfaces/gql-definitions";
 import uniqueArray from "@/utils/uniqueArray";
 import { IuserSchema } from "..";
 
@@ -16,7 +15,7 @@ const methods = {
   },
   async getGraph(this: IuserSchema, ...fields: ("chats"|"messages"|"places"|"ridesAsPassenger"|"ridesAsDriver")[]) {
     const models = fields.length ? uniqueArray(fields).join(" ") : ["chats", "messages", "places", "ridesAsPassenger", "ridesAsDriver"].join(" ");
-    return this.populate(models).execPopulate() as unknown as User;
+    return this.populate(models).execPopulate();
   },
 };
 

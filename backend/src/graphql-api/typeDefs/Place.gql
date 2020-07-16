@@ -6,3 +6,12 @@ type Place implements Base @entity {
   isFav: Boolean! @column
   user: User! @link
 }
+
+type PlaceOutput implements Base {
+  name: String!
+  lat: Float!
+  lng: Float!
+  address: String!
+  isFav: Boolean!
+  user: ID!
+}

@@ -25,7 +25,7 @@ const Mutation: Mutations = {
         passenger: user._id,
       }),
     ]);
-    const RIDE_PASSENGER_BROADCAST = await ride.getGraph();
+    const RIDE_PASSENGER_BROADCAST = await ride.toJSON();
     // eslint-disable-next-line
     pubSub.publish("rideRequest", { RIDE_PASSENGER_BROADCAST });
     return RIDE_PASSENGER_BROADCAST;

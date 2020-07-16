@@ -1,13 +1,12 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { RideDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectToString } from "@/Interfaces";
+import { RideDbObject, RideOutput } from "common/Interfaces/gql-definitions";
 import User from "../User";
 import methods, { RideSchemaWithMethods } from "./methods";
 import Chat from "../Chat";
 
 export interface IRideSchema extends mongoose.Document, Omit<RideDbObject, "_id"> {
   _id: RideDbObject["_id"]
-  toJSON:(options?:DocumentToObjectOptions) => ObjectToString<RideDbObject>
+  toJSON:(options?:DocumentToObjectOptions) => RideOutput
 }
 
 const RideSchema = new mongoose.Schema({

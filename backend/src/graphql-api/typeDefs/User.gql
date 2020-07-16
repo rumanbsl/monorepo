@@ -26,26 +26,48 @@ type User implements Base @entity {
   chatsAsDriver: [Chat!]! @link
 }
 
+type UserOutput implements Base {
+  fbid: String
+  email: String
+  verifiedEmail: Boolean!
+  name: String!
+  age: Int
+  password: String
+  phoneNumber: String
+  verifiedPhoneNumber: Boolean!
+  profilePhoto: String
+  isDriving: Boolean!
+  isRiding: Boolean!
+  isTaken: Boolean!
+  lastPosition: LastPosition
+  places: [ID!]!
+  messages: [ID!]!
+  ridesAsPassenger: [ID!]!
+  ridesAsDriver: [ID!]!
+  chatsAsPassenger: [ID!]!
+  chatsAsDriver: [ID!]!
+}
+
 extend type Mutation {
   USER_FB_CONNECT(name: String!, email: String, fbid: String!): String!
   # output is token
   USER_EMAIL_SIGN_IN(email: String!, password: String!): String!
   # output is token
   USER_EMAIL_SIGN_UP(name: String!,email: String!,password: String!,profilePhoto: String!,age: Int!,phoneNumber: String!): String!
-  USER_UPDATE_PROFILE(name: String,email: String,profilePhoto: String): User!
+  USER_UPDATE_PROFILE(name: String,email: String,profilePhoto: String): UserOutput!
   USER_TOGGLE_DRIVING_MODE: Boolean!
   USER_REPORT_MOVEMENT(lat: Float, lng: Float, orientation: Float): LastPosition!
   USER_ADD_PLACE(name: String!, lat: Float!, lng: Float!, address: String!, isFav: Boolean!): Boolean!
   USER_EDIT_PLACE(placeId: String!, name: String, isFav: Boolean): Boolean!
   USER_REMOVE_PLACE(placeId: String!): Boolean!
-  USER_GET_NEARBY_DRIVERS: [User]!
+  USER_GET_NEARBY_DRIVERS: [UserOutput]!
 }
 
 extend type Query {
-  USER_GET: User
-  USER_GET_PLACES: [Place]!
+  USER_GET: UserOutput
+  USER_GET_PLACES: [PlaceOutput]!
 }
 
 extend type Subscription {
-  USER_DRIVERS_GET: User!
+  USER_DRIVERS_GET: UserOutput!
 }

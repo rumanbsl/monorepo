@@ -1,7 +1,7 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { UserDbObject } from "common/Interfaces/gql-definitions";
+import { UserDbObject, UserOutput } from "common/Interfaces/gql-definitions";
 
-import { ObjectID, ObjectToString } from "@/Interfaces";
+import { ObjectID } from "@/Interfaces";
 import methods, { UserSchemaWithMethods } from "./methods";
 import Chat from "../Chat";
 import Message from "../Message";
@@ -11,7 +11,7 @@ import Ride from "../Ride";
 export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id" | "password"> {
   _id: ObjectID
   _password?: string;
-  toJSON:(options?:DocumentToObjectOptions) => ObjectToString<UserDbObject>
+  toJSON:(options?:DocumentToObjectOptions) => UserOutput
 }
 
 const UserSchema = new mongoose.Schema({

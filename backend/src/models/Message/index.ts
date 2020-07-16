@@ -1,13 +1,13 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { MessageDbObject } from "common/Interfaces/gql-definitions";
-import { ObjectToString, ObjectID } from "@/Interfaces";
+import { MessageDbObject, MessageOutput } from "common/Interfaces/gql-definitions";
+import { ObjectID } from "@/Interfaces";
 import User from "../User";
 import Chat from "../Chat";
 import methods, { MessageSchemaWithMethods } from "./methods";
 
 export interface IMessageSchema extends mongoose.Document, Omit<MessageDbObject, "_id">{
   _id: ObjectID;
-  toJSON:(options?:DocumentToObjectOptions) => ObjectToString<MessageDbObject>
+  toJSON:(options?:DocumentToObjectOptions) => MessageOutput
 }
 
 const MessageSchema = new mongoose.Schema({

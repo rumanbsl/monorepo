@@ -11,6 +11,12 @@ type Verification implements Base @entity {
   key: String! @column
   verified: Boolean! @column
 }
+type VerificationOutput implements Base {
+  target: VerificationTarget!
+  payload: String!
+  key: String!
+  verified: Boolean!
+}
 
 
 extend type Mutation {

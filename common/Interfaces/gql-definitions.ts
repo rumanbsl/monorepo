@@ -19,7 +19,7 @@ export type Scalars = {
 
 
 export type ChatOutput = Base & {
-  messages: Scalars['ID'];
+  messages: Scalars['String'];
   passenger: Scalars['ID'];
   driver: Scalars['ID'];
   ride: Scalars['ID'];
@@ -33,11 +33,11 @@ export type Chat = Base & {
 };
 
 export type Query = {
-  CHAT_GET?: Maybe<Chat>;
-  RIDE_GET_INFORMATION?: Maybe<Ride>;
-  RIDE_GET_NEARBY_DRIVER?: Maybe<Ride>;
-  USER_GET?: Maybe<User>;
-  USER_GET_PLACES: Array<Maybe<Place>>;
+  CHAT_GET?: Maybe<ChatOutput>;
+  RIDE_GET_INFORMATION?: Maybe<RideOutput>;
+  RIDE_GET_NEARBY_DRIVER?: Maybe<RideOutput>;
+  USER_GET?: Maybe<UserOutput>;
+  USER_GET_PLACES: Array<Maybe<PlaceOutput>>;
   _?: Maybe<Scalars['String']>;
 };
 
@@ -52,19 +52,19 @@ export type QueryRide_Get_InformationArgs = {
 };
 
 export type Mutation = {
-  CHAT_SEND_MESSAGE: Message;
-  RIDE_REQUEST_BY_PASSENGER: Ride;
+  CHAT_SEND_MESSAGE: MessageOutput;
+  RIDE_REQUEST_BY_PASSENGER: RideOutput;
   RIDE_UPDATE_STATUS_BY_DRIVER: Scalars['Boolean'];
   USER_ADD_PLACE: Scalars['Boolean'];
   USER_EDIT_PLACE: Scalars['Boolean'];
   USER_EMAIL_SIGN_IN: Scalars['String'];
   USER_EMAIL_SIGN_UP: Scalars['String'];
   USER_FB_CONNECT: Scalars['String'];
-  USER_GET_NEARBY_DRIVERS: Array<Maybe<User>>;
+  USER_GET_NEARBY_DRIVERS: Array<Maybe<UserOutput>>;
   USER_REMOVE_PLACE: Scalars['Boolean'];
   USER_REPORT_MOVEMENT: LastPosition;
   USER_TOGGLE_DRIVING_MODE: Scalars['Boolean'];
-  USER_UPDATE_PROFILE: User;
+  USER_UPDATE_PROFILE: UserOutput;
   VERIFICATION_EMAIL_COMPLETE: Scalars['Boolean'];
   VERIFICATION_EMAIL_START: Scalars['Boolean'];
   VERIFICATION_PHONE_COMPLETE?: Maybe<Scalars['String']>;
@@ -169,10 +169,10 @@ export type MutationVerification_Phone_StartArgs = {
 };
 
 export type Subscription = {
-  ON_MESSAGE: Message;
-  RIDE_PASSENGER_BROADCAST?: Maybe<Ride>;
-  RIDE_STATUS_UPDATE_BY_DRIVER?: Maybe<Ride>;
-  USER_DRIVERS_GET: User;
+  ON_MESSAGE: MessageOutput;
+  RIDE_PASSENGER_BROADCAST?: Maybe<RideOutput>;
+  RIDE_STATUS_UPDATE_BY_DRIVER?: Maybe<RideOutput>;
+  USER_DRIVERS_GET: UserOutput;
   _?: Maybe<Scalars['String']>;
 };
 
@@ -182,6 +182,12 @@ export type Message = Base & {
   user: User;
 };
 
+export type MessageOutput = Base & {
+  text: Scalars['String'];
+  chat: Scalars['ID'];
+  user: Scalars['ID'];
+};
+
 export type Place = Base & {
   name: Scalars['String'];
   lat: Scalars['Float'];
@@ -189,6 +195,15 @@ export type Place = Base & {
   address: Scalars['String'];
   isFav: Scalars['Boolean'];
   user: User;
+};
+
+export type PlaceOutput = Base & {
+  name: Scalars['String'];
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  address: Scalars['String'];
+  isFav: Scalars['Boolean'];
+  user: Scalars['ID'];
 };
 
 export enum RideStatus {
@@ -208,6 +223,18 @@ export type PickupInfo = {
 export type DropOffInfo = {
   lat: Scalars['Float'];
   lng: Scalars['Float'];
+};
+
+export type RideOutput = Base & {
+  status: RideStatus;
+  pickupInfo: PickupInfo;
+  dropOffInfo: DropOffInfo;
+  price: Scalars['Float'];
+  duration: Scalars['String'];
+  distance: Scalars['String'];
+  driver?: Maybe<Scalars['ID']>;
+  passenger: Scalars['ID'];
+  chat?: Maybe<Scalars['ID']>;
 };
 
 export type Ride = Base & {
@@ -261,12 +288,41 @@ export type User = Base & {
   chatsAsDriver: Array<Chat>;
 };
 
+export type UserOutput = Base & {
+  fbid?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  verifiedEmail: Scalars['Boolean'];
+  name: Scalars['String'];
+  age?: Maybe<Scalars['Int']>;
+  password?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
+  verifiedPhoneNumber: Scalars['Boolean'];
+  profilePhoto?: Maybe<Scalars['String']>;
+  isDriving: Scalars['Boolean'];
+  isRiding: Scalars['Boolean'];
+  isTaken: Scalars['Boolean'];
+  lastPosition?: Maybe<LastPosition>;
+  places: Array<Scalars['ID']>;
+  messages: Array<Scalars['ID']>;
+  ridesAsPassenger: Array<Scalars['ID']>;
+  ridesAsDriver: Array<Scalars['ID']>;
+  chatsAsPassenger: Array<Scalars['ID']>;
+  chatsAsDriver: Array<Scalars['ID']>;
+};
+
 export enum VerificationTarget {
   Phone = 'PHONE',
   Email = 'EMAIL'
 }
 
 export type Verification = Base & {
+  target: VerificationTarget;
+  payload: Scalars['String'];
+  key: Scalars['String'];
+  verified: Scalars['Boolean'];
+};
+
+export type VerificationOutput = Base & {
   target: VerificationTarget;
   payload: Scalars['String'];
   key: Scalars['String'];

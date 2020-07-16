@@ -15,7 +15,7 @@ const Query: Queries = {
       $or : [{ passenger: user._id }, { driver: user._id }],
     });
     if (!chat) throw apolloError({ type: "NotFoundInDBError" });
-    return chat.getGraph();
+    return chat.toJSON();
   }),
 };
 

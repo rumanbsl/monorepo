@@ -1,5 +1,5 @@
 type ChatOutput implements Base {
-  messages: ID! @id
+  messages: String! @id
   passenger: ID! @id
   driver: ID! @id
   ride: ID! @id
@@ -14,12 +14,12 @@ type Chat implements Base @entity {
 
 
 extend type Query {
-  CHAT_GET(chatId: String!): Chat
+  CHAT_GET(chatId: String!): ChatOutput
 }
 extend type Mutation {
-  CHAT_SEND_MESSAGE(chatId: String!, text: String!): Message!
+  CHAT_SEND_MESSAGE(chatId: String!, text: String!): MessageOutput!
 }
 
 extend type Subscription {
-  ON_MESSAGE: Message!
+  ON_MESSAGE: MessageOutput!
 }

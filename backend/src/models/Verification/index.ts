@@ -1,11 +1,11 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
 
-import { VerificationDbObject, VerificationTarget } from "common/Interfaces/gql-definitions";
-import { ObjectToString, ObjectID } from "@/Interfaces";
+import { VerificationDbObject, VerificationTarget, VerificationOutput } from "common/Interfaces/gql-definitions";
+import { ObjectID } from "@/Interfaces";
 
 export interface IVerificationSchema extends mongoose.Document, Omit<VerificationDbObject, "_id"> {
   _id: ObjectID;
-  toJSON:(options?:DocumentToObjectOptions) => ObjectToString<VerificationDbObject>
+  toJSON:(options?:DocumentToObjectOptions) => VerificationOutput
 }
 
 const { Phone, Email } = VerificationTarget;
