@@ -19,6 +19,7 @@ const Mutation: Mutations = {
     if (user.isRiding) throw apolloError({ type: "ForbiddenError", message: "You cannot request multiple rides" });
     if (user.isDriving) throw apolloError({ type: "ForbiddenError", message: "You cannot be a passenger if you are driving" });
     const [, ride] = await Promise.all([
+      user.update({ isRiding: true }),
       Ride.create<CreateRideArg>({
         ...input,
         passenger: user._id,

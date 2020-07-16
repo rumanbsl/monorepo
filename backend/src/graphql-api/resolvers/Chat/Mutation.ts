@@ -15,7 +15,7 @@ const Mutation: Mutations = {
     if (!chat) throw apolloError({ type: "NotFoundInDBError" });
     const message = await Message.create<CreateMessageArg>({ chat: chat._id, user: user._id, text: input.text });
     const graph = await message.getGraph();
-
+    console.log(JSON.stringify({ graph }, null, 2));
     // eslint-disable-next-line
     pubSub.publish("newChatMessage", { ON_MESSAGE: graph })
 

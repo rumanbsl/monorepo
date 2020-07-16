@@ -27,16 +27,16 @@ export interface IanyObject {
   [key: string]: unknown;
 }
 
-export type RootMutation = Required<Omit<{ [key in keyof Mutation]: ResolverFn<Mutation[key]> }, "__typename" | "_">>
-export type RootQuery = Required<Omit<{ [key in keyof Query]: ResolverFn<Query[key]> }, "__typename" | "_">>
-export type RootSubscription = Required<Omit<{
+export type RootMutation = Required<{ [key in keyof Mutation]: ResolverFn<Mutation[key]> }>
+export type RootQuery = Required<{ [key in keyof Query]: ResolverFn<Query[key]> }>
+export type RootSubscription = Required<{
   [key in keyof Subscription]: {
     subscribe: ResolverFn<AsyncIterator<key>>
     | (
         (asyncIteratorFn: ResolverFn<AsyncIterator<key>>, filterFn: FilterFn) => ResolverFn<AsyncIterator<key>>
       )
   }
-}, "__typename" | "_">>
+}>
 
 export type ObjectToString<T extends Record<string, unknown>> = {
   [key in keyof T]: T[key] extends ObjectID ? string :

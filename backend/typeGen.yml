@@ -6,6 +6,7 @@ schema:
 config:
   enumsAsString: false
   useIndexSignature: true
+  skipTypename: true
 generates:
   ../common/Interfaces/gql-definitions.ts:
     plugins:

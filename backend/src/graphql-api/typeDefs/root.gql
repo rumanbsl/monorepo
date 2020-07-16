@@ -1,5 +1,11 @@
 scalar Date
 
+interface Base @abstractEntity(discriminatorField: "_?") {
+  _id: ID! @id
+  createdAt: String! @column(overrideType: "Date")
+  updatedAt: String @column(overrideType: "Date")
+}
+
 type Query {
   _: String
 }

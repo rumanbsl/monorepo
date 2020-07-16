@@ -1,12 +1,17 @@
-type Chat @entity {
-  _id: String! @id
+type ChatOutput implements Base {
+  messages: ID! @id
+  passenger: ID! @id
+  driver: ID! @id
+  ride: ID! @id
+}
+
+type Chat implements Base @entity {
   messages: [Message!]! @link
   passenger: User @link
   driver: User @link
   ride: Ride! @link
-  createdAt: String! @column(overrideType: "Date")
-  updatedAt: String @column(overrideType: "Date")
 }
+
 
 extend type Query {
   CHAT_GET(chatId: String!): Chat

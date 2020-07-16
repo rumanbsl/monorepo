@@ -18,19 +18,21 @@ export type Scalars = {
 
 
 
-export type Chat = {
-  __typename?: 'Chat';
-  _id: Scalars['String'];
+export type ChatOutput = Base & {
+  messages: Scalars['ID'];
+  passenger: Scalars['ID'];
+  driver: Scalars['ID'];
+  ride: Scalars['ID'];
+};
+
+export type Chat = Base & {
   messages: Array<Message>;
   passenger?: Maybe<User>;
   driver?: Maybe<User>;
   ride: Ride;
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
-  __typename?: 'Query';
   CHAT_GET?: Maybe<Chat>;
   RIDE_GET_INFORMATION?: Maybe<Ride>;
   RIDE_GET_NEARBY_DRIVER?: Maybe<Ride>;
@@ -50,7 +52,6 @@ export type QueryRide_Get_InformationArgs = {
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
   CHAT_SEND_MESSAGE: Message;
   RIDE_REQUEST_BY_PASSENGER: Ride;
   RIDE_UPDATE_STATUS_BY_DRIVER: Scalars['Boolean'];
@@ -168,7 +169,6 @@ export type MutationVerification_Phone_StartArgs = {
 };
 
 export type Subscription = {
-  __typename?: 'Subscription';
   ON_MESSAGE: Message;
   RIDE_PASSENGER_BROADCAST?: Maybe<Ride>;
   RIDE_STATUS_UPDATE_BY_DRIVER?: Maybe<Ride>;
@@ -176,27 +176,19 @@ export type Subscription = {
   _?: Maybe<Scalars['String']>;
 };
 
-export type Message = {
-  __typename?: 'Message';
-  _id: Scalars['String'];
+export type Message = Base & {
   text: Scalars['String'];
   chat: Chat;
   user: User;
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
 };
 
-export type Place = {
-  __typename?: 'Place';
-  _id: Scalars['String'];
+export type Place = Base & {
   name: Scalars['String'];
   lat: Scalars['Float'];
   lng: Scalars['Float'];
   address: Scalars['String'];
   isFav: Scalars['Boolean'];
   user: User;
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
 };
 
 export enum RideStatus {
@@ -208,29 +200,23 @@ export enum RideStatus {
 }
 
 export type PickupInfo = {
-  __typename?: 'PickupInfo';
   lat: Scalars['Float'];
   lng: Scalars['Float'];
   address: Scalars['String'];
 };
 
 export type DropOffInfo = {
-  __typename?: 'DropOffInfo';
   lat: Scalars['Float'];
   lng: Scalars['Float'];
 };
 
-export type Ride = {
-  __typename?: 'Ride';
-  _id: Scalars['String'];
+export type Ride = Base & {
   status: RideStatus;
   pickupInfo: PickupInfo;
   dropOffInfo: DropOffInfo;
   price: Scalars['Float'];
   duration: Scalars['String'];
   distance: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt?: Maybe<Scalars['String']>;
   driver?: Maybe<User>;
   passenger: User;
   chat?: Maybe<Chat>;
@@ -248,15 +234,12 @@ export type DropOffInput = {
 };
 
 export type LastPosition = {
-  __typename?: 'LastPosition';
   lat?: Maybe<Scalars['Float']>;
   lng?: Maybe<Scalars['Float']>;
   orientation?: Maybe<Scalars['Float']>;
 };
 
-export type User = {
-  __typename?: 'User';
-  _id: Scalars['String'];
+export type User = Base & {
   fbid?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   verifiedEmail: Scalars['Boolean'];
@@ -270,8 +253,6 @@ export type User = {
   isRiding: Scalars['Boolean'];
   isTaken: Scalars['Boolean'];
   lastPosition?: Maybe<LastPosition>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
   places: Array<Place>;
   messages: Array<Message>;
   ridesAsPassenger: Array<Ride>;
@@ -285,17 +266,19 @@ export enum VerificationTarget {
   Email = 'EMAIL'
 }
 
-export type Verification = {
-  __typename?: 'Verification';
-  _id: Scalars['String'];
+export type Verification = Base & {
   target: VerificationTarget;
   payload: Scalars['String'];
   key: Scalars['String'];
   verified: Scalars['Boolean'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
 };
 
+
+export type Base = {
+  _id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt?: Maybe<Scalars['String']>;
+};
 
 export type AdditionalEntityFields = {
   path?: Maybe<Scalars['String']>;
@@ -304,54 +287,41 @@ export type AdditionalEntityFields = {
 
 
 import { ObjectID } from 'mongodb';
-export type ChatDbObject = {
-  _id: ObjectID,
+export type ChatDbObject = BaseDbInterface & {
   messages: Array<MessageDbObject['_id']>,
   passenger?: Maybe<UserDbObject['_id']>,
   driver?: Maybe<UserDbObject['_id']>,
   ride: RideDbObject['_id'],
-  createdAt: Date,
-  updatedAt?: Date,
 };
 
-export type MessageDbObject = {
-  _id: ObjectID,
+export type MessageDbObject = BaseDbInterface & {
   text: string,
   chat: ChatDbObject['_id'],
   user: UserDbObject['_id'],
-  createdAt: Date,
-  updatedAt?: Date,
 };
 
-export type PlaceDbObject = {
-  _id: ObjectID,
+export type PlaceDbObject = BaseDbInterface & {
   name: string,
   lat: number,
   lng: number,
   address: string,
   isFav: boolean,
   user: UserDbObject['_id'],
-  createdAt: Date,
-  updatedAt?: Date,
 };
 
-export type RideDbObject = {
-  _id: ObjectID,
+export type RideDbObject = BaseDbInterface & {
   status: RideStatus,
   pickupInfo: PickupInfo,
   dropOffInfo: DropOffInfo,
   price: number,
   duration: string,
   distance: string,
-  createdAt: Date,
-  updatedAt?: Date,
   driver?: Maybe<UserDbObject['_id']>,
   passenger: UserDbObject['_id'],
   chat?: Maybe<ChatDbObject['_id']>,
 };
 
-export type UserDbObject = {
-  _id: ObjectID,
+export type UserDbObject = BaseDbInterface & {
   fbid?: Maybe<string>,
   email?: Maybe<string>,
   verifiedEmail: boolean,
@@ -365,8 +335,6 @@ export type UserDbObject = {
   isRiding: boolean,
   isTaken: boolean,
   lastPosition?: Maybe<LastPosition>,
-  createdAt: Date,
-  updatedAt: Date,
   places: Array<PlaceDbObject['_id']>,
   messages: Array<MessageDbObject['_id']>,
   ridesAsPassenger: Array<RideDbObject['_id']>,
@@ -375,12 +343,16 @@ export type UserDbObject = {
   chatsAsDriver: Array<ChatDbObject['_id']>,
 };
 
-export type VerificationDbObject = {
-  _id: ObjectID,
+export type VerificationDbObject = BaseDbInterface & {
   target: VerificationTarget,
   payload: string,
   key: string,
   verified: boolean,
+};
+
+export type BaseDbInterface = {
+  _id: ObjectID,
   createdAt: Date,
-  updatedAt: Date,
+  updatedAt?: Date,
+  _?: string,
 };

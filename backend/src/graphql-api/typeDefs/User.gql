@@ -4,8 +4,7 @@ type LastPosition {
   orientation: Float
 }
 
-type User @entity(embedded: true) {
-  _id: String! @id
+type User implements Base @entity {
   fbid: String @column
   email: String @column
   verifiedEmail: Boolean! @column
@@ -19,8 +18,6 @@ type User @entity(embedded: true) {
   isRiding: Boolean! @column
   isTaken: Boolean! @column
   lastPosition: LastPosition @column
-  createdAt: String! @column(overrideType: "Date")
-  updatedAt: String! @column(overrideType: "Date")
   places: [Place!]! @link
   messages: [Message!]! @link
   ridesAsPassenger: [Ride!]! @link

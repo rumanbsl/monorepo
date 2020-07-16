@@ -1,8 +1,5 @@
-type Message @entity(embedded: true) {
-  _id: String! @id
+type Message implements Base @entity {
   text: String! @column
   chat: Chat! @link
   user: User! @link
-  createdAt: String! @column(overrideType: "Date")
-  updatedAt: String @column(overrideType: "Date")
 }

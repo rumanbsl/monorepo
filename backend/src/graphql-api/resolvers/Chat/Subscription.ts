@@ -10,8 +10,7 @@ const Subscription: Subscriptions = {
       (_, __, ctx: Context) => ctx.pubSub.asyncIterator("newChatMessage"),
       ({ ON_MESSAGE }: {ON_MESSAGE: Message}, __, ctx: ContextWithSubscribedUser) => {
         const { user } = ctx.connection.context;
-        const { chat: { driver, passenger, ...rest } } = ON_MESSAGE;
-        console.log({ driver, passenger, ...rest });
+        const { chat: { driver, passenger } } = ON_MESSAGE;
         return user?._id.toString() === driver?.toString() || user?._id.toString() === passenger?.toString();
       },
     ),

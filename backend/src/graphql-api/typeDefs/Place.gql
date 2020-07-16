@@ -1,11 +1,8 @@
-type Place @entity {
-  _id: String! @id
+type Place implements Base @entity {
   name: String! @column
   lat: Float! @column
   lng: Float! @column
   address: String! @column
   isFav: Boolean! @column
   user: User! @link
-  createdAt: String! @column(overrideType: "Date")
-  updatedAt: String @column(overrideType: "Date")
 }

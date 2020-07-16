@@ -17,16 +17,13 @@ type DropOffInfo {
   lng: Float!
 }
 
-type Ride @entity {
-  _id: String! @id
+type Ride implements Base @entity {
   status: RideStatus! @column
   pickupInfo: PickupInfo! @column
   dropOffInfo: DropOffInfo! @column
   price: Float! @column
   duration: String! @column
   distance: String! @column
-  createdAt: String! @column(overrideType: "Date")
-  updatedAt: String @column(overrideType: "Date")
   driver: User @link
   passenger: User! @link
   chat: Chat @link

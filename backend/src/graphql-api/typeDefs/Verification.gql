@@ -5,14 +5,11 @@ enum VerificationTarget {
   EMAIL
 }
 
-type Verification @entity {
-  _id: String! @id
+type Verification implements Base @entity {
   target: VerificationTarget! @column
   payload: String! @column
   key: String! @column
   verified: Boolean! @column
-  createdAt: String! @column(overrideType: "Date")
-  updatedAt: String! @column(overrideType: "Date")
 }
 
 
