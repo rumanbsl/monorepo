@@ -1,26 +1,21 @@
 import React from "react";
-import NextApp from "next/app";
 import BaseStyle from "@/styles/base";
-import Provider from "@/utils/Provider";
-import Layout from "./Layout";
+import { ApolloProvider } from "@apollo/client";
+import { useApollo } from "@/utils/apolloClient";
+import { AppProps } from "next/app";
 import Meta from "./Meta";
-/**
- * @description The Root component
- * @export
- * @class TailwindApp
- * @extends {App}
- */
-export default class App extends NextApp{
-  render() {
-    const { Component, pageProps } = this.props;
-    return (
-      <Provider>
-        <Meta />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-        <BaseStyle />
-      </Provider>
-    );
-  }
+import Layout from "./Layout";
+
+export default function App({ Component, pageProps }: AppProps) {
+  const apolloClient = useApollo(pageProps?.initialApolloState);
+
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Meta />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+      <BaseStyle />
+    </ApolloProvider>
+  );
 }

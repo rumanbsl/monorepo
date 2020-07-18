@@ -12,9 +12,10 @@ import {
 } from "common/Interfaces/gql-definitions";
 import { CreateUserArg, CreatePlaceArg } from "common";
 import apolloError from "@/utils/apolloError";
-import { createJWT } from "@/utils/jwt";
+import { createAccessToken } from "@/utils/authorization";
 import { sendVerificationEMail } from "@/utils/sendEmail";
 import nonNullable from "@/utils/getNonNullable";
+import { UserSchemaWithMethods } from "@/models/User/methods";
 import { isAuthenticatedResolver, baseResolver } from "../Base";
 
 const { createResolver: baseCreateResolver } = baseResolver;
@@ -33,37 +34,36 @@ type Mutations = Pick<RootMutation,
   | "USER_GET_NEARBY_DRIVERS"
 >
 
+function setAuthContext(user: UserSchemaWithMethods) {
+  const token = createAccessToken({ id: user._id });
+  return token;
+}
+
 const Mutation: Mutations = {
-  USER_FB_CONNECT: baseCreateResolver(async (_, input: MutationUser_Fb_ConnectArgs, { models, res }) => {
+  USER_FB_CONNECT: baseCreateResolver(async (_, input: MutationUser_Fb_ConnectArgs, { models }) => {
     const { User } = models;
     const foundUser = await User.findOne({ fbid: input.fbid });
     if (foundUser) {
-      const token = createJWT(foundUser._id);
-      res.cookie("access-token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
-      return null;
+      return setAuthContext(foundUser);
     }
 
     const newUser = await User.create<CreateUserArg>({
       ...input,
       profilePhoto: `https://graph.facebook.com/${input.fbid}/picture?type=square`,
     });
-    const token = createJWT(newUser._id);
-    res.cookie("access-token", token);
-    return null;
+    return setAuthContext(newUser);
   }),
   USER_EMAIL_SIGN_IN: baseCreateResolver(async (_, arg: { email: string; password: string }, ctx) => {
-    const { models: { User }, res } = ctx;
+    const { models: { User } } = ctx;
     const { email, password } = arg;
     const user = await User.findOne({ email });
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: { email } });
     const isMatchPassword = user.authenticate(password);
     if (!isMatchPassword) throw apolloError({ type: "AuthenticationFailedError" });
-    const token = createJWT(user._id);
-    res.cookie("access-token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
-    return null;
+    return setAuthContext(user);
   }),
   USER_EMAIL_SIGN_UP: baseCreateResolver(async (_, input: MutationUser_Email_Sign_UpArgs, ctx) => {
-    const { models: { User, Verification }, sgMail, res } = ctx;
+    const { models: { User, Verification }, sgMail } = ctx;
     const userExists = await User.findOne({ email: input.email });
     if (userExists) throw apolloError({ type: "AlreadyExistsError", data: { email: input.email } });
     const phoneVerification = await Verification.findOne({ payload: input.phoneNumber, verified: true });
@@ -75,9 +75,7 @@ const Mutation: Mutations = {
     });
     await sendVerificationEMail({ sgMail, key: emailVerification.key, to: input.email });
 
-    const token = createJWT(newUser._id);
-    res.cookie("access-token", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
-    return null;
+    return setAuthContext(newUser);
   }),
   USER_UPDATE_PROFILE: loggedIn(async (_, input: MutationUser_Update_ProfileArgs, ctx) => {
     const { models: { User }, req } = ctx;

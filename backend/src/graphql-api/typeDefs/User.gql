@@ -55,9 +55,9 @@ type UserOutput {
 }
 
 extend type Mutation {
-  USER_FB_CONNECT(name: String!, email: String, fbid: String!): Boolean
-  USER_EMAIL_SIGN_IN(email: String!, password: String!): Boolean
-  USER_EMAIL_SIGN_UP(name: String!,email: String!,password: String!,profilePhoto: String!,age: Int!,phoneNumber: String!): Boolean
+  USER_FB_CONNECT(name: String!, email: String, fbid: String!): String!
+  USER_EMAIL_SIGN_IN(email: String!, password: String!): String!
+  USER_EMAIL_SIGN_UP(name: String!,email: String!,password: String!,profilePhoto: String!,age: Int!,phoneNumber: String!): String!
   USER_UPDATE_PROFILE(name: String,email: String,profilePhoto: String): UserOutput!
   USER_TOGGLE_DRIVING_MODE: Boolean!
   USER_REPORT_MOVEMENT(lat: Float, lng: Float, orientation: Float): LastPosition!

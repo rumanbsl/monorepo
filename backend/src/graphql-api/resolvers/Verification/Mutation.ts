@@ -8,7 +8,7 @@ import {
 } from "common/Interfaces/gql-definitions";
 import { sendVerificationSMS } from "@/utils/sendSMS";
 import apolloError from "@/utils/apolloError";
-import { createJWT } from "@/utils/jwt";
+import { createAccessToken } from "@/utils/authorization";
 import { sendVerificationEMail } from "@/utils/sendEmail";
 import { baseResolver, isAuthenticatedResolver } from "../Base";
 
@@ -40,7 +40,7 @@ const Mutation: Mutations = {
 
     user.verifiedPhoneNumber = true;
     await user.save();
-    const token = createJWT(user._id);
+    const token = createAccessToken({ id: user._id });
     return token;
   }),
   VERIFICATION_EMAIL_START: loggedIn(async (_, __, ctx) => {

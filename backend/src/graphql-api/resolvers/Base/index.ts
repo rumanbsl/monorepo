@@ -2,7 +2,7 @@ import { createResolver } from "apollo-resolvers";
 import { isInstance } from "apollo-errors";
 import { Context, ContextWithReqUser } from "@/Interfaces";
 import ApolloError from "@/utils/apolloError";
-import { decodeJWTAndGetUser } from "@/utils/jwt";
+import { decodeJWTAndGetUser, extractAuthHeader } from "@/utils/authorization";
 import { Resolver } from "./Interfaces";
 
 interface ContextWithUser extends Omit<ContextWithReqUser, "req"> {
@@ -12,7 +12,6 @@ interface ContextWithUser extends Omit<ContextWithReqUser, "req"> {
 export const baseResolver = createResolver(
   null,
   (_, __, ___, error) => {
-    console.log(error);
     if (isInstance(error)) return error;
     if (error.name === "TokenExpiredError") {
       return ApolloError({ internalData: error, type: "UnknownError", message: "Token Expired!" });
@@ -24,7 +23,7 @@ export const baseResolver = createResolver(
 export const isAuthenticatedResolver = baseResolver.createResolver(
   async (_, __, ctx) => {
     const { req } = ctx as ContextWithUser;
-    req.user = await decodeJWTAndGetUser(req.cookies);
+    req.user = await decodeJWTAndGetUser({ "access-token": extractAuthHeader(req.headers.authorization) });
   },
 ) as Resolver<any, ContextWithReqUser>;
 
