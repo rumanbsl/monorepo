@@ -11,15 +11,8 @@ ENV ACLOCAL_PATH=/usr/share/aclocal
 ENV LIBRARY_PATH=/lib:/usr/lib
 
 FROM base as dev
-EXPOSE 1111
+EXPOSE 80
 WORKDIR /app/frontend
 COPY --from=base /app/frontend .
 CMD [ "yarn", "dev" ]
-
-# Traefik stuff
-# FROM base as build
-# WORKDIR /app/frontend
-# COPY ./common /app/common
-# COPY --from=base /app/frontend .
-# COPY ./frontend .
 

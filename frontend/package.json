@@ -2,14 +2,14 @@
   "dependencies": {
     "@apollo/client": "^3.0.2",
     "@apollo/link-context": "^2.0.0-beta.3",
+    "@apollo/react-ssr": "3.1.5",
     "next": "^9.4.4",
     "next-connect": "^0.8.1",
     "nprogress": "^0.2.0",
     "polished": "^3.6.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "styled-components": "^5.1.1",
-    "@apollo/react-ssr": "3.1.5"
+    "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.3.19",
@@ -24,6 +24,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/styled-components": "^5.1.1",
     "@zeit/next-css": "^1.0.1",
+    "apollo": "2.30.1",
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
@@ -48,7 +49,9 @@
     "dev": "nodemon",
     "gen:icon": "svg-icon-generate --svgDir ./svgs --destination ./components/Icon.tsx",
     "start": "next start",
-    "storybook": "start-storybook -p 6006 -s ./public --ci"
+    "storybook": "start-storybook -p 6006 -s ./public --ci",
+    "precodegen": "apollo schema:download --endpoint=http://localhost:3000/graphql",
+    "codegen": "apollo client:codegen src/@types/generated.d.ts --queries=src/resolvers/**/*.ts --addTypename --target typescript --outputFlat --localSchemaFile schema.json"
   },
   "version": "1.0.0"
 }

@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { useState } from "react";
-import SearchBar from "./searchbar";
 import UserInfo from "./userInfo";
 
 const Header = styled.div`
@@ -33,11 +31,9 @@ const Logo = styled.h1`
 `;
 
 export default function HeaderComponent() {
-  const [searchValue, useSearchValue] = useState<string>("");
   return (
     <Header>
-      <Logo><a href="/">Wearism</a></Logo>
-      <SearchBar value={searchValue} onChange={useSearchValue} />
+      <Logo><a href="/">N-Uber</a></Logo>
       <UserInfo />
     </Header>
   );

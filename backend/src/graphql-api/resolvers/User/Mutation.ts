@@ -1,4 +1,5 @@
 import { RootMutation } from "@/Interfaces";
+import { Response } from "express";
 import {
   VerificationTarget,
   MutationUser_Fb_ConnectArgs,
@@ -12,7 +13,7 @@ import {
 } from "common/Interfaces/gql-definitions";
 import { CreateUserArg, CreatePlaceArg } from "common";
 import apolloError from "@/utils/apolloError";
-import { createAccessToken } from "@/utils/authorization";
+import { createAccessToken, createRefreshToken, setTokenInCookie } from "@/utils/authorization";
 import { sendVerificationEMail } from "@/utils/sendEmail";
 import nonNullable from "@/utils/getNonNullable";
 import { UserSchemaWithMethods } from "@/models/User/methods";
@@ -34,36 +35,40 @@ type Mutations = Pick<RootMutation,
   | "USER_GET_NEARBY_DRIVERS"
 >
 
-function setAuthContext(user: UserSchemaWithMethods) {
-  const token = createAccessToken({ id: user._id });
-  return token;
+function setAuthContext(res: Response, user: UserSchemaWithMethods) {
+  const accessToken = createAccessToken({ id: user._id });
+  const refreshToken = createRefreshToken({ id: user._id });
+  setTokenInCookie(res, accessToken, "access-token");
+  setTokenInCookie(res, refreshToken, "refresh-token");
+  return null;
 }
 
 const Mutation: Mutations = {
-  USER_FB_CONNECT: baseCreateResolver(async (_, input: MutationUser_Fb_ConnectArgs, { models }) => {
+  USER_FB_CONNECT: baseCreateResolver(async (_, input: MutationUser_Fb_ConnectArgs, { models, res }) => {
     const { User } = models;
     const foundUser = await User.findOne({ fbid: input.fbid });
     if (foundUser) {
-      return setAuthContext(foundUser);
+      return setAuthContext(res, foundUser);
     }
 
     const newUser = await User.create<CreateUserArg>({
       ...input,
       profilePhoto: `https://graph.facebook.com/${input.fbid}/picture?type=square`,
     });
-    return setAuthContext(newUser);
+    return setAuthContext(res, newUser);
   }),
   USER_EMAIL_SIGN_IN: baseCreateResolver(async (_, arg: { email: string; password: string }, ctx) => {
-    const { models: { User } } = ctx;
+    const { models: { User }, res } = ctx;
     const { email, password } = arg;
     const user = await User.findOne({ email });
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: { email } });
     const isMatchPassword = user.authenticate(password);
     if (!isMatchPassword) throw apolloError({ type: "AuthenticationFailedError" });
-    return setAuthContext(user);
+    res.cookie("boooooooo", "----------", { httpOnly: true });
+    return setAuthContext(res, user);
   }),
   USER_EMAIL_SIGN_UP: baseCreateResolver(async (_, input: MutationUser_Email_Sign_UpArgs, ctx) => {
-    const { models: { User, Verification }, sgMail } = ctx;
+    const { models: { User, Verification }, sgMail, res } = ctx;
     const userExists = await User.findOne({ email: input.email });
     if (userExists) throw apolloError({ type: "AlreadyExistsError", data: { email: input.email } });
     const phoneVerification = await Verification.findOne({ payload: input.phoneNumber, verified: true });
@@ -75,7 +80,7 @@ const Mutation: Mutations = {
     });
     await sendVerificationEMail({ sgMail, key: emailVerification.key, to: input.email });
 
-    return setAuthContext(newUser);
+    return setAuthContext(res, newUser);
   }),
   USER_UPDATE_PROFILE: loggedIn(async (_, input: MutationUser_Update_ProfileArgs, ctx) => {
     const { models: { User }, req } = ctx;

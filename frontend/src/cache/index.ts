@@ -8,7 +8,7 @@ export interface LocalStateShape {
 }
 
 cache.writeQuery<LocalStateShape>({
-  data  : { isLoggedIn: typeof window !== "undefined" ? !!localStorage.getItem("token") : false },
+  data  : { isLoggedIn: false },
   query : clientOnlyResolvers.Query.IS_LOGGED_IN,
 });
 

@@ -14,7 +14,7 @@ import useCustomMiddlewares from "./middlewares/custom";
 import useVendorMiddlewares from "./middlewares/vendors";
 import models from "./models";
 import Routes from "./routes";
-import { decodeJWTAndGetUser, extractAuthHeader } from "./utils/authorization";
+import { decodeJWTAndGetUser, extractAuthCookies } from "./utils/authorization";
 
 const {
   NODE_ENV,
@@ -91,10 +91,10 @@ export function initializeApolloServer(): ApolloServer {
     // @ts-ignore
     formatError,
     subscriptions: {
-      async onConnect(meta?: {authorization?:string}) {
+      async onConnect(_: {authorization?:string}, websocket) {
         // if we need cookie based auth
-        // const cookies = cookieParse<AuthCookiesResponse>((websocket as any).upgradeReq.headers.cookie);
-        return { user: await decodeJWTAndGetUser({ "access-token": extractAuthHeader(meta?.authorization) }) };
+        const cookies = extractAuthCookies((websocket as any).upgradeReq.headers.cookie);
+        return { user: await decodeJWTAndGetUser(cookies) };
       },
     },
   });

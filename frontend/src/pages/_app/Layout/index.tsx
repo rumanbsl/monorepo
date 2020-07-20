@@ -11,11 +11,13 @@ const Layout = styled.div`
   max-width: 111rem;
 `;
 
-export default (({ children }) => (
+const LayoutComponent: NextPage = ({ children }) => (
   <ThemeProvider theme={theme}>
     <Layout>
       <Header />
       <Main>{children}</Main>
     </Layout>
   </ThemeProvider>
-)) as NextPage;
+);
+
+export default LayoutComponent;

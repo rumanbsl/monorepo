@@ -16,7 +16,8 @@
     "mongoose": "^5.9.25",
     "passport": "^0.4.1",
     "twilio": "^3.48.0",
-    "uuid": "^8.2.0"
+    "uuid": "^8.2.0",
+    "cors": "2.8.5"
   },
   "devDependencies": {
     "@fimbul/wotan": "^0.21.1",

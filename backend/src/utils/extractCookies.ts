@@ -1,4 +1,4 @@
-export default function cookieParse<T extends Record<string, unknown>>(str: string) {
+export default function extractCookies<T extends Record<string, unknown>>(str: string) {
   const cookiesRaw: string[] = str.split("; ");
   const cookies = cookiesRaw.reduce((acc, c) => {
     const [key, value] = c.split("=");

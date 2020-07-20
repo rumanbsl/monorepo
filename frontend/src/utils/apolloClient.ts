@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ApolloClient, NormalizedCacheObject, createHttpLink } from "@apollo/client";
-import { setContext } from "@apollo/link-context";
 import cache from "@/cache";
+import fetch from "isomorphic-unfetch";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
@@ -9,23 +9,15 @@ function createApolloClient() {
   const link = createHttpLink({
     // https://github.com/zeit/next.js/blob/master/examples/with-custom-reverse-proxy/package.json if needed
     // "https://api.graph.cool/simple/v1/cixmkt2ul01q00122mksg82pn"
-    uri         : "http://localhost:3000/graphql",
+    uri         : "http://localhost/graphql",
     credentials : "same-origin", // include | same-origin
     fetch,
   });
 
-  const authLink = setContext((_, { headers }) => {
-    if (headers) {
-      const token = localStorage.getItem("token");
-      if (token) headers.authorization = `Bearer ${token}`;
-    }
-    return headers;
-  });
   return new ApolloClient({
-    ssrMode : typeof window === "undefined",
+    ssrMode: typeof window === "undefined",
     cache,
-    // @ts-expect-error
-    link    : authLink.concat(link),
+    link,
   });
 }
 
