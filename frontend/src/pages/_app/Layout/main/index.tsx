@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import ProgressBar from "nprogress";
-import Router, { useRouter } from "next/router";
+import Router, { useRouter, NextRouter } from "next/router";
 import Link from "next/link";
 import Routes from "@/utils/Routes";
+import { useQuery } from "@apollo/client";
+import clientOnly from "@/resolvers/clientOnly";
+import { useEffect } from "react";
 
 Router.events.on("routeChangeStart", () => { ProgressBar.start(); });
 Router.events.on("routeChangeComplete", () => { ProgressBar.done(); });
@@ -57,23 +60,45 @@ const Navigation = styled.nav`
   }
 `;
 
-export default function MainComponent({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+const NavigationComponent = ({ router }: {router: NextRouter}) => {
   const className = (route: typeof Routes[number]) => {
     const returnable: string[] = [];
-    if (route === "/") returnable.push("home");
-    if (router.pathname === route) returnable.push("active");
+    if (route.path === "/") returnable.push("home");
+    if (router.pathname === route.path) returnable.push("active");
     return returnable.join(" ");
   };
   return (
+    <Navigation>
+      {Routes.map((route, i) => (
+        <Link href={route.path} key={i}>
+          <a className={className(route)}>{route.path === "/" ? "home" : route.path.substring(1)}</a>
+        </Link>
+      ))}
+    </Navigation>
+  );
+};
+
+export default function MainComponent({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { data } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
+
+  const visitingProtectedWithoutLoggingIn = !!Routes.find((route) => route.path === router.pathname && route.protected);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!data?.isLoggedIn && visitingProtectedWithoutLoggingIn) {
+        void router.push("/login");
+      }
+    }
+  });
+
+  if (!data?.isLoggedIn) {
+    return visitingProtectedWithoutLoggingIn ? null : <Main>{children}</Main>;
+  }
+
+  return (
     <Main>
-      <Navigation>
-        {Routes.map((route, i) => (
-          <Link href={route} key={i}>
-            <a className={className(route)}>{route === "/" ? "home" : route.substring(1)}</a>
-          </Link>
-        ))}
-      </Navigation>
+      <NavigationComponent router={router} />
       {children}
     </Main>
   );

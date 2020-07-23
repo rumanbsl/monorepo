@@ -3,8 +3,8 @@ import BaseStyle from "@/styles/base";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "@/utils/apolloClient";
 import { AppProps } from "next/app";
-import Meta from "./Meta";
 import Layout from "./Layout";
+import Meta from "./Meta";
 
 export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps?.initialApolloState);

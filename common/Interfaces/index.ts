@@ -1,4 +1,6 @@
-import { UserDbObject, VerificationDbObject, PlaceDbObject, RideDbObject, ChatDbObject, MessageDbObject } from "./Interfaces/gql-definitions";
+import { UserDbObject, VerificationDbObject, PlaceDbObject, RideDbObject, ChatDbObject, MessageDbObject } from "./gql-definitions";
+
+export type UnPromisify<T> = T extends Promise<infer U> ? U : T;
 
 export interface CreateUserArg extends Partial<UserDbObject> {
   name: UserDbObject["name"]

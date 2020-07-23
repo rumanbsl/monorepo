@@ -15,6 +15,7 @@ const LayoutComponent: NextPage = ({ children }) => (
   <ThemeProvider theme={theme}>
     <Layout>
       <Header />
+      {/* Logic for rendering components based on login state is available in Main */}
       <Main>{children}</Main>
     </Layout>
   </ThemeProvider>

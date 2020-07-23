@@ -1,3 +1,3 @@
 export default function Sell() {
-  return <div>sell</div>;
+  return <div>you can sell, as you are authorized</div>;
 }

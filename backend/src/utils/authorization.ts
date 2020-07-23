@@ -4,7 +4,7 @@ import { AuthCookiesResponse, ObjectID } from "@/Interfaces";
 import { Response } from "express";
 import apolloError from "./apolloError";
 import OID from "./OID";
-import extractCookies from "./extractCookies";
+import extractCookies from "../../../common/utils/extractCookies";
 
 const { JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } = process.env;
 
@@ -15,10 +15,13 @@ export function createRefreshToken(payload: {id: ObjectID}) {
   return jwt.sign(payload, JWT_REFRESH_TOKEN, { expiresIn: "7d" });
 }
 
-export async function decodeJWTAndGetUser(authorization: AuthCookiesResponse) {
-  if (!authorization["access-token"]) throw apolloError({ type: "AuthenticationRequiredError", data: authorization });
+export async function decodeJWTAndGetUser(authorization: AuthCookiesResponse, opt: { gqlType:boolean } = { gqlType: true }) {
+  if (!authorization["refresh-token"]) {
+    if (opt.gqlType) throw apolloError({ type: "AuthenticationRequiredError", data: authorization });
+    throw new Error("refresh-token invalid or expired");
+  }
 
-  const data = jwt.verify(authorization["access-token"], JWT_ACCESS_TOKEN) as {id?: string};
+  const data = jwt.verify(authorization["refresh-token"], JWT_REFRESH_TOKEN) as {id?: string};
   const _id = OID(data.id);
   const user = await User.findById(_id);
   if (!user) throw apolloError({ type: "NotFoundInDBError" });

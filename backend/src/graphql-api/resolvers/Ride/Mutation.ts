@@ -1,5 +1,5 @@
 import { RootMutation } from "@/Interfaces";
-import { CreateChatArg, CreateRideArg } from "common";
+import { CreateChatArg, CreateRideArg } from "common/Interfaces";
 
 import {
   MutationRide_Request_By_PassengerArgs,

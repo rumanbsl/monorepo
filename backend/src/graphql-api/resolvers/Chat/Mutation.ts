@@ -2,7 +2,7 @@ import { RootMutation } from "@/Interfaces";
 import { MutationChat_Send_MessageArgs } from "common/Interfaces/gql-definitions";
 import OID from "@/utils/OID";
 import apolloError from "@/utils/apolloError";
-import { CreateMessageArg } from "common";
+import { CreateMessageArg } from "common/Interfaces";
 import { isAuthenticatedResolver } from "../Base";
 
 const { createResolver: loggedIn } = isAuthenticatedResolver;

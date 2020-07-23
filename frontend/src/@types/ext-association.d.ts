@@ -11,3 +11,7 @@ declare module "*.gql" {
   const Schema: DocumentNode;
   export = Schema
 }
+
+declare module "cookie" {
+  function parse<T>(cookieStr: unknown): T;
+}

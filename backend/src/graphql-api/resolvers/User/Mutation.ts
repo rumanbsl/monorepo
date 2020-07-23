@@ -11,7 +11,7 @@ import {
   MutationUser_Edit_PlaceArgs,
   MutationUser_Remove_PlaceArgs,
 } from "common/Interfaces/gql-definitions";
-import { CreateUserArg, CreatePlaceArg } from "common";
+import { CreateUserArg, CreatePlaceArg } from "common/Interfaces";
 import apolloError from "@/utils/apolloError";
 import { createAccessToken, createRefreshToken, setTokenInCookie } from "@/utils/authorization";
 import { sendVerificationEMail } from "@/utils/sendEmail";
@@ -64,7 +64,6 @@ const Mutation: Mutations = {
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: { email } });
     const isMatchPassword = user.authenticate(password);
     if (!isMatchPassword) throw apolloError({ type: "AuthenticationFailedError" });
-    res.cookie("boooooooo", "----------", { httpOnly: true });
     return setAuthContext(res, user);
   }),
   USER_EMAIL_SIGN_UP: baseCreateResolver(async (_, input: MutationUser_Email_Sign_UpArgs, ctx) => {

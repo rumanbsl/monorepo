@@ -3,7 +3,8 @@
     "date-fns": "2.15.0",
     "graphql": "^15.3.0",
     "graphql-iso-date": "3.6.1",
-    "isomorphic-unfetch": "^3.0.0"
+    "isomorphic-unfetch": "^3.0.0",
+    "cookie": "0.4.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -60,7 +61,7 @@
     "frontend:dev": "lerna run dev --scope=@ruman-blog/frontend --stream",
     "frontend:merge": "package-merge ./package.json ./frontend/package.json > package.json",
     "lint": "lerna run lint --stream",
-    "start": "docker-compose up --remove-orphans frontend backend",
+    "start": "docker-compose up",
     "test": "lerna run test --stream",
     "version:bump": "lerna version --conventional-commits --yes"
   },

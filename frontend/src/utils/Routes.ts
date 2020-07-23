@@ -1,6 +1,11 @@
 const routes = [
-  "/",
-  "/sell",
+  { path: "/" },
+  { path: "/sell", protected: true },
 ] as const;
 
-export default routes;
+interface RouteShape {
+  path: typeof routes[number]["path"];
+  protected?: boolean;
+}
+
+export default routes as Readonly<RouteShape[]>;

@@ -1,5 +1,5 @@
 import { RootMutation } from "@/Interfaces";
-import { CreateVerificationArg } from "common";
+import { CreateVerificationArg } from "common/Interfaces";
 import {
   VerificationTarget,
   MutationVerification_Phone_StartArgs,

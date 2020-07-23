@@ -21,6 +21,7 @@
   "extends": "../tsconfig",
   "include": [
     "**/*.ts",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "../common/extractCookies.ts"
   ]
 }

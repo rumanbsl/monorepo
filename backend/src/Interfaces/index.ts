@@ -5,7 +5,7 @@ import { context } from "@/app";
 import { Request } from "express";
 import { UserSchemaWithMethods } from "@/models/User/methods";
 import { FilterFn } from "apollo-server-express";
-// type UnPromisify<T> = T extends Promise<infer U> ? U : T;
+
 export type Context = ReturnType<typeof context>
 export interface ObjectID extends bsonID {
   toString: () => string;
