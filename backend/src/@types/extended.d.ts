@@ -6,3 +6,11 @@ declare module "chalk-console" {
   function error(...arg): void
   function info(...arg): void
 }
+
+declare module "rand-token" {
+  /**
+   *
+   * @param strength 16 | 32 | 64 | 128
+   */
+  function uid(strength: number): string
+}

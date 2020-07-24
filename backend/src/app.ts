@@ -94,7 +94,8 @@ export function initializeApolloServer(): ApolloServer {
       async onConnect(_: {authorization?:string}, websocket) {
         // if we need cookie based auth
         const cookies = extractAuthCookies((websocket as any).upgradeReq.headers.cookie);
-        return { user: await decodeJWTAndGetUser(cookies) };
+        const { user } = await decodeJWTAndGetUser(cookies);
+        return { user };
       },
     },
   });

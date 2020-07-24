@@ -1,27 +1,27 @@
-import { useRef, useEffect } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useRef } from "react";
+import { useMutation } from "@apollo/client";
 import serverOnly from "@/resolvers/serverOnly";
 import { useRouter } from "next/router";
 import clientOnly from "@/resolvers/clientOnly";
+import cache from "@/cache";
 
 export interface InputShape {
   email: string;
   password: string;
 }
 
+const inClientSide = () => typeof window !== "undefined";
+
 const LoginForm = () => {
   const router = useRouter();
   const emailRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const passwordRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
-  const { data } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
+  const data = cache.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
 
-  useEffect(() => {
-    if (data?.isLoggedIn) void router.replace("/sell");
-  });
-
-  // TODO: Do the mutation in serverside
   const [loginMutation] = useMutation<{USER_EMAIL_SIGN_IN: string}, InputShape>(serverOnly.Mutation.USER_EMAIL_SIGN_IN);
+
+  if (data?.isLoggedIn) return null;
 
   const login = async () => {
     const variables = {
@@ -31,13 +31,16 @@ const LoginForm = () => {
     if (variables.email && variables.password) {
       await loginMutation({
         variables,
-        update(cache) {
-          cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
+        update(localCache, { data:incoming }) {
+          if (incoming?.USER_EMAIL_SIGN_IN && inClientSide) {
+            localStorage.setItem("X-AUTH", `Bearer ${incoming.USER_EMAIL_SIGN_IN}`);
+            localCache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
+            void router.replace("/sell");
+          }
         },
       });
     }
   };
-  if (data?.isLoggedIn) return null;
   return (
     <div>
       <input
@@ -59,5 +62,10 @@ const LoginForm = () => {
     </div>
   );
 };
+
+/* export const getServerSideProps:GetServerSideProps<{isLoggedIn: boolean}> = async ({ req }) => {
+  const cookies = cookie.parse<{"refresh-token": string}>(req.headers.cookie || "");
+  return { props: { isLoggedIn: "refresh-token" in cookies } };
+}; */
 
 export default LoginForm;

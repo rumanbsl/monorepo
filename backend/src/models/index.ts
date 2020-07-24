@@ -6,10 +6,10 @@ import Ride from "./Ride";
 import Verification from "./Verification";
 
 export default {
-  User,
   Chat,
   Message,
   Place,
   Ride,
+  User,
   Verification,
 } as const;

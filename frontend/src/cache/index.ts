@@ -8,7 +8,7 @@ export interface LocalStateShape {
 }
 
 cache.writeQuery<LocalStateShape>({
-  data  : { isLoggedIn: false },
+  data  : { isLoggedIn: typeof window !== "undefined" && !!localStorage.getItem("X-AUTH") },
   query : clientOnlyResolvers.Query.IS_LOGGED_IN,
 });
 

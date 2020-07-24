@@ -10,6 +10,7 @@ import {
   LastPosition,
   MutationUser_Edit_PlaceArgs,
   MutationUser_Remove_PlaceArgs,
+  MutationUser_Revoke_Refresh_TokenArgs,
 } from "common/Interfaces/gql-definitions";
 import { CreateUserArg, CreatePlaceArg } from "common/Interfaces";
 import apolloError from "@/utils/apolloError";
@@ -17,6 +18,7 @@ import { createAccessToken, createRefreshToken, setTokenInCookie } from "@/utils
 import { sendVerificationEMail } from "@/utils/sendEmail";
 import nonNullable from "@/utils/getNonNullable";
 import { UserSchemaWithMethods } from "@/models/User/methods";
+import OID from "@/utils/OID";
 import { isAuthenticatedResolver, baseResolver } from "../Base";
 
 const { createResolver: baseCreateResolver } = baseResolver;
@@ -33,14 +35,14 @@ type Mutations = Pick<RootMutation,
   | "USER_EDIT_PLACE"
   | "USER_REMOVE_PLACE"
   | "USER_GET_NEARBY_DRIVERS"
+  | "USER_REVOKE_REFRESH_TOKEN"
 >
 
 function setAuthContext(res: Response, user: UserSchemaWithMethods) {
   const accessToken = createAccessToken({ id: user._id });
-  const refreshToken = createRefreshToken({ id: user._id });
-  setTokenInCookie(res, accessToken, "access-token");
-  setTokenInCookie(res, refreshToken, "refresh-token");
-  return null;
+  const refreshToken = createRefreshToken({ id: user._id, tokenVersion: user._tokenVersion || 0 });
+  setTokenInCookie(res, refreshToken.toString(), "refresh-token");
+  return accessToken;
 }
 
 const Mutation: Mutations = {
@@ -134,7 +136,13 @@ const Mutation: Mutations = {
 
     return Promise.all(drivers.map((d) => d.toJSON()));
   }),
-
+  USER_REVOKE_REFRESH_TOKEN: loggedIn(async (_, input: MutationUser_Revoke_Refresh_TokenArgs, { models }) => {
+    const { User } = models;
+    const user = await User.findByIdAndUpdate(OID(input.userId), { $inc: { _tokenVersion: 1 } }, { new: true });
+    if (!user) throw apolloError({ type: "NotFoundInDBError", data: input });
+    console.log(user);
+    return true;
+  }),
 };
 
 export default Mutation;

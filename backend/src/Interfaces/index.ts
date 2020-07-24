@@ -43,4 +43,4 @@ export type ObjectToString<T extends Record<string, unknown>> = {
   T[key] extends Record<string, unknown> ? ObjectToString<T[key]> : T[key]
 }
 
-export type AuthCookiesResponse = {["access-token"]?: string; ["refresh-token"]?: string};
+export type AuthShape = {["access-token"]?: string; ["refresh-token"]?: string};

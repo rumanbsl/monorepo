@@ -1,18 +1,22 @@
 import { useMemo } from "react";
-import { ApolloClient, NormalizedCacheObject, createHttpLink } from "@apollo/client";
+import { ApolloClient, NormalizedCacheObject, createHttpLink, ApolloLink } from "@apollo/client";
 import cache from "@/cache";
 import fetch from "isomorphic-unfetch";
+import { setContext } from "@apollo/link-context";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function createApolloClient() {
-  const link = createHttpLink({
-    // https://github.com/zeit/next.js/blob/master/examples/with-custom-reverse-proxy/package.json if needed
-    // "https://api.graph.cool/simple/v1/cixmkt2ul01q00122mksg82pn"
-    uri         : "http://localhost/graphql",
-    credentials : "same-origin", // include | same-origin
-    fetch,
+  const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem("token");
+    if (token) headers["X-AUTH"] = `Bearer ${token}`;
+    return headers;
   });
+  const link = createHttpLink({
+    uri         : "http://localhost/graphql",
+    credentials : "same-origin",
+    fetch,
+  }).concat(authLink as unknown as ApolloLink);
 
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
@@ -24,14 +28,10 @@ function createApolloClient() {
 export function initializeApollo(initialState?:NormalizedCacheObject) {
   const _apolloClient = apolloClient ?? createApolloClient();
 
-  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
-  // gets hydrated here
   if (initialState) {
     _apolloClient.cache.restore(initialState);
   }
-  // For SSG and SSR always create a new Apollo Client
   if (typeof window === "undefined") return _apolloClient;
-  // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;

@@ -63,12 +63,13 @@ export type Mutation = {
   RIDE_UPDATE_STATUS_BY_DRIVER: Scalars['Boolean'];
   USER_ADD_PLACE: Scalars['Boolean'];
   USER_EDIT_PLACE: Scalars['Boolean'];
-  USER_EMAIL_SIGN_IN?: Maybe<Scalars['Boolean']>;
-  USER_EMAIL_SIGN_UP?: Maybe<Scalars['Boolean']>;
-  USER_FB_CONNECT?: Maybe<Scalars['Boolean']>;
+  USER_EMAIL_SIGN_IN: Scalars['String'];
+  USER_EMAIL_SIGN_UP: Scalars['String'];
+  USER_FB_CONNECT: Scalars['String'];
   USER_GET_NEARBY_DRIVERS: Array<Maybe<UserOutput>>;
   USER_REMOVE_PLACE: Scalars['Boolean'];
   USER_REPORT_MOVEMENT: LastPosition;
+  USER_REVOKE_REFRESH_TOKEN: Scalars['Boolean'];
   USER_TOGGLE_DRIVING_MODE: Scalars['Boolean'];
   USER_UPDATE_PROFILE: UserOutput;
   VERIFICATION_EMAIL_COMPLETE: Scalars['Boolean'];
@@ -148,6 +149,11 @@ export type MutationUser_Report_MovementArgs = {
   lat?: Maybe<Scalars['Float']>;
   lng?: Maybe<Scalars['Float']>;
   orientation?: Maybe<Scalars['Float']>;
+};
+
+
+export type MutationUser_Revoke_Refresh_TokenArgs = {
+  userId: Scalars['String'];
 };
 
 

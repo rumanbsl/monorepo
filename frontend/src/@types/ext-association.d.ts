@@ -13,5 +13,5 @@ declare module "*.gql" {
 }
 
 declare module "cookie" {
-  function parse<T>(cookieStr: unknown): T;
+  function parse<T>(cookieStr: unknown): Partial<T>;
 }

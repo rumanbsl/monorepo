@@ -11,6 +11,7 @@ import Ride from "../Ride";
 export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id" | "password"> {
   _id: ObjectID
   _password?: string;
+  _tokenVersion: number;
   toJSON:(options?:DocumentToObjectOptions) => UserOutput
 }
 
@@ -20,6 +21,7 @@ const UserSchema = new mongoose.Schema({
   phoneNumber         : String,
   _password           : String,
   profilePhoto        : String,
+  _tokenVersion       : { type: Number, default: 0 },
   name                : { type: String, required: true },
   verifiedEmail       : { type: Boolean, default: false },
   verifiedPhoneNumber : { type: Boolean, default: false },

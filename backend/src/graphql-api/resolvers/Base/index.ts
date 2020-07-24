@@ -2,7 +2,7 @@ import { createResolver } from "apollo-resolvers";
 import { isInstance } from "apollo-errors";
 import { Context, ContextWithReqUser } from "@/Interfaces";
 import ApolloError from "@/utils/apolloError";
-import { decodeJWTAndGetUser, extractAuthCookies } from "@/utils/authorization";
+import { decodeJWTAndGetUser, extractAuthHeader } from "@/utils/authorization";
 import { Resolver } from "./Interfaces";
 
 interface ContextWithUser extends Omit<ContextWithReqUser, "req"> {
@@ -23,8 +23,9 @@ export const baseResolver = createResolver(
 export const isAuthenticatedResolver = baseResolver.createResolver(
   async (_, __, ctx) => {
     const { req } = ctx as ContextWithUser;
-    const cookies = extractAuthCookies(req.cookies);
-    req.user = await decodeJWTAndGetUser(cookies);
+    const token = extractAuthHeader(req.headers["x-auth"]);
+    console.log({ token });
+    req.user = (await decodeJWTAndGetUser({ "access-token": token })).user;
   },
 ) as Resolver<any, ContextWithReqUser>;
 
