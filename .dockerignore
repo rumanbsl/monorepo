@@ -4,13 +4,15 @@
 # Allow files and directories
 !/backend/**
 !/frontend/**
-!/rust-backend/**
 !/yarn.lock
 !babel.config.js
 !.eslintrc.js
 !tsconfig.json
 !package.json
 
-/backend/node_modules/**
-/frontend/node_modules/**
 **/node_modules
+/frontend/node_modules/**
+/frontend/.next/**
+/frontend/dist/**
+/backend/node_modules/**
+/backend/dist/**
