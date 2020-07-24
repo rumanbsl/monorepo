@@ -14,7 +14,7 @@ import {
 } from "common/Interfaces/gql-definitions";
 import { CreateUserArg, CreatePlaceArg } from "common/Interfaces";
 import apolloError from "@/utils/apolloError";
-import { createAccessToken, createRefreshToken, setTokenInCookie } from "@/utils/authorization";
+import { createAccessToken, createRefreshToken, setRefreshTokenInCookie } from "@/utils/authorization";
 import { sendVerificationEMail } from "@/utils/sendEmail";
 import nonNullable from "@/utils/getNonNullable";
 import { UserSchemaWithMethods } from "@/models/User/methods";
@@ -36,12 +36,13 @@ type Mutations = Pick<RootMutation,
   | "USER_REMOVE_PLACE"
   | "USER_GET_NEARBY_DRIVERS"
   | "USER_REVOKE_REFRESH_TOKEN"
+  | "USER_LOGOUT"
 >
 
 function setAuthContext(res: Response, user: UserSchemaWithMethods) {
   const accessToken = createAccessToken({ id: user._id });
   const refreshToken = createRefreshToken({ id: user._id, tokenVersion: user._tokenVersion || 0 });
-  setTokenInCookie(res, refreshToken.toString(), "refresh-token");
+  setRefreshTokenInCookie(res, refreshToken.toString());
   return accessToken;
 }
 
@@ -141,6 +142,11 @@ const Mutation: Mutations = {
     const user = await User.findByIdAndUpdate(OID(input.userId), { $inc: { _tokenVersion: 1 } }, { new: true });
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: input });
     console.log(user);
+    return true;
+  }),
+  USER_LOGOUT: loggedIn(async (_, __, { res }) => {
+    console.log("being called");
+    setRefreshTokenInCookie(res, "");
     return true;
   }),
 };

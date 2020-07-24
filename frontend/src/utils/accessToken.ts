@@ -1,5 +1,7 @@
+const isClient = typeof window !== "undefined";
+
 export const setAccessToken = (s: string) => {
-  localStorage.setItem("x-auth", s);
+  if (isClient) localStorage.setItem("x-auth", s);
 };
 
-export const getAccessToken = () => localStorage.getItem("x-auth") || "";
+export const getAccessToken = () => (isClient ? (localStorage.getItem("x-auth") || "") : "");

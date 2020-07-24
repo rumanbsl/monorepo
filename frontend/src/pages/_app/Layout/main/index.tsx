@@ -80,17 +80,20 @@ const NavigationComponent = ({ router }: {router: NextRouter}) => {
 
 export default function MainComponent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { data } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
+  const { data, error, loading } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
 
-  const visitingProtectedWithoutLoggingIn = !!Routes.find((route) => route.path === router.pathname && route.protected);
+  const visitingProtectedWithoutLoggingIn = Routes.some((route) => route.path === router.pathname && route.protected);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!data?.isLoggedIn && visitingProtectedWithoutLoggingIn) {
-        void router.push("/login");
+        router.push("/login").then(console.log).catch(console.log);
       }
     }
   });
+
+  if (loading) return <div>loading...</div>;
+  if (error) return <div>Oh no!</div>;
 
   if (!data?.isLoggedIn) {
     return visitingProtectedWithoutLoggingIn ? null : <Main>{children}</Main>;

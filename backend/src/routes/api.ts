@@ -1,7 +1,7 @@
 /* 🚥🚥 /api 🚥🚥 */
 import express from "express";
 import { AuthShape } from "@/Interfaces";
-import { createAccessToken, decodeJWTAndGetUser, setTokenInCookie, createRefreshToken } from "@/utils/authorization";
+import { createAccessToken, decodeJWTAndGetUser, setRefreshTokenInCookie, createRefreshToken } from "@/utils/authorization";
 
 const apiRouter = express.Router();
 
@@ -24,7 +24,7 @@ apiRouter.route("/refresh-token")
       }
 
       const refreshToken = createRefreshToken({ id: user._id, tokenVersion: user._tokenVersion || 0 });
-      setTokenInCookie(res, refreshToken, "refresh-token");
+      setRefreshTokenInCookie(res, refreshToken);
       const accessToken = createAccessToken({ id: user._id });
 
       return res.json({ ok: true, accessToken });

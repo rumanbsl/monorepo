@@ -9,7 +9,7 @@ import extractCookies from "../../../common/utils/extractCookies";
 const { JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } = process.env;
 
 export function createAccessToken(payload: {id: ObjectID}) {
-  return jwt.sign(payload, JWT_ACCESS_TOKEN, { expiresIn: "15s" });
+  return jwt.sign(payload, JWT_ACCESS_TOKEN, { expiresIn: "15m" });
 }
 export function createRefreshToken(payload: {id: ObjectID; tokenVersion: number}) {
   return jwt.sign(payload, JWT_REFRESH_TOKEN, { expiresIn: "7d" });
@@ -35,13 +35,12 @@ export async function decodeJWTAndGetUser(authorization: AuthShape, opt: { gqlTy
   return { user, token: data };
 }
 
-export function setTokenInCookie(res: Response, token: string, cookieName: "refresh-token" | "access-token" | "all") {
-  if (cookieName === "all") {
-    res.cookie("refresh-token", token, { httpOnly: true, maxAge: 15 * 60 * 1000 }); // 15 minutes
-    res.cookie("access-token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 }); // a week
-  } else {
-    res.cookie(cookieName, token, { httpOnly: true });
-  }
+export function setRefreshTokenInCookie(res: Response, token: string) {
+  res.cookie("refresh-token", token, {
+    sameSite : "strict",
+    httpOnly : true,
+    ...(token.length === 0 ? {} : { maxAge: 7 * 24 * 60 * 60 * 1000 }),
+  });
 }
 
 export function extractAuthHeader(token: unknown) {

@@ -67,6 +67,7 @@ export type Mutation = {
   USER_EMAIL_SIGN_UP: Scalars['String'];
   USER_FB_CONNECT: Scalars['String'];
   USER_GET_NEARBY_DRIVERS: Array<Maybe<UserOutput>>;
+  USER_LOGOUT: Scalars['Boolean'];
   USER_REMOVE_PLACE: Scalars['Boolean'];
   USER_REPORT_MOVEMENT: LastPosition;
   USER_REVOKE_REFRESH_TOKEN: Scalars['Boolean'];

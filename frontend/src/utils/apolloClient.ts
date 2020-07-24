@@ -66,12 +66,8 @@ const link = ApolloLink.from([
       setAccessToken(accessToken);
     },
     handleError: (err) => {
-      // full control over handling token fetch Error
       console.warn("Your refresh token is invalid. Try to relogin");
       console.error(err);
-
-      // your custom action here
-      // user.logout();
     },
 
   }),

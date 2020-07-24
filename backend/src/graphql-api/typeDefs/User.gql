@@ -66,6 +66,7 @@ extend type Mutation {
   USER_REMOVE_PLACE(placeId: String!): Boolean!
   USER_GET_NEARBY_DRIVERS: [UserOutput]!
   USER_REVOKE_REFRESH_TOKEN(userId: String!): Boolean!
+  USER_LOGOUT: Boolean!
 }
 
 extend type Query {
