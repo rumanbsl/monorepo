@@ -6,7 +6,7 @@ import { createAccessToken, decodeJWTAndGetUser, setTokenInCookie, createRefresh
 const apiRouter = express.Router();
 
 apiRouter.route("/refresh-token")
-  .get(async (req, res) => {
+  .post(async (req, res) => {
     try {
       const cookies = req.cookies as AuthShape;
       if (!cookies["refresh-token"]) {

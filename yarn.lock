@@ -62,7 +62,7 @@
     tslib "^1.10.0"
     zen-observable "^0.8.14"
 
-"@apollo/client@^3.0.2":
+"@apollo/client@^3.0.0-beta.48", "@apollo/client@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.2.tgz#fadb2b39a0e32950baaef2566442cb3f6de74a52"
   integrity sha512-4ighan5Anlj4tK/tdUHs4Mi1njqXZ7AxRCVolz/H702DjPphAJfm+FRkIadPTmwz+OLO+d+tX+6V1VBshf02rg==
@@ -6161,6 +6161,13 @@ apollo-link-http@^1.5.5:
     apollo-link "^1.2.14"
     apollo-link-http-common "^0.2.16"
     tslib "^1.9.3"
+
+apollo-link-token-refresh@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/apollo-link-token-refresh/-/apollo-link-token-refresh-0.3.1.tgz#85be840abe98e53451b7ddc3960a44557b2bd7fb"
+  integrity sha512-OpZfHtuVAydlwHimdPRZCMb7XmWRkqliG3IMtGQhrPoqYR3x20aXb5Q9bpsHgQ3nI51o/1QLA3/kM3rss/O8Zw==
+  dependencies:
+    "@apollo/client" "^3.0.0-beta.48"
 
 apollo-link@^1.2.14, apollo-link@^1.2.3:
   version "1.2.14"
@@ -14120,6 +14127,11 @@ jws@^3.2.2:
   dependencies:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
+
+jwt-decode@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
+  integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
 
 kareem@2.3.1:
   version "2.3.1"

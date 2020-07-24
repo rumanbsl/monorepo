@@ -4,6 +4,7 @@ import serverOnly from "@/resolvers/serverOnly";
 import { useRouter } from "next/router";
 import clientOnly from "@/resolvers/clientOnly";
 import cache from "@/cache";
+import { setAccessToken } from "@/utils/accessToken";
 
 export interface InputShape {
   email: string;
@@ -33,7 +34,7 @@ const LoginForm = () => {
         variables,
         update(localCache, { data:incoming }) {
           if (incoming?.USER_EMAIL_SIGN_IN && inClientSide) {
-            localStorage.setItem("X-AUTH", `Bearer ${incoming.USER_EMAIL_SIGN_IN}`);
+            setAccessToken(incoming.USER_EMAIL_SIGN_IN);
             localCache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
             void router.replace("/sell");
           }

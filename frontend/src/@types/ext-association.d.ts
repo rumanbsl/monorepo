@@ -15,3 +15,8 @@ declare module "*.gql" {
 declare module "cookie" {
   function parse<T>(cookieStr: unknown): Partial<T>;
 }
+
+declare module "jwt-decode"{
+  function jwtDecode(jwt: string): {exp?: number};
+  export = jwtDecode;
+ }

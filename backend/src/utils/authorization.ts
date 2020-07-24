@@ -9,7 +9,7 @@ import extractCookies from "../../../common/utils/extractCookies";
 const { JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } = process.env;
 
 export function createAccessToken(payload: {id: ObjectID}) {
-  return jwt.sign(payload, JWT_ACCESS_TOKEN, { expiresIn: "15m" });
+  return jwt.sign(payload, JWT_ACCESS_TOKEN, { expiresIn: "15s" });
 }
 export function createRefreshToken(payload: {id: ObjectID; tokenVersion: number}) {
   return jwt.sign(payload, JWT_REFRESH_TOKEN, { expiresIn: "7d" });

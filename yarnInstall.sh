@@ -1,11 +1,23 @@
-#!/bin/bash
-CONTAINER=$1;
-# PACKAGES=$( IFS=$'\n\n'; echo "${PACKAGES_ARR[*]}" );
+#!/bin/sh
 
-if [ -n "$$CONTAINER" ]; then
-    echo $(
-        docker-compose stop $CONTAINER && yarn &&/
-        docker-compose run $CONTAINER sh -c "cd .. && yarn" &&/
-        docker-compose start $CONTAINER
-    )
+CONTAINER=$1;
+
+VALID_CONTAINER=$(
+  [ "$1" ] &&
+  ([ $CONTAINER == "frontend" ] || [ $CONTAINER == "backend" ]) &&
+    echo true || echo false
+  );
+if [ $VALID_CONTAINER == true ];
+then
+  DIR=$(([[ $CONTAINER == *"frontend"* ]]) && echo "frontend" || echo "$CONTAINER");
+
+  rm -rf $CONTAINER-build.log &&\
+  docker-compose stop $CONTAINER &&\
+  cd $DIR && yarn && cd .. &&\
+  docker-compose run $CONTAINER sh -c "yarn" &&\
+  docker-compose start $CONTAINER &&\
+  echo "process complete" 🎊 &&\
+  $(nohup docker-compose build $CONTAINER > $CONTAINER-build.log &);
+else
+  echo "The command is like this: \n./yarnGet.sh <CONTAINER_NAME> <SOME_NODE_PACKAGE_NAME(s)>";
 fi
