@@ -57,10 +57,8 @@ const link = ApolloLink.from([
       const token = getAccessToken();
 
       if (!token) { return true; }
-      console.log({ token });
       const decoded = jwtDecode(token);
       if (typeof decoded?.exp !== "number") return false;
-      console.log(Date.now(), decoded.exp * 1000, new Date(decoded.exp * 1000));
       return Date.now() < decoded.exp * 1000;
     },
     fetchAccessToken : () => fetch("/api/v1/refresh-token", { method: "POST" }),

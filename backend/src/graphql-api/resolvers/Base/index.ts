@@ -24,7 +24,6 @@ export const isAuthenticatedResolver = baseResolver.createResolver(
   async (_, __, ctx) => {
     const { req } = ctx as ContextWithUser;
     const token = extractAuthHeader(req.headers["x-auth"]);
-    console.log({ token });
     req.user = (await decodeJWTAndGetUser({ "access-token": token })).user;
   },
 ) as Resolver<any, ContextWithReqUser>;

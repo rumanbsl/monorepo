@@ -21,7 +21,6 @@ export async function decodeJWTAndGetUser(authorization: AuthShape, opt: { gqlTy
     if (opt.gqlType) throw apolloError({ type: "AuthenticationRequiredError", data: authorization });
     throw new Error("access-token invalid or expired");
   }
-  console.log(token);
   const data = jwt.verify(
     token,
     authorization["access-token"] ? JWT_ACCESS_TOKEN : JWT_REFRESH_TOKEN,
