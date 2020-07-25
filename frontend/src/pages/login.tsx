@@ -11,8 +11,6 @@ export interface InputShape {
   password: string;
 }
 
-const inClientSide = () => typeof window !== "undefined";
-
 const LoginForm = () => {
   const router = useRouter();
   const emailRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -22,8 +20,9 @@ const LoginForm = () => {
 
   const [loginMutation] = useMutation<{USER_EMAIL_SIGN_IN: string}, InputShape>(serverOnly.Mutation.USER_EMAIL_SIGN_IN);
 
-  if (data?.isLoggedIn) return null;
-
+  if (data?.isLoggedIn) {
+    return null;
+  }
   const login = async () => {
     const variables = {
       email    : emailRef.current?.value,
@@ -32,10 +31,10 @@ const LoginForm = () => {
     if (variables.email && variables.password) {
       await loginMutation({
         variables,
-        update(localCache, { data:incoming }) {
-          if (incoming?.USER_EMAIL_SIGN_IN && inClientSide) {
-            setAccessToken(incoming.USER_EMAIL_SIGN_IN);
-            localCache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
+        update(_, { data:mutationData }) {
+          if (mutationData?.USER_EMAIL_SIGN_IN) {
+            setAccessToken(mutationData.USER_EMAIL_SIGN_IN);
+            cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
             void router.replace("/sell");
           }
         },

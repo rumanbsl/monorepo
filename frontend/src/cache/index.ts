@@ -8,9 +8,17 @@ export interface LocalStateShape {
   isLoggedIn: boolean;
 }
 
-cache.writeQuery<LocalStateShape>({
-  data  : { isLoggedIn: typeof window !== "undefined" && !!getAccessToken() },
-  query : clientOnlyResolvers.Query.IS_LOGGED_IN,
-});
+export function initializeCacheWithDefaultValue({ loggedOut } = { loggedOut: false }) {
+  cache.reset().then(() => {
+    cache.writeQuery<LocalStateShape>({
+      data  : { isLoggedIn: typeof window !== "undefined" && !loggedOut && !!getAccessToken() },
+      query : clientOnlyResolvers.Query.IS_LOGGED_IN,
+    });
+  }).catch((err) => {
+    console.error(err);
+  });
+}
+
+initializeCacheWithDefaultValue();
 
 export default cache;
