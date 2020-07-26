@@ -4,6 +4,7 @@
 import React, {Component, DOMAttributes, SVGAttributes, HTMLAttributes} from 'react';
 
 const iconNames = [
+  'arrow',
   'heart',
   'search',
 ] as const;
@@ -24,6 +25,9 @@ interface PropTypes {
 
 const getIcon = (props: PropTypes) => {
   const {height, color, onClick, name, size, style, width, className, ...rest} = props;
+  if(name === 'arrow') {
+    return (<svg {...rest} height={typeof height === "number" ? height : (24 || size || 0)} width={typeof width === "number" ? width : (24 || size || 0)} onClick={onClick} style={style} className={className} fill={color} viewBox="0 0 24 24"><path d="M0 16.67l2.829 2.83 9.175-9.339 9.167 9.339L24 16.67 12.004 4.5z"/></svg>);
+  }
   if(name === 'heart') {
     return (<svg {...rest} height={typeof height === "number" ? height : (23 || size || 0)} width={typeof width === "number" ? width : (22 || size || 0)} onClick={onClick} style={style} className={className} fill={color} viewBox="0 0 22 23"><path d="M16.551 2.809c.548.24 1.059.598 1.497 1.062a5.124 5.124 0 0 1 1.04 1.653c.199.509.32 1.05.36 1.604l-5.884 9.002-2.504 3.3L2.553 7.11c.04-.547.162-1.083.36-1.586a5.122 5.122 0 0 1 1.04-1.653 4.61 4.61 0 0 1 1.496-1.062 4.238 4.238 0 0 1 1.705-.36c.579 0 1.158.12 1.705.36a4.54 4.54 0 0 1 1.111.697l1.03.873 1.03-.873c.342-.29.717-.524 1.111-.697a4.239 4.239 0 0 1 1.705-.36c.58 0 1.158.12 1.705.36zm0 0l.642-1.296m-7.684-.017c.537.236 1.039.55 1.491.934a6.088 6.088 0 0 1 1.491-.934A5.857 5.857 0 0 1 14.846 1c.808 0 1.608.169 2.355.496a6.144 6.144 0 0 1 1.997 1.413 6.557 6.557 0 0 1 1.334 2.114c.309.79.468 1.638.468 2.494l-6.154 9.414L11 22 1 7.517c0-.856.16-1.703.468-2.494.31-.79.763-1.509 1.334-2.114A6.143 6.143 0 0 1 4.8 1.496 5.857 5.857 0 0 1 7.154 1c.808 0 1.608.169 2.355.496z" stroke="#050505"/></svg>);
   }

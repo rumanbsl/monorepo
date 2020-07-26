@@ -63,9 +63,4 @@ const LoginForm = () => {
   );
 };
 
-/* export const getServerSideProps:GetServerSideProps<{isLoggedIn: boolean}> = async ({ req }) => {
-  const cookies = cookie.parse<{"refresh-token": string}>(req.headers.cookie || "");
-  return { props: { isLoggedIn: "refresh-token" in cookies } };
-}; */
-
 export default LoginForm;

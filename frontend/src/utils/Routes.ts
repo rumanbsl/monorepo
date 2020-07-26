@@ -1,7 +1,7 @@
 const routes = [
   { path: "/", protected: true, navItem: true },
   { path: "/sell", protected: true, navItem: true },
-  { path: "/login" },
+  { path: "/auth" },
 ] as const;
 
 interface RouteShape {

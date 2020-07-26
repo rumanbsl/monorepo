@@ -13,8 +13,8 @@ then
 
   rm -rf $CONTAINER-build.log &&\
   docker-compose stop $CONTAINER &&\
-  cd $DIR && yarn && cd .. &&\
-  docker-compose run $CONTAINER sh -c "yarn" &&\
+  cd $DIR && yarn --ignore-engines && cd .. &&\
+  docker-compose run $CONTAINER sh -c "yarn --ignore-engines" &&\
   docker-compose start $CONTAINER &&\
   echo "process complete" 🎊 &&\
   $(nohup docker-compose build $CONTAINER > $CONTAINER-build.log &);

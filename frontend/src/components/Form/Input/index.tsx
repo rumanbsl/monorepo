@@ -2,11 +2,13 @@ import styled from "styled-components";
 import Icon, { IconName } from "@/components/Icon";
 import { InputHTMLAttributes } from "react";
 
-const Input = styled.div`
+const Input = styled.div<{labelInline: boolean}>`
   flex: 1;
 
   > div {
-    display: inline-block;
+    align-items: ${({ labelInline }) => (labelInline ? "center" : "start")};
+    display: inline-flex;
+    flex-direction: ${({ labelInline }) => (labelInline ? "row" : "column")};
     position: relative;
 
     .icon {
@@ -17,6 +19,10 @@ const Input = styled.div`
       @media screen and (max-width: 300px) {
         display: none;
       }
+    }
+
+    label {
+      margin: ${({ labelInline }) => (labelInline ? "0 1rem 0 0" : "0 0 1rem 0")};
     }
 
     input {
@@ -41,15 +47,15 @@ const Input = styled.div`
         color: #909090;
       }
 
-      &:focus {
+      /* &:focus {
         border: 1px solid #909090;
         width: calc(100% + 1px);
-      }
+      } */
     }
   }
 `;
 
-interface PropTypes<T=string> {
+interface PropTypes<T> {
   icon: IconName;
   onChange: InputHTMLAttributes<HTMLInputElement>["onChange"];
   placeholder: string;
@@ -74,11 +80,13 @@ interface PropTypes<T=string> {
   "time" |
   "url" |
   "week";
-  value: T extends ("email" | "text") ? string : number;
+  value: T extends ("number") ? number : string;
   width: number|string;
+  label: string;
+  labelInline: boolean
 }
 
-export default (prop: Partial<PropTypes>) => {
+export default function InputComponent<T>(prop: Partial<PropTypes<T>>) {
   const width = (() => {
     if (typeof prop.width === "number") {
       return `${prop.width}px`;
@@ -87,18 +95,21 @@ export default (prop: Partial<PropTypes>) => {
     }
     return "40rem";
   })();
+
   return (
-    <Input>
+    <Input labelInline={!!prop.labelInline}>
       <div>
+        { prop.label ? <label htmlFor="input-component">{prop.label}</label> : null}
         <input
           style={{ width }}
           type={prop.type || "text"}
           placeholder={prop.placeholder || ""}
-          value={prop.value || ""}
+          value={typeof prop.value === "number" ? prop.value : prop.value || ""}
           onChange={prop.onChange}
+          id="input-component"
         />
         { prop.icon && <Icon name={prop.icon} className="icon" /> }
       </div>
     </Input>
   );
-};
+}

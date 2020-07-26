@@ -94,13 +94,15 @@ const setup = {
     },
   },
   methods: {
-    onLogout(_, { data }) {
-      if (data?.USER_LOGOUT) {
-        setAccessToken("");
-        initializeCacheWithDefaultValue({ loggedOut: true });
-      }
-    },
-  } as {onLogout: MutationUpdaterFn<{USER_LOGOUT: boolean}>},
+    ...{
+      onLogout(_, { data }) {
+        if (data?.USER_LOGOUT) {
+          setAccessToken("");
+          initializeCacheWithDefaultValue({ loggedOut: true });
+        }
+      },
+    } as {onLogout: MutationUpdaterFn<{USER_LOGOUT: boolean}>},
+  },
 };
 
 export default function MainComponent({ children }: { children: React.ReactNode }) {
@@ -109,12 +111,12 @@ export default function MainComponent({ children }: { children: React.ReactNode 
   const { data, error, loading } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
 
   const visitingProtectedWithoutLoggingIn = Routes.some((route) => route.path === router.pathname && route.protected);
-  const authRoutes = ["login", "signup"];
+  const authRoutes = ["auth", "signup"];
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!data?.isLoggedIn && visitingProtectedWithoutLoggingIn) {
-        router.push("/login").then(console.log).catch(console.error);
+        router.push("/auth").then(console.log).catch(console.error);
       } else if (data?.isLoggedIn && authRoutes.includes(router.pathname)) {
         router.push("/").then(console.log).catch(console.error);
       }

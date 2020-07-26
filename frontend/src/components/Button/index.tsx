@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { MouseEventHandler } from "react";
 
 const Button = styled.button`
   align-items: center;
@@ -28,15 +27,14 @@ const Button = styled.button`
   }
 `;
 
-interface Props<ClickArg = any> {
-  children: React.ReactNode;
-  onClick: MouseEventHandler<ClickArg>;
+interface Props extends React.ButtonHTMLAttributes<unknown> {
   variant?: "Primary" | "Secondary" | "Tertiary" | "Danger";
 }
 
-export default function ButtonComponent({ children, onClick, variant = "Primary" }: Props) {
+export default function ButtonComponent(props: Props) {
+  const { children, variant = "Primary", ...rest } = props;
   return (
-    <Button onClick={onClick} className={variant.toLowerCase()}>
+    <Button {...rest} className={variant.toLowerCase()}>
       {children}
     </Button>
   );
