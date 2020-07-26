@@ -2,8 +2,10 @@ import styled from "styled-components";
 
 const Form = styled.form``;
 
-export default ({ children }: {children: React.ReactNode}) => (
-  <Form>
-    {children}
-  </Form>
-);
+export default function FormComponent({ children }: {children: React.ReactNode}) {
+  return (
+    <Form>
+      {children}
+    </Form>
+  );
+}

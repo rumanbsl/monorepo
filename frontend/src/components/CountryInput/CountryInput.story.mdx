@@ -1,0 +1,16 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { text } from "@storybook/addon-knobs";
+import CountryInput from './index';
+
+<Meta title="CountryInput" component={CountryInput} />
+
+# CountryInput
+
+<Preview>
+  <Story name="Default">
+    <CountryInput
+      onSetPhoneNumber={(num) => { console.log(num); }}
+      phoneNumberWithCode={text("phoneNumberWithCode", "")}
+    />
+  </Story>
+</Preview>

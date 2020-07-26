@@ -1,7 +1,7 @@
 import countriesWithPhoneCode from "@/utils/countriesWithPhoneCode";
 import Icon from "@/components/Icon";
 import { useState, useEffect } from "react";
-
+import PropTypes, { InferProps } from "prop-types";
 import styled from "styled-components";
 import Button from "../Button";
 import Input from "../Form/Input";
@@ -71,7 +71,8 @@ function Country({ country, onSelect }: {country: CountryShape; onSelect: (cc: C
   );
 }
 
-export default ({ onSetPhoneNumber, phoneNumberWithCode }: {onSetPhoneNumber: (phoneNumber: string)=>void; phoneNumberWithCode: string}) => {
+export default function CountryInputComponent(props: InferProps<typeof CountryInputComponent.propTypes>) {
+  const { onSetPhoneNumber, phoneNumberWithCode } = props;
   const [dialCode, num] = phoneNumberWithCode.split(" ");
   const [phoneNumber, setPhoneNumber] = useState(dialCode || "");
   const [countryCode, setCountryCode] = useState(num || "");
@@ -116,4 +117,9 @@ export default ({ onSetPhoneNumber, phoneNumberWithCode }: {onSetPhoneNumber: (p
       />
     </CountryInput>
   );
+}
+// https://fettblog.eu/typescript-react/prop-types/
+CountryInputComponent.propTypes = {
+  onSetPhoneNumber    : PropTypes.func.isRequired,
+  phoneNumberWithCode : PropTypes.string.isRequired,
 };

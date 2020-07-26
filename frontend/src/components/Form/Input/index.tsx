@@ -55,31 +55,31 @@ const Input = styled.div<{labelInline: boolean}>`
   }
 `;
 
-interface PropTypes<T> {
+type InputType = "button" | "checkbox" |
+"color" |
+"date" |
+"datetime" |
+"email" |
+"file" |
+"hidden" |
+"image" |
+"month" |
+"number" |
+"password" |
+"radio" |
+"range" |
+"reset" |
+"search" |
+"submit" |
+"tel" |
+"text" |
+"time" |
+"url" |
+"week";
+
+interface PropTypes<T> extends InputHTMLAttributes<HTMLInputElement> {
   icon: IconName;
-  onChange: InputHTMLAttributes<HTMLInputElement>["onChange"];
-  placeholder: string;
-  type: "button" | "checkbox" |
-  "color" |
-  "date" |
-  "datetime" |
-  "email" |
-  "file" |
-  "hidden" |
-  "image" |
-  "month" |
-  "number" |
-  "password" |
-  "radio" |
-  "range" |
-  "reset" |
-  "search" |
-  "submit" |
-  "tel" |
-  "text" |
-  "time" |
-  "url" |
-  "week";
+  type: InputType;
   value: T extends ("number") ? number : string;
   width: number|string;
   label: string;

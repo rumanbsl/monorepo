@@ -3,7 +3,7 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 
 
 module.exports = {
-  stories: ['../components/**/*.(story|stories).(tsx|mdx)'],
+  stories: ['../src/components/**/*.(story|stories).(tsx|mdx)'],
   addons: [
     '@storybook/preset-typescript',
     '@storybook/addon-actions',
