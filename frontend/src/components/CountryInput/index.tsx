@@ -77,14 +77,16 @@ export default ({ onSetPhoneNumber, phoneNumberWithCode }: {onSetPhoneNumber: (p
   const [countryCode, setCountryCode] = useState(num || "");
   const [showDropdown, toggleShowDropdown] = useState(false);
   useEffect(() => {
-    if (countryCode && phoneNumber) onSetPhoneNumber(`${countryCode} ${phoneNumber}`);
+    if (countryCode) onSetPhoneNumber(`${countryCode} ${phoneNumber}`);
   }, [countryCode, phoneNumber, onSetPhoneNumber]);
+
+  const selectedCountry = countriesWithPhoneCode.find((c) => c.dial_code === countryCode);
 
   return (
     <CountryInput>
-      <Dropdown showDropdown={showDropdown}>
+      <Dropdown showDropdown={showDropdown} tabIndex={0} onBlur={() => { toggleShowDropdown(() => false); }}>
         <Button variant="Secondary" onClick={() => { toggleShowDropdown(() => !showDropdown); }} style={{ width: "22rem", height: "5rem" }}>
-          {countryCode || "Choose a country" }
+          {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.dial_code}` : "Choose a country" }
           <Icon
             name="arrow"
             style={{ marginLeft: "1rem", transform: showDropdown ? "rotate(0deg)" : "rotate(180deg)", transition: "transform 100ms ease-in" }}
