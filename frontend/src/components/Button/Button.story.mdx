@@ -1,4 +1,5 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
 import Button from './index';
 
 <Meta title="Button" component={Button} />
@@ -6,7 +7,40 @@ import Button from './index';
 # Button
 
 <Preview>
-  <Story name="Primary">
-    <Button>Click Me</Button>
+  <Story name="primary">
+    <Button variant='primary' onClick={action("clicked")}>Click Me!</Button>
+  </Story>
+  <Story name="primary_invert">
+    <Button variant='primary_invert' onClick={action("clicked")}>Click Me!</Button>
+  </Story>
+  <Story name="success">
+    <Button variant='success' onClick={action("clicked")}>Click Me!</Button>
+  </Story>
+  <Story name="success_invert">
+    <Button variant='success_invert' onClick={action("clicked")}>Click Me!</Button>
+  </Story>
+  <Story name="warning">
+    <Button variant='warning' onClick={action("clicked")}>Click Me!</Button>
+  </Story>
+  <Story name="warning_invert">
+    <Button variant='warning_invert' onClick={action("clicked")}>Click Me!</Button>
+  </Story>
+  <Story name="error">
+    <Button variant='error' onClick={action("clicked")}>Click Me!</Button>
+  </Story>
+  <Story name="error_invert">
+    <Button variant='error_invert' onClick={action("clicked")}>Click Me!</Button>
   </Story>
 </Preview>
+
+# Props
+```ts
+// cmd/ctrl + space will give all the available props
+type variant = "primary" | "primary_invert" | "success" | "success_invert" | "warning" | "warning_invert" | "error" | "error_invert";
+```
+<Props of={Button} />
+
+# import
+```ts
+import Button from @/components/button
+```

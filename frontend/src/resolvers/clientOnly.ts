@@ -1,3 +1,5 @@
+/* eslint-disable graphql/template-strings */
+
 import { gql } from "@apollo/client";
 
 /* Make sure tthe field names match `LocalStateShape` in `@/cache` */

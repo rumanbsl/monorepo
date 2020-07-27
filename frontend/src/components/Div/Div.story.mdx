@@ -1,0 +1,20 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import Div from './index';
+
+<Meta title="Div" component={Div} />
+
+# Div
+
+<Preview>
+  <Story name="Default">
+    <Div bg="primary" color="primary_invert" p="LG" width={{ _: 1, sm: 1, md: 1 / 2,lg: 1 / 3, xl: 1 / 4 }}>Styled System Div</Div>
+  </Story>
+</Preview>
+
+# Props
+```ts
+// typescript will auto suggest all the props available
+interface Props extends ColorProps<MyTheme>, SpaceProps<MyTheme>, LayoutProps<MyTheme>{}
+```
+<Props of={Div} />

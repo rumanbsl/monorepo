@@ -25,7 +25,7 @@ const SearchBar = styled.div`
       color: #75736b;
       display: inline-block;
       font-size: 12px;
-      font-weight: ${({ theme }) => theme.fontWeight.regular};
+      font-weight: ${({ theme }) => theme.typography.fontWeight.regular};
       height: 5.2rem;
       letter-spacing: -0.05rem;
       min-width: 27.8rem;

@@ -1,5 +1,6 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { text } from "@storybook/addon-knobs";
+import { action } from "@storybook/addon-actions";
 import CountryInput from './index';
 
 <Meta title="CountryInput" component={CountryInput} />
@@ -9,8 +10,17 @@ import CountryInput from './index';
 <Preview>
   <Story name="Default">
     <CountryInput
-      onSetPhoneNumber={(num) => { console.log(num); }}
+      onSetPhoneNumber={(num) => { action("onSetPhoneNumber", num) }}
       phoneNumberWithCode={text("phoneNumberWithCode", "")}
     />
   </Story>
 </Preview>
+
+# Props
+```ts
+interface PropShape {
+  onSetPhoneNumber: (phoneNumber: string) => void;
+  phoneNumberWithCode: string; // e.g. +358 44123123
+}
+```
+<Props of={CountryInput} />

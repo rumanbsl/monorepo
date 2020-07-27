@@ -1,41 +1,56 @@
-import styled from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
+import { darken, lighten } from "polished";
+import { Variants } from "@/styles/colors";
+import { CSSProperties } from "react";
 
-const Button = styled.button`
+interface VariantShape extends CSSProperties {
+  bg?: (keyof Variants);
+  color: (keyof Variants);
+}
+
+function getbg({ variant, theme }: { variant?: VariantShape["color"] | "outline" | "outline_invert", theme: DefaultTheme }) {
+  if (!variant) return theme.colors.primary;
+  if (variant === "outline") return "#fff";
+  if (variant === "outline_invert") return "#000";
+  return theme.colors[variant];
+}
+function getborder({ variant, theme }: { variant?: VariantShape["color"] | "outline" | "outline_invert", theme: DefaultTheme }) {
+  if (!variant) return theme.colors.primary;
+  if (variant === "outline") return `2px solid ${theme.colors.primary}`;
+  if (variant === "outline_invert") return `2px solid ${theme.colors.primary_invert}`;
+  return 0;
+}
+function getcolor({ variant, theme }: { variant?: VariantShape["color"] | "outline" | "outline_invert", theme: DefaultTheme }) {
+  if (!variant) return theme.colors.primary;
+  if (variant === "outline") return theme.colors.primary;
+  if (variant === "outline_invert") return theme.colors.primary_invert;
+  // @ts-expect-error
+  if (variant.includes("invert")) return theme.colors[variant.substring(0, "varient_invert".indexOf("_"))]; // primary_invert => primary
+  // @ts-expect-error
+  return theme.colors[`${variant}_invert`]; // primary => primary_invert
+}
+
+const Button = styled.button<{ variant?: VariantShape["color"] | "outline" | "outline_invert" }>`
   align-items: center;
-  border: 0;
+  background: ${({ variant, theme }) => getbg({ variant, theme })};
+  border: ${({ variant, theme }) => getborder({ variant, theme })};
   border-radius: 1.1rem;
+  color: ${({ variant, theme }) => getcolor({ variant, theme })};
   cursor: pointer;
   display: flex;
   justify-content: center;
   min-height: 4.2rem;
   min-width: 9.2rem;
-  transition: background 200ms ease-in, transform 200ms ease-in;
+  transition: background 100ms ease-in, transform 100ms ease-in;
 
-  &.primary {
-    color: #fff;
+  &:active {
+    background: ${({ variant, theme }) => darken(0.2, getbg({ variant, theme }))};
+  }
 
-    &,
-    &:active {
-      background: #000;
-    }
-
-    &:hover,
-    &:focus {
-      background: rgba(0, 0, 0, 0.8);
-      transform: translateY(-0.2rem);
-    }
+  &:hover,
+  &:focus {
+    background: ${({ theme, variant }) => lighten(0.1, getbg({ variant, theme }))};
   }
 `;
 
-interface Props extends React.ButtonHTMLAttributes<unknown> {
-  variant?: "Primary" | "Secondary" | "Tertiary" | "Danger";
-}
-
-export default function ButtonComponent(props: Props) {
-  const { children, variant = "Primary", ...rest } = props;
-  return (
-    <Button {...rest} className={variant.toLowerCase()}>
-      {children}
-    </Button>
-  );
-}
+export default Button;

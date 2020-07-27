@@ -21,7 +21,7 @@ const Header = styled.div`
 const Logo = styled.h1`
   display: inline-block;
   font-size: 4.2rem;
-  font-weight: ${({ theme }) => theme.fontWeight.semiBold};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.semiBold};
   letter-spacing: -0.4rem;
 
   > a {

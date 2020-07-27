@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const schemaJson = require("./schema.json");
+
 module.exports = {
   env: {
     browser : true,
@@ -11,6 +14,7 @@ module.exports = {
     "../.eslintrc",
   ],
   globals  : { React: "writable" },
+  plugins  : ["graphql"],
   settings : {
     "import/parsers": {
       "@typescript-eslint/parser": [
@@ -38,6 +42,10 @@ module.exports = {
     },
   },
   rules: {
+    "graphql/template-strings": ["error", {
+      env: "apollo",
+      schemaJson,
+    }],
     "import/no-extraneous-dependencies" : ["error", { packageDir: ["./", "../"] }],
     "jsx-a11y/anchor-is-valid"          : 0,
     "react/jsx-filename-extension"      : [

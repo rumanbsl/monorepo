@@ -31,8 +31,8 @@ const Input = styled.div<{labelInline: boolean}>`
       border-radius: 1.2rem;
       color: #75736b;
       display: inherit;
-      font-size: 12px;
-      font-weight: ${({ theme }) => theme.fontWeight.regular};
+
+      font-weight: ${({ theme }) => theme.typography.fontWeight.regular};
       height: 5.2rem;
       letter-spacing: -0.05rem;
       padding: 1.2rem 5.5rem 1.2rem 1.2rem;

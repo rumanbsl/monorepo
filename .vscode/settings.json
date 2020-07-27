@@ -8,6 +8,16 @@
     "typescriptreact",
     "html",
   ],
+  "eslint.options": {
+    "extensions": [
+      ".js",
+      ".jsx",
+      ".md",
+      ".mdx",
+      ".ts",
+      ".tsx"
+    ]
+  },
   "emmet.includeLanguages": {
     "javascript": "javascriptreact",
   },

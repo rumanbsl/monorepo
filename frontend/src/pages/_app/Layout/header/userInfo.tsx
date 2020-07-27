@@ -23,7 +23,7 @@ const UserInfo = styled.div`
 export default function UserInfoComponent() {
   return (
     <UserInfo>
-      <Icon name="heart" style={{ fill: "none" }} />
+      <Icon name="heart" width={24} height={24} />
       <Button>0</Button>
       <span>US</span>
     </UserInfo>

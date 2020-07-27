@@ -39,7 +39,7 @@ const Navigation = styled.nav`
     display: inline-flex;
     font-size: 1.4rem;
     font-style: italic;
-    font-weight: ${({ theme }) => theme.fontWeight.bold};
+    font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
     height: 7.7rem;
     letter-spacing: -0.8px;
     padding: 1.8rem 2.6rem;

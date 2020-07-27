@@ -1,7 +1,6 @@
 import countriesWithPhoneCode from "@/utils/countriesWithPhoneCode";
 import Icon from "@/components/Icon";
 import { useState, useEffect } from "react";
-import PropTypes, { InferProps } from "prop-types";
 import styled from "styled-components";
 import Button from "../Button";
 import Input from "../Form/Input";
@@ -19,7 +18,7 @@ const Dropdown = styled.div<{showDropdown: boolean}>`
 margin-top: 0.2rem;
 position: relative;
 
-ul {
+ul.dropdown-content {
   background: #fff;
   border: 1px solid #eee;
   border-radius: 1rem;
@@ -32,6 +31,7 @@ ul {
   padding: 0;
   position: absolute;
   transition: display 1s ease-out;
+  z-index: 1;
 
   li {
     list-style: none;
@@ -71,7 +71,12 @@ function Country({ country, onSelect }: {country: CountryShape; onSelect: (cc: C
   );
 }
 
-export default function CountryInputComponent(props: InferProps<typeof CountryInputComponent.propTypes>) {
+interface PropShape {
+  onSetPhoneNumber: (phoneNumber: string)=>void;
+  phoneNumberWithCode: string;
+}
+
+export default function CountryInputComponent(props: PropShape) {
   const { onSetPhoneNumber, phoneNumberWithCode } = props;
   const [dialCode, num] = phoneNumberWithCode.split(" ");
   const [phoneNumber, setPhoneNumber] = useState(dialCode || "");
@@ -86,14 +91,14 @@ export default function CountryInputComponent(props: InferProps<typeof CountryIn
   return (
     <CountryInput>
       <Dropdown showDropdown={showDropdown} tabIndex={0} onBlur={() => { toggleShowDropdown(() => false); }}>
-        <Button variant="Secondary" onClick={() => { toggleShowDropdown(() => !showDropdown); }} style={{ width: "22rem", height: "5rem" }}>
+        <Button variant="primary" onClick={() => { toggleShowDropdown(() => !showDropdown); }} style={{ width: "22rem", height: "5rem" }}>
           {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.dial_code}` : "Choose a country" }
           <Icon
             name="arrow"
             style={{ marginLeft: "1rem", transform: showDropdown ? "rotate(0deg)" : "rotate(180deg)", transition: "transform 100ms ease-in" }}
           />
         </Button>
-        <ul>
+        <ul className="dropdown-content">
           {countriesWithPhoneCode.map((country) => (
             <Country
               key={country.code}
@@ -118,8 +123,3 @@ export default function CountryInputComponent(props: InferProps<typeof CountryIn
     </CountryInput>
   );
 }
-// https://fettblog.eu/typescript-react/prop-types/
-CountryInputComponent.propTypes = {
-  onSetPhoneNumber    : PropTypes.func.isRequired,
-  phoneNumberWithCode : PropTypes.string.isRequired,
-};
