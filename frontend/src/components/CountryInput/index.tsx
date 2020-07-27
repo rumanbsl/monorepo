@@ -6,7 +6,7 @@ import Button from "../Button";
 import Input from "../Form/Input";
 
 const CountryInput = styled.div`
-  display: flex;
+  display: inline-flex;
   position: relative;
 
   * {
@@ -15,22 +15,22 @@ const CountryInput = styled.div`
 `;
 
 const Dropdown = styled.div<{showDropdown: boolean}>`
-margin-top: 0.2rem;
+margin: 0.2rem 0.2rem 0 0;
 position: relative;
+transition: display 1s ease-out;
 
 ul.dropdown-content {
   background: #fff;
   border: 1px solid #eee;
   border-radius: 1rem;
-  display: ${({ showDropdown }) => (showDropdown ? "block" : "none")};
+  display: ${({ showDropdown }) => (showDropdown ? "inherit" : "none")};
   margin: 0;
   max-height: 30rem;
-  max-width: 22rem;
+  max-width: 19rem;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 0;
   position: absolute;
-  transition: display 1s ease-out;
   z-index: 1;
 
   li {
@@ -40,7 +40,7 @@ ul.dropdown-content {
       background: #fff;
       border: 0;
       cursor: pointer;
-      display: block;
+      display: inherit;
       padding: 1rem 1rem 1rem 2rem;
       text-align: initial;
       width: 100%;
@@ -76,6 +76,17 @@ interface PropShape {
   phoneNumberWithCode: string;
 }
 
+const ButtonComponent = styled(Button)<{showDropdown?: boolean}>`
+  svg {
+    fill: ${({ theme }) => theme.colors.primary};
+    height: 2rem;
+    margin-left: 1rem;
+    transform: ${({ showDropdown }) => (showDropdown ? "rotate(90deg)" : "rotate(270deg)")};
+    transition: fill 100ms ease-in, transform 100ms ease-in;
+    width: 2rem;
+  }
+`;
+
 export default function CountryInputComponent(props: PropShape) {
   const { onSetPhoneNumber, phoneNumberWithCode } = props;
   const [dialCode, num] = phoneNumberWithCode.split(" ");
@@ -91,13 +102,10 @@ export default function CountryInputComponent(props: PropShape) {
   return (
     <CountryInput>
       <Dropdown showDropdown={showDropdown} tabIndex={0} onBlur={() => { toggleShowDropdown(() => false); }}>
-        <Button variant="primary" onClick={() => { toggleShowDropdown(() => !showDropdown); }} style={{ width: "22rem", height: "5rem" }}>
+        <ButtonComponent variant="outline" onClick={() => { toggleShowDropdown(() => !showDropdown); }} showDropdown={showDropdown}>
           {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.dial_code}` : "Choose a country" }
-          <Icon
-            name="arrow"
-            style={{ marginLeft: "1rem", transform: showDropdown ? "rotate(0deg)" : "rotate(180deg)", transition: "transform 100ms ease-in" }}
-          />
-        </Button>
+          <Icon name="arrow" />
+        </ButtonComponent>
         <ul className="dropdown-content">
           {countriesWithPhoneCode.map((country) => (
             <Country

@@ -47,10 +47,11 @@ const Input = styled.div<{labelInline: boolean}>`
         color: #909090;
       }
 
-      /* &:focus {
-        border: 1px solid #909090;
-        width: calc(100% + 1px);
-      } */
+      &:focus {
+        border: ${({ theme }) => `0.2rem solid ${theme.colors.primary}`};
+        outline: none;
+        width: calc(100% - 0.2rem);
+      }
     }
   }
 `;
@@ -99,7 +100,7 @@ export default function InputComponent<T>(prop: Partial<PropTypes<T>>) {
   return (
     <Input labelInline={!!prop.labelInline}>
       <div>
-        { prop.label ? <label htmlFor="input-component">{prop.label}</label> : null}
+        { prop.label ? <label htmlFor="input-component" style={{ marginLeft: "4px" }}>{prop.label}</label> : null}
         <input
           style={{ width }}
           type={prop.type || "text"}

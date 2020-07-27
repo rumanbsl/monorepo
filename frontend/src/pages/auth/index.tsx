@@ -1,8 +1,12 @@
+import Div from "@/components/Div";
+import PhoneLogin from "@/components/CountryInput";
 import FacebookLogin from "./components/FacebookLogin";
+import EmailLogin from "./components/emailLogin";
 
 export default () => (
-  <div>
-    hello
+  <Div mt="XL">
     <FacebookLogin />
-  </div>
+    <PhoneLogin phoneNumberWithCode="" onSetPhoneNumber={console.log} />
+    <EmailLogin />
+  </Div>
 );

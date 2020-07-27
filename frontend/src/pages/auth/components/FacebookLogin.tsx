@@ -17,7 +17,7 @@ const ButtonComponent = styled(Button)`
 
 export default function FacebookLoginComponent() {
   return (
-    <ButtonComponent variant="outline_invert">
+    <ButtonComponent variant="outline">
       <Icon name="facebook" />
       facebook
     </ButtonComponent>

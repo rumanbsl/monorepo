@@ -1,10 +1,12 @@
-import { useRef } from "react";
 import { useMutation } from "@apollo/client";
 import serverOnly from "@/resolvers/serverOnly";
 import { useRouter } from "next/router";
 import clientOnly from "@/resolvers/clientOnly";
 import cache from "@/cache";
 import { setAccessToken } from "@/utils/accessToken";
+import Input from "@/components/Form/Input";
+import Button from "@/components/Button";
+import { useState } from "react";
 
 export interface InputShape {
   email: string;
@@ -13,9 +15,8 @@ export interface InputShape {
 
 const LoginForm = () => {
   const router = useRouter();
-  const emailRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const passwordRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const data = cache.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
 
   const [loginMutation] = useMutation<{USER_EMAIL_SIGN_IN: string}, InputShape>(serverOnly.Mutation.USER_EMAIL_SIGN_IN);
@@ -24,13 +25,9 @@ const LoginForm = () => {
     return null;
   }
   const login = async () => {
-    const variables = {
-      email    : emailRef.current?.value,
-      password : passwordRef.current?.value,
-    };
-    if (variables.email && variables.password) {
+    if (email && password) {
       await loginMutation({
-        variables,
+        variables: { email, password },
         update(_, { data:mutationData }) {
           if (mutationData?.USER_EMAIL_SIGN_IN) {
             setAccessToken(mutationData.USER_EMAIL_SIGN_IN);
@@ -43,22 +40,21 @@ const LoginForm = () => {
   };
   return (
     <div>
-      <input
+      <Input
         type="text"
-        placeholder="email"
-        ref={emailRef}
+        label="email"
+        value={email}
+        onChange={((e) => e.target.value && setEmail(e.target.value))}
       />
-      <input
+      <Input
         type="password"
-        placeholder="password"
-        ref={passwordRef}
+        label="password"
+        value={password}
+        onChange={((e) => e.target.value && setPassword(e.target.value))}
       />
-      <button
-        type="button"
-        onClick={login}
-      >
+      <Button variant="primary" onClick={login} mt="LG">
         submit
-      </button>
+      </Button>
     </div>
   );
 };

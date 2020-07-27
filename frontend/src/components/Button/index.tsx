@@ -1,26 +1,28 @@
 import styled, { DefaultTheme } from "styled-components";
 import { darken, lighten } from "polished";
 import { Variants } from "@/styles/colors";
-import { CSSProperties } from "react";
+import { color, ColorProps, space, SpaceProps, layout, LayoutProps } from "styled-system";
+import { MyTheme } from "@/styles";
 
-interface VariantShape extends CSSProperties {
-  bg?: (keyof Variants);
-  color: (keyof Variants);
+type VariantShape = (keyof Variants) | "outline" | "outline_invert";
+
+interface Props extends ColorProps<MyTheme>, SpaceProps<MyTheme>, LayoutProps<MyTheme>{
+  variant?: VariantShape
 }
 
-function getbg({ variant, theme }: { variant?: VariantShape["color"] | "outline" | "outline_invert", theme: DefaultTheme }) {
+function getbg({ variant, theme }: { variant?: VariantShape, theme: DefaultTheme }) {
   if (!variant) return theme.colors.primary;
   if (variant === "outline") return "#fff";
   if (variant === "outline_invert") return "#000";
   return theme.colors[variant];
 }
-function getborder({ variant, theme }: { variant?: VariantShape["color"] | "outline" | "outline_invert", theme: DefaultTheme }) {
+function getborder({ variant, theme }: { variant?: VariantShape, theme: DefaultTheme }) {
   if (!variant) return theme.colors.primary;
   if (variant === "outline") return `2px solid ${theme.colors.primary}`;
   if (variant === "outline_invert") return `2px solid ${theme.colors.primary_invert}`;
   return 0;
 }
-function getcolor({ variant, theme }: { variant?: VariantShape["color"] | "outline" | "outline_invert", theme: DefaultTheme }) {
+function getcolor({ variant, theme }: { variant?: VariantShape, theme: DefaultTheme }) {
   if (!variant) return theme.colors.primary;
   if (variant === "outline") return theme.colors.primary;
   if (variant === "outline_invert") return theme.colors.primary_invert;
@@ -30,7 +32,7 @@ function getcolor({ variant, theme }: { variant?: VariantShape["color"] | "outli
   return theme.colors[`${variant}_invert`]; // primary => primary_invert
 }
 
-const Button = styled.button<{ variant?: VariantShape["color"] | "outline" | "outline_invert" }>`
+const Button = styled.button<Props>`
   align-items: center;
   background: ${({ variant, theme }) => getbg({ variant, theme })};
   border: ${({ variant, theme }) => getborder({ variant, theme })};
@@ -39,7 +41,7 @@ const Button = styled.button<{ variant?: VariantShape["color"] | "outline" | "ou
   cursor: pointer;
   display: flex;
   justify-content: center;
-  min-height: 4.2rem;
+  min-height: 4.8rem;
   min-width: 9.2rem;
   transition: background 100ms ease-in, transform 100ms ease-in;
 
@@ -50,7 +52,12 @@ const Button = styled.button<{ variant?: VariantShape["color"] | "outline" | "ou
   &:hover,
   &:focus {
     background: ${({ theme, variant }) => lighten(0.1, getbg({ variant, theme }))};
+    outline: none;
   }
+
+  ${color}
+  ${space}
+  ${layout}
 `;
 
 export default Button;
