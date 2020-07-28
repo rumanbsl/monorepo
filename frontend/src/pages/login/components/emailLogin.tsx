@@ -44,13 +44,13 @@ const LoginForm = () => {
         type="text"
         label="email"
         value={email}
-        onChange={((e) => e.target.value && setEmail(e.target.value))}
+        onChange={((e) => setEmail(e.target.value || ""))}
       />
       <Input
         type="password"
         label="password"
         value={password}
-        onChange={((e) => e.target.value && setPassword(e.target.value))}
+        onChange={((e) => setPassword(e.target.value || ""))}
       />
       <Button variant="primary" onClick={login} mt="LG">
         submit

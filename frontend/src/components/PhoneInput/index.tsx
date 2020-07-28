@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Button from "../Button";
 import Input from "../Form/Input";
 
-const CountryInput = styled.div`
+const PhoneInput = styled.div`
   display: inline-flex;
   position: relative;
 
@@ -18,6 +18,11 @@ const Dropdown = styled.div<{showDropdown: boolean}>`
 margin: 0.2rem 0.2rem 0 0;
 position: relative;
 transition: display 1s ease-out;
+width: 16rem;
+
+button {
+  width: inherit;
+}
 
 ul.dropdown-content {
   background: #fff;
@@ -25,12 +30,12 @@ ul.dropdown-content {
   border-radius: 1rem;
   display: ${({ showDropdown }) => (showDropdown ? "inherit" : "none")};
   margin: 0;
-  max-height: 30rem;
-  max-width: 19rem;
+  max-height: 40rem;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 0;
   position: absolute;
+  width: inherit;
   z-index: 1;
 
   li {
@@ -87,7 +92,7 @@ const ButtonComponent = styled(Button)<{showDropdown?: boolean}>`
   }
 `;
 
-export default function CountryInputComponent(props: PropShape) {
+export default function PhoneInputComponent(props: PropShape) {
   const { onSetPhoneNumber, phoneNumberWithCode } = props;
   const [dialCode, num] = phoneNumberWithCode.split(" ");
   const [phoneNumber, setPhoneNumber] = useState(dialCode || "");
@@ -100,10 +105,10 @@ export default function CountryInputComponent(props: PropShape) {
   const selectedCountry = countriesWithPhoneCode.find((c) => c.dial_code === countryCode);
 
   return (
-    <CountryInput>
+    <PhoneInput>
       <Dropdown showDropdown={showDropdown} tabIndex={0} onBlur={() => { toggleShowDropdown(() => false); }}>
         <ButtonComponent variant="outline" onClick={() => { toggleShowDropdown(() => !showDropdown); }} showDropdown={showDropdown}>
-          {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.dial_code}` : "Choose a country" }
+          {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.dial_code}` : "Country Code" }
           <Icon name="arrow" />
         </ButtonComponent>
         <ul className="dropdown-content">
@@ -128,6 +133,6 @@ export default function CountryInputComponent(props: PropShape) {
           }
         }}
       />
-    </CountryInput>
+    </PhoneInput>
   );
 }

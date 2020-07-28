@@ -116,7 +116,7 @@ export default function MainComponent({ children }: { children: React.ReactNode 
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!data?.isLoggedIn && visitingProtectedWithoutLoggingIn) {
-        router.push("/auth").then(console.log).catch(console.error);
+        router.push("/login").then(console.log).catch(console.error);
       } else if (data?.isLoggedIn && authRoutes.includes(router.pathname)) {
         router.push("/").then(console.log).catch(console.error);
       }
