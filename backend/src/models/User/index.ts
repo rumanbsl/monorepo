@@ -18,7 +18,7 @@ export interface IuserSchema extends mongoose.Document, Omit<UserDbObject, "_id"
 const UserSchema = new mongoose.Schema({
   age                 : Number,
   fbid                : String,
-  phoneNumber         : String,
+  phoneNumber         : [String],
   _password           : String,
   profilePhoto        : String,
   _tokenVersion       : { type: Number, default: 0 },

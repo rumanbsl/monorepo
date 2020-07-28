@@ -130,7 +130,7 @@ export type MutationUser_Email_Sign_UpArgs = {
   password: Scalars['String'];
   profilePhoto: Scalars['String'];
   age: Scalars['Int'];
-  phoneNumber: Scalars['String'];
+  phoneNumber: Array<Maybe<Scalars['String']>>;
 };
 
 
@@ -307,7 +307,7 @@ export type User = {
   name: Scalars['String'];
   age?: Maybe<Scalars['Int']>;
   password?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Array<Maybe<Scalars['String']>>>;
   verifiedPhoneNumber: Scalars['Boolean'];
   profilePhoto?: Maybe<Scalars['String']>;
   isDriving: Scalars['Boolean'];
@@ -332,7 +332,7 @@ export type UserOutput = {
   name: Scalars['String'];
   age?: Maybe<Scalars['Int']>;
   password?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Array<Maybe<Scalars['String']>>>;
   verifiedPhoneNumber: Scalars['Boolean'];
   profilePhoto?: Maybe<Scalars['String']>;
   isDriving: Scalars['Boolean'];
@@ -436,7 +436,7 @@ export type UserDbObject = {
   name: string,
   age?: Maybe<number>,
   password?: Maybe<string>,
-  phoneNumber?: Maybe<string>,
+  phoneNumber?: Maybe<Array<Maybe<string>>>,
   verifiedPhoneNumber: boolean,
   profilePhoto?: Maybe<string>,
   isDriving: boolean,

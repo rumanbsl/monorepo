@@ -1,7 +1,9 @@
 import countriesWithPhoneCode from "@/utils/countriesWithPhoneCode";
 import Icon from "@/components/Icon";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
+import { phoneRegEx } from "common/regex";
+import { ToastContainer, toast } from "react-toastify";
 import Button from "../Button";
 import Input from "../Form/Input";
 
@@ -9,18 +11,18 @@ const PhoneInput = styled.div`
   display: inline-flex;
   position: relative;
 
-  * {
+  > * {
     white-space: nowrap;
   }
 `;
 
 const Dropdown = styled.div<{showDropdown: boolean}>`
-margin: 0.2rem 0.2rem 0 0;
 position: relative;
 transition: display 1s ease-out;
-width: 16rem;
+width: 17rem;
 
 button {
+  height: 5.2rem;
   width: inherit;
 }
 
@@ -77,8 +79,8 @@ function Country({ country, onSelect }: {country: CountryShape; onSelect: (cc: C
 }
 
 interface PropShape {
-  onSetPhoneNumber: (phoneNumber: string)=>void;
-  phoneNumberWithCode: string;
+  phoneNumberWithCode: [CountryShape["dial_code"], string];
+  onSetPhoneNumber: (phoneNumberWithCode: PropShape["phoneNumberWithCode"])=>void;
 }
 
 const ButtonComponent = styled(Button)<{showDropdown?: boolean}>`
@@ -94,13 +96,18 @@ const ButtonComponent = styled(Button)<{showDropdown?: boolean}>`
 
 export default function PhoneInputComponent(props: PropShape) {
   const { onSetPhoneNumber, phoneNumberWithCode } = props;
-  const [dialCode, num] = phoneNumberWithCode.split(" ");
-  const [phoneNumber, setPhoneNumber] = useState(dialCode || "");
-  const [countryCode, setCountryCode] = useState(num || "");
+  const [dialCode, num] = phoneNumberWithCode;
+  const [phoneNumber, setPhoneNumber] = useState(num);
+  const [countryCode, setCountryCode] = useState(dialCode);
   const [showDropdown, toggleShowDropdown] = useState(false);
-  useEffect(() => {
-    if (countryCode) onSetPhoneNumber(`${countryCode} ${phoneNumber}`);
-  }, [countryCode, phoneNumber, onSetPhoneNumber]);
+
+  const onPressSubmitButton = (phone: {countryCode: CountryShape["dial_code"], phoneNumber: string}) => {
+    if (phoneRegEx.test(`${phone.countryCode}${phone.phoneNumber}`) && phone.countryCode && phone.phoneNumber) {
+      onSetPhoneNumber([phone.countryCode, phone.phoneNumber]);
+    } else {
+      toast.error("Invalid phone number", { autoClose: 2000 });
+    }
+  };
 
   const selectedCountry = countriesWithPhoneCode.find((c) => c.dial_code === countryCode);
 
@@ -126,6 +133,7 @@ export default function PhoneInputComponent(props: PropShape) {
         type="text"
         value={phoneNumber}
         placeholder="phone number"
+        style={{ margin: "0 0.4rem" }}
         onChange={(e) => {
           const value = parseInt(e.target.value, 10);
           if (value >= 0 || e.target.value === "") {
@@ -133,6 +141,8 @@ export default function PhoneInputComponent(props: PropShape) {
           }
         }}
       />
+      <Button onClick={() => onPressSubmitButton({ countryCode, phoneNumber })}>submit</Button>
+      <ToastContainer />
     </PhoneInput>
   );
 }

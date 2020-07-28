@@ -14,7 +14,7 @@ export default () => (
   <Container>
     <h2>Login</h2>
     <Divider title="By Phone" mt="XL" mb="LG" />
-    <PhoneLogin phoneNumberWithCode="" onSetPhoneNumber={console.log} />
+    <PhoneLogin phoneNumberWithCode={["+358", ""]} onSetPhoneNumber={console.log} />
     <Divider title="Traditional" mt="XL" mb="LG" />
     <EmailLogin />
     <Divider title="Social media" mt="XL" mb="LG" />

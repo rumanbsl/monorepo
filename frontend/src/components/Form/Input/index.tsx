@@ -88,28 +88,29 @@ interface PropTypes<T> extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function InputComponent<T>(prop: Partial<PropTypes<T>>) {
-  const width = (() => {
-    if (typeof prop.width === "number") {
-      return `${prop.width}px`;
-    } if ((typeof prop.width === "string" && ["px", "rem", "em", "%", "pt"].some((unit) => (prop.width as string).endsWith(unit)))) {
-      return prop.width;
+  const { width, label, placeholder, value, onChange, icon, labelInline, type, ...rest } = prop;
+  const Width = (() => {
+    if (typeof width === "number") {
+      return `${width}px`;
+    } if ((typeof width === "string" && ["px", "rem", "em", "%", "pt"].some((unit) => (width).endsWith(unit)))) {
+      return width;
     }
     return "40rem";
   })();
 
   return (
-    <Input labelInline={!!prop.labelInline}>
+    <Input labelInline={!!labelInline} {...rest}>
       <div>
-        { prop.label ? <label htmlFor="input-component" style={{ marginLeft: "4px" }}>{prop.label}</label> : null}
+        { label ? <label htmlFor="input-component" style={{ marginLeft: "4px" }}>{label}</label> : null}
         <input
-          style={{ width }}
-          type={prop.type || "text"}
-          placeholder={prop.placeholder || ""}
-          value={typeof prop.value === "number" ? prop.value : prop.value || ""}
-          onChange={prop.onChange}
+          style={{ width: Width }}
+          type={type || "text"}
+          placeholder={placeholder || ""}
+          value={typeof value === "number" ? value : value || ""}
+          onChange={onChange}
           id="input-component"
         />
-        { prop.icon && <Icon name={prop.icon} className="icon" /> }
+        { icon && <Icon name={icon} className="icon" /> }
       </div>
     </Input>
   );

@@ -73,7 +73,7 @@ const Mutation: Mutations = {
     const { models: { User, Verification }, sgMail, res } = ctx;
     const userExists = await User.findOne({ email: input.email });
     if (userExists) throw apolloError({ type: "AlreadyExistsError", data: { email: input.email } });
-    const phoneVerification = await Verification.findOne({ payload: input.phoneNumber, verified: true });
+    const phoneVerification = await Verification.findOne({ payload: input.phoneNumber.join(), verified: true });
     if (!phoneVerification) throw apolloError({ type: "PhoneNotVerifiedError" });
     const newUser = await User.create<CreateUserArg>(input);
     const emailVerification = await Verification.create<{ payload: string; target: "EMAIL" }>({

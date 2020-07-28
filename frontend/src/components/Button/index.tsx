@@ -23,7 +23,7 @@ function getborder({ variant, theme }: { variant?: VariantShape, theme: DefaultT
   return 0;
 }
 function getcolor({ variant, theme }: { variant?: VariantShape, theme: DefaultTheme }) {
-  if (!variant) return theme.colors.primary;
+  if (!variant) return theme.colors.primary_invert;
   if (variant === "outline") return theme.colors.primary;
   if (variant === "outline_invert") return theme.colors.primary_invert;
   // @ts-expect-error
