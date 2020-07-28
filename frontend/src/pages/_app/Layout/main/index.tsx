@@ -111,7 +111,7 @@ export default function MainComponent({ children }: { children: React.ReactNode 
   const { data, error, loading } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
 
   const visitingProtectedWithoutLoggingIn = Routes.some((route) => route.path === router.pathname && route.protected);
-  const authRoutes = ["auth", "signup"];
+  const authRoutes = ["/login", "/signup"];
 
   useEffect(() => {
     if (typeof window !== "undefined") {
