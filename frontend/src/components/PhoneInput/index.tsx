@@ -1,13 +1,20 @@
 import countriesWithPhoneCode from "@/utils/countriesWithPhoneCode";
 import Icon from "@/components/Icon";
-import { useState } from "react";
+import { useState, HTMLAttributes } from "react";
 import styled from "styled-components";
 import { phoneRegEx } from "common/regex";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "../Button";
 import Input from "../Form/Input";
+import Div, { DivProps } from "../Div";
 
-const PhoneInput = styled.div`
+type CountryShape = typeof countriesWithPhoneCode[number];
+interface PropShape extends DivProps, Omit<HTMLAttributes<unknown>, "color"> {
+  phoneNumberWithCode: [CountryShape["dial_code"], string];
+  onSetPhoneNumber: (phoneNumberWithCode: PropShape["phoneNumberWithCode"])=>void;
+}
+
+const PhoneInput = styled(Div)`
   display: inline-flex;
   position: relative;
 
@@ -30,7 +37,7 @@ ul.dropdown-content {
   background: #fff;
   border: 1px solid #eee;
   border-radius: 1rem;
-  display: ${({ showDropdown }) => (showDropdown ? "inherit" : "none")};
+  display: ${({ showDropdown }) => (showDropdown ? "initial" : "none")};
   margin: 0;
   max-height: 40rem;
   overflow-x: hidden;
@@ -47,7 +54,6 @@ ul.dropdown-content {
       background: #fff;
       border: 0;
       cursor: pointer;
-      display: inherit;
       padding: 1rem 1rem 1rem 2rem;
       text-align: initial;
       width: 100%;
@@ -60,8 +66,6 @@ ul.dropdown-content {
   }
 }
 `;
-
-type CountryShape = typeof countriesWithPhoneCode[number];
 
 function Country({ country, onSelect }: {country: CountryShape; onSelect: (cc: CountryShape["dial_code"])=>void}) {
   return (
@@ -78,11 +82,6 @@ function Country({ country, onSelect }: {country: CountryShape; onSelect: (cc: C
   );
 }
 
-interface PropShape {
-  phoneNumberWithCode: [CountryShape["dial_code"], string];
-  onSetPhoneNumber: (phoneNumberWithCode: PropShape["phoneNumberWithCode"])=>void;
-}
-
 const ButtonComponent = styled(Button)<{showDropdown?: boolean}>`
   svg {
     fill: ${({ theme }) => theme.colors.primary};
@@ -95,7 +94,7 @@ const ButtonComponent = styled(Button)<{showDropdown?: boolean}>`
 `;
 
 export default function PhoneInputComponent(props: PropShape) {
-  const { onSetPhoneNumber, phoneNumberWithCode } = props;
+  const { onSetPhoneNumber, phoneNumberWithCode, width = "100%", ...rest } = props;
   const [dialCode, num] = phoneNumberWithCode;
   const [phoneNumber, setPhoneNumber] = useState(num);
   const [countryCode, setCountryCode] = useState(dialCode);
@@ -110,9 +109,9 @@ export default function PhoneInputComponent(props: PropShape) {
   };
 
   const selectedCountry = countriesWithPhoneCode.find((c) => c.dial_code === countryCode);
-
   return (
-    <PhoneInput>
+    // @ts-expect-error
+    <PhoneInput {...rest} width={width}>
       <Dropdown showDropdown={showDropdown} tabIndex={0} onBlur={() => { toggleShowDropdown(() => false); }}>
         <ButtonComponent variant="outline" onClick={() => { toggleShowDropdown(() => !showDropdown); }} showDropdown={showDropdown}>
           {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.dial_code}` : "Country Code" }
@@ -134,6 +133,7 @@ export default function PhoneInputComponent(props: PropShape) {
         value={phoneNumber}
         placeholder="phone number"
         style={{ margin: "0 0.4rem" }}
+        icon="arrow"
         onChange={(e) => {
           const value = parseInt(e.target.value, 10);
           if (value >= 0 || e.target.value === "") {

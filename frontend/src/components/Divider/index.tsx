@@ -4,7 +4,6 @@ import Div, { DivProps } from "../Div";
 const DividerBase = styled(Div)<DivProps>`
   align-items: baseline;
   display: flex;
-  width: inherit;
 
   .title {
     color: ${({ theme }) => theme.colors.primary};

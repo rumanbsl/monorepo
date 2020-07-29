@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Icon, { IconName } from "@/components/Icon";
 import { InputHTMLAttributes } from "react";
 
-const Input = styled.div<{labelInline: boolean}>`
+const Input = styled.div<{labelInline: boolean, width: string}>`
   flex: 1;
 
   > div {
@@ -10,6 +10,7 @@ const Input = styled.div<{labelInline: boolean}>`
     display: inline-flex;
     flex-direction: ${({ labelInline }) => (labelInline ? "row" : "column")};
     position: relative;
+    width: ${({ width }) => width};
 
     .icon {
       position: absolute;
@@ -30,14 +31,13 @@ const Input = styled.div<{labelInline: boolean}>`
       border: 0;
       border-radius: 1.2rem;
       color: #75736b;
-      display: inherit;
 
       font-weight: ${({ theme }) => theme.typography.fontWeight.regular};
       height: 5.2rem;
       letter-spacing: -0.05rem;
       padding: 1.2rem 5.5rem 1.2rem 1.2rem;
       transition: border 50ms ease-in-out;
-      width: 100%;
+      width: inherit;
 
       @media screen and (max-width: 300px) {
         padding: 1.2rem;
@@ -95,15 +95,14 @@ export default function InputComponent<T>(prop: Partial<PropTypes<T>>) {
     } if ((typeof width === "string" && ["px", "rem", "em", "%", "pt"].some((unit) => (width).endsWith(unit)))) {
       return width;
     }
-    return "40rem";
+    return "100%";
   })();
 
   return (
-    <Input labelInline={!!labelInline} {...rest}>
+    <Input labelInline={!!labelInline} {...rest} width={Width}>
       <div>
         { label ? <label htmlFor="input-component" style={{ marginLeft: "4px" }}>{label}</label> : null}
         <input
-          style={{ width: Width }}
           type={type || "text"}
           placeholder={placeholder || ""}
           value={typeof value === "number" ? value : value || ""}

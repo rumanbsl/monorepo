@@ -1,20 +1,14 @@
 import PhoneLogin from "@/components/PhoneInput";
 import Divider from "@/components/Divider";
-import styled from "styled-components";
 import { useRouter } from "next/router";
 import cache from "@/cache";
 import clientOnly from "@/resolvers/clientOnly";
 import { useMutation } from "@apollo/client";
 import serverOnly from "@/resolvers/serverOnly";
 import { setAccessToken } from "@/utils/accessToken";
+import Div from "@/components/Div";
 import EmailLogin, { InputShape } from "./components/emailLogin";
 import FacebookLogin from "./components/FacebookLogin";
-
-const Container = styled.div`
-  h3 {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`;
 
 export default () => {
   const router = useRouter();
@@ -38,14 +32,14 @@ export default () => {
     return null;
   }
   return (
-    <Container>
+    <Div width={{ lg: 1 / 2, md: 1, sm: 1 }} m="X-AUTO">
       <h2>Login</h2>
       <Divider title="By Phone" mt="XL" mb="LG" />
       <PhoneLogin phoneNumberWithCode={["+358", ""]} onSetPhoneNumber={console.log} />
-      <Divider title="Traditional" mt="XL" mb="LG" />
+      <Divider title="Classic" mt="XL" mb="LG" />
       <EmailLogin email="" password="" onSubmitEmailCredentials={onSubmitEmailCredentials} />
       <Divider title="Social media" mt="XL" mb="LG" />
       <FacebookLogin />
-    </Container>
+    </Div>
   );
 };
