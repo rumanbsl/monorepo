@@ -1,10 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { ObjectID as bsonID } from "bson";
-import { Mutation, Query, Subscription } from "common/Interfaces/gql-definitions";
+import { Mutation, Query, Subscription } from "@/Interfaces/gql-definitions";
 import { context } from "@/app";
 import { Request } from "express";
 import { UserSchemaWithMethods } from "@/models/User/methods";
 import { FilterFn } from "apollo-server-express";
+
+import { UserDbObject, VerificationDbObject, PlaceDbObject, RideDbObject, ChatDbObject, MessageDbObject } from "./gql-definitions";
 
 export type Context = ReturnType<typeof context>
 export interface ObjectID extends bsonID {
@@ -44,3 +46,22 @@ export type ObjectToString<T extends Record<string, unknown>> = {
 }
 
 export type AuthShape = {["access-token"]?: string; ["refresh-token"]?: string};
+export type UnPromisify<T> = T extends Promise<infer U> ? U : T;
+
+export interface CreateUserArg extends Partial<UserDbObject> {
+  name: UserDbObject["name"]
+}
+export interface CreateVerificationArg extends Partial<VerificationDbObject> {
+  target: VerificationDbObject["target"];
+  payload: VerificationDbObject["payload"];
+}
+export interface CreatePlaceArg extends Partial<PlaceDbObject> {
+  name: PlaceDbObject["name"]
+  lat: PlaceDbObject["lat"]
+  lng: PlaceDbObject["lng"]
+  address: PlaceDbObject["address"]
+}
+
+export type CreateRideArg = Omit<RideDbObject, "createdAt" | "status">
+export type CreateChatArg = Omit<ChatDbObject, "createdAt" | "messages">
+export type CreateMessageArg = Omit<MessageDbObject, "createdAt">

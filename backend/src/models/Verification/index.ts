@@ -1,6 +1,6 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
 
-import { VerificationDbObject, VerificationTarget, VerificationOutput } from "common/Interfaces/gql-definitions";
+import { VerificationDbObject, VerificationTarget, VerificationOutput } from "@/Interfaces/gql-definitions";
 import { ObjectID } from "@/Interfaces";
 
 export interface IVerificationSchema extends mongoose.Document, Omit<VerificationDbObject, "_id"> {

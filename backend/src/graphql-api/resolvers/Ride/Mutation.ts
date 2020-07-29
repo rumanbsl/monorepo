@@ -1,11 +1,10 @@
-import { RootMutation } from "@/Interfaces";
-import { CreateChatArg, CreateRideArg } from "common/Interfaces";
+import { RootMutation, CreateChatArg, CreateRideArg } from "@/Interfaces";
 
 import {
   MutationRide_Request_By_PassengerArgs,
   MutationRide_Update_Status_By_DriverArgs,
   RideStatus,
-} from "common/Interfaces/gql-definitions";
+} from "@/Interfaces/gql-definitions";
 
 import apolloError from "@/utils/apolloError";
 import { isAuthenticatedResolver } from "../Base";

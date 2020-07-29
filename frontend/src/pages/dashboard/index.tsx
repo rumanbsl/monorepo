@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client";
 import serverOnly from "@/resolvers/serverOnly";
+import Div from "@/components/Div";
 
-export default function Sell() {
+export default function Dashboard() {
   const { data, error, loading } = useQuery(serverOnly.Query.USER_GET);
 
   if (error) {
@@ -10,6 +11,9 @@ export default function Sell() {
   }
   if (loading) return <div>Loading...</div>;
   return (
-    <pre>{JSON.stringify(data)}</pre>
+    <Div>
+      <h2>Dashboard</h2>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </Div>
   );
 }

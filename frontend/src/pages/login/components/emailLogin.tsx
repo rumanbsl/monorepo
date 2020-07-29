@@ -2,18 +2,19 @@ import Input from "@/components/Form/Input";
 import Button from "@/components/Button";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { USER_EMAIL_SIGN_INVariables } from "@/Interfaces/generated";
 
-export interface InputShape {
-  email: string;
-  password: string;
+interface LoginProps extends USER_EMAIL_SIGN_INVariables {
+  onSubmitEmailCredentials: (input: USER_EMAIL_SIGN_INVariables)=>void;
+  loading?:boolean;
 }
 
-const LoginForm = (props: {onSubmitEmailCredentials: (input: InputShape)=>void} & InputShape) => {
-  const { email: Email, password: Password } = props;
+const LoginForm = (props: LoginProps) => {
+  const { email: Email, password: Password, loading } = props;
   const [email, setEmail] = useState(Email || "");
   const [password, setPassword] = useState(Password || "");
 
-  const login = async (input: InputShape) => {
+  const login = async (input: USER_EMAIL_SIGN_INVariables) => {
     if (email && password) {
       props.onSubmitEmailCredentials(input);
     } else {
@@ -34,7 +35,7 @@ const LoginForm = (props: {onSubmitEmailCredentials: (input: InputShape)=>void} 
         value={password}
         onChange={((e) => setPassword(e.target.value || ""))}
       />
-      <Button variant="primary" onClick={() => login({ email, password })} mt="LG">
+      <Button variant="primary" onClick={() => login({ email, password })} mt="LG" loading={!!loading}>
         submit
       </Button>
       <ToastContainer />

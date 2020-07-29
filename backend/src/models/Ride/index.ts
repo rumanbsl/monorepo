@@ -1,5 +1,5 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { RideDbObject, RideOutput } from "common/Interfaces/gql-definitions";
+import { RideDbObject, RideOutput } from "@/Interfaces/gql-definitions";
 import User from "../User";
 import methods, { RideSchemaWithMethods } from "./methods";
 import Chat from "../Chat";

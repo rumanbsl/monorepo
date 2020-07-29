@@ -1,4 +1,4 @@
-import { Place } from "common/Interfaces/gql-definitions";
+import { Place } from "@/Interfaces/gql-definitions";
 import { IPlaceSchema } from "..";
 
 const methods = {

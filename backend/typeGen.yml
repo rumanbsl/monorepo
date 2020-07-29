@@ -8,7 +8,7 @@ config:
   useIndexSignature: true
   skipTypename: true
 generates:
-  ../common/Interfaces/gql-definitions.ts:
+  ./backend/Interfaces/gql-definitions.ts:
     plugins:
       - typescript
       - typescript-operations

@@ -1,6 +1,6 @@
 import { RootSubscription, Context, ContextWithSubscribedUser } from "@/Interfaces";
 import { withFilter } from "apollo-server-express";
-import { RideOutput } from "common/Interfaces/gql-definitions";
+import { RideOutput } from "@/Interfaces/gql-definitions";
 
 type Subscriptions = Pick<RootSubscription, "RIDE_PASSENGER_BROADCAST"|"RIDE_STATUS_UPDATE_BY_DRIVER">
 

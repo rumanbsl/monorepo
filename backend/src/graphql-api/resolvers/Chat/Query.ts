@@ -1,5 +1,5 @@
 import { RootQuery } from "@/Interfaces";
-import { QueryChat_GetArgs } from "common/Interfaces/gql-definitions";
+import { QueryChat_GetArgs } from "@/Interfaces/gql-definitions";
 import OID from "@/utils/OID";
 import apolloError from "@/utils/apolloError";
 import { isAuthenticatedResolver } from "../Base";

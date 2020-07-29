@@ -1,6 +1,6 @@
 const routes = [
   { path: "/", protected: true, navItem: true },
-  { path: "/sell", protected: true, navItem: true },
+  { path: "/dashboard", protected: true, navItem: true },
   { path: "/login" },
 ] as const;
 

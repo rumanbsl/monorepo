@@ -1,11 +1,11 @@
-import { RootMutation } from "@/Interfaces";
-import { CreateVerificationArg } from "common/Interfaces";
+import { RootMutation, CreateVerificationArg } from "@/Interfaces";
+
 import {
   VerificationTarget,
   MutationVerification_Phone_StartArgs,
   MutationVerification_Phone_CompleteArgs,
   MutationVerification_Email_CompleteArgs,
-} from "common/Interfaces/gql-definitions";
+} from "@/Interfaces/gql-definitions";
 import { sendVerificationSMS } from "@/utils/sendSMS";
 import apolloError from "@/utils/apolloError";
 import { createAccessToken } from "@/utils/authorization";

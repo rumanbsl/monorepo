@@ -3,11 +3,15 @@ import { darken, lighten } from "polished";
 import { Variants } from "@/styles/colors";
 import { color, ColorProps, space, SpaceProps, layout, LayoutProps } from "styled-system";
 import { MyTheme } from "@/styles";
+import Loader from "@/components/Loader";
+import { ButtonHTMLAttributes } from "react";
 
 type VariantShape = (keyof Variants) | "outline" | "outline_invert";
 
 interface Props extends ColorProps<MyTheme>, SpaceProps<MyTheme>, LayoutProps<MyTheme>{
-  variant?: VariantShape
+  variant?: VariantShape;
+  loading?: boolean;
+  children: React.ReactNode;
 }
 
 function getbg({ variant, theme }: { variant?: VariantShape, theme: DefaultTheme }) {
@@ -60,4 +64,13 @@ const Button = styled.button<Props>`
   ${layout}
 `;
 
-export default Button;
+const ButtonComponent: React.FC<Props & ButtonHTMLAttributes<unknown>> = (props) => {
+  const { loading, children, ...rest } = props;
+  return (
+    <Button disabled={loading} {...rest}>
+      {loading ? <Loader /> : children}
+    </Button>
+  );
+};
+
+export default ButtonComponent;

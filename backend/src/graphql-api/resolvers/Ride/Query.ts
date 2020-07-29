@@ -1,5 +1,5 @@
 import { RootQuery } from "@/Interfaces";
-import { RideStatus, QueryRide_Get_InformationArgs } from "common/Interfaces/gql-definitions";
+import { RideStatus, QueryRide_Get_InformationArgs } from "@/Interfaces/gql-definitions";
 import OID from "@/utils/OID";
 import apolloError from "@/utils/apolloError";
 import { isAuthenticatedResolver } from "../Base";

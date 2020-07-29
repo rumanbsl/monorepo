@@ -1,5 +1,5 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { UserDbObject, UserOutput } from "common/Interfaces/gql-definitions";
+import { UserDbObject, UserOutput } from "@/Interfaces/gql-definitions";
 
 import { ObjectID } from "@/Interfaces";
 import methods, { UserSchemaWithMethods } from "./methods";

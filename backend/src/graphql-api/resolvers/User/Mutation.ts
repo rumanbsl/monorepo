@@ -1,4 +1,4 @@
-import { RootMutation } from "@/Interfaces";
+import { RootMutation, CreateUserArg, CreatePlaceArg } from "@/Interfaces";
 import { Response } from "express";
 import {
   VerificationTarget,
@@ -11,8 +11,8 @@ import {
   MutationUser_Edit_PlaceArgs,
   MutationUser_Remove_PlaceArgs,
   MutationUser_Revoke_Refresh_TokenArgs,
-} from "common/Interfaces/gql-definitions";
-import { CreateUserArg, CreatePlaceArg } from "common/Interfaces";
+} from "@/Interfaces/gql-definitions";
+
 import apolloError from "@/utils/apolloError";
 import { createAccessToken, createRefreshToken, setRefreshTokenInCookie } from "@/utils/authorization";
 import { sendVerificationEMail } from "@/utils/sendEmail";
