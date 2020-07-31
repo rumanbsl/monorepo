@@ -13,6 +13,8 @@ services:
     environment:
       - HOST_BACKEND=backend
       - NODE_ENV=development
+    env_file:
+      - SECRETS/dev.env
     volumes:
       - ./common:/app/common
       - ./.vscode:/app/.vscode

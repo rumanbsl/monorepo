@@ -12,6 +12,7 @@
     "prop-types": "15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-facebook-login": "4.1.1",
     "react-toastify": "6.0.8",
     "styled-components": "^5.1.1",
     "styled-system": "^5.1.5"
@@ -38,6 +39,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
+    "eslint-plugin-styled-components-a11y": "^0.0.16",
     "stylelint": "^13.6.1",
     "stylelint-config-lost": "^0.0.3",
     "stylelint-config-sass-guidelines": "^7.0.0",
@@ -54,7 +56,7 @@
   "scripts": {
     "build": "next build",
     "build-storybook": "build-storybook",
-    "codegen": "apollo client:codegen src/@types/generated.d.ts --queries=src/resolvers/serverOnly.ts --addTypename --target typescript --outputFlat --localSchemaFile schema.json",
+    "codegen": "apollo client:codegen ./src/Interfaces/gql-definitions.ts --queries=src/resolvers/serverOnly.ts --addTypename --target typescript --outputFlat --localSchemaFile schema.json",
     "dev": "nodemon",
     "gen:icon": "svg-to-tsx --svgDir ./svgs --destination ./src/components/Icon.tsx",
     "precodegen": "apollo schema:download --endpoint=http://localhost/graphql",

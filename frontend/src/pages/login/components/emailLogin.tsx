@@ -2,7 +2,7 @@ import Input from "@/components/Form/Input";
 import Button from "@/components/Button";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { USER_EMAIL_SIGN_INVariables } from "@/Interfaces/generated";
+import { USER_EMAIL_SIGN_INVariables } from "@/Interfaces/gql-definitions";
 
 interface LoginProps extends USER_EMAIL_SIGN_INVariables {
   onSubmitEmailCredentials: (input: USER_EMAIL_SIGN_INVariables)=>void;

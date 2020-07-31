@@ -1,6 +1,7 @@
-import Button from "@/components/Button";
+import Button, { ButtonProps } from "@/components/Button";
 import Icon from "@/components/Icon";
 import styled from "styled-components";
+import { ButtonHTMLAttributes } from "react";
 
 const ButtonComponent = styled(Button)`
   svg {
@@ -15,11 +16,13 @@ const ButtonComponent = styled(Button)`
   }
 `;
 
-export default function FacebookLoginComponent() {
-  return (
-    <ButtonComponent variant="outline">
-      <Icon name="facebook" />
-      facebook
-    </ButtonComponent>
-  );
-}
+type FacebookLoginComponentProps = ButtonProps & ButtonHTMLAttributes<any>;
+
+const FacebookLoginComponent:React.SFC<Omit<FacebookLoginComponentProps, "children">> = (props) => (
+  <ButtonComponent variant="outline" {...props}>
+    <Icon name="facebook" />
+    facebook
+  </ButtonComponent>
+);
+
+export default FacebookLoginComponent;

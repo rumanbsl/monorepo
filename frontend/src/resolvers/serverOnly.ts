@@ -22,6 +22,11 @@ const Mutation = {
       USER_LOGOUT
     }
   `,
+  USER_FB_CONNECT: gql`
+    mutation USER_FB_CONNECT($name: String!,$email:String!,$fbid:String! ) {
+      USER_FB_CONNECT(name:$name, email: $email, fbid: $fbid)
+    }
+  `,
 };
 
 export default { Query, Mutation };

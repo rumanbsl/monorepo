@@ -53,6 +53,25 @@ export interface USER_LOGOUT {
 // @generated
 // This file was automatically generated and should not be edited.
 
+// ====================================================
+// GraphQL mutation operation: USER_FB_CONNECT
+// ====================================================
+
+export interface USER_FB_CONNECT {
+  USER_FB_CONNECT: string;
+}
+
+export interface USER_FB_CONNECTVariables {
+  name: string;
+  email: string;
+  fbid: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
 //==============================================================
 // START Enums and Input Objects
 //==============================================================

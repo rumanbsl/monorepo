@@ -7,26 +7,51 @@ import { useMutation } from "@apollo/client";
 import serverOnly from "@/resolvers/serverOnly";
 import { setAccessToken } from "@/utils/accessToken";
 import Div from "@/components/Div";
-import { USER_EMAIL_SIGN_INVariables } from "@/Interfaces/generated";
-import EmailLogin from "./components/emailLogin";
+import { USER_EMAIL_SIGN_INVariables, USER_FB_CONNECTVariables } from "@/Interfaces/gql-definitions";
+// @ts-ignore
+import FacebookLoginWrapper from "react-facebook-login/dist/facebook-login-render-props";
+import { GetServerSideProps, NextPage } from "next";
 import FacebookLogin from "./components/FacebookLogin";
+import EmailLogin from "./components/emailLogin";
+import { FaceBookProps } from "./Interfaces";
 
-export default () => {
+const LoginPage: NextPage<{fbAppId: string}> = (props) => {
+  const { fbAppId } = props;
   const router = useRouter();
   const data = cache.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
-  const [loginMutation, { loading }] = useMutation<{USER_EMAIL_SIGN_IN: string}, USER_EMAIL_SIGN_INVariables>(serverOnly.Mutation.USER_EMAIL_SIGN_IN);
+  const [emailLoginMutation, { loading: emailLoading }] = useMutation<{USER_EMAIL_SIGN_IN: string}, USER_EMAIL_SIGN_INVariables>(
+    serverOnly.Mutation.USER_EMAIL_SIGN_IN,
+  );
+  const [fbConnectMutation, { loading: fbConnectLoading }] = useMutation<{USER_FB_CONNECT: string}, USER_FB_CONNECTVariables>(
+    serverOnly.Mutation.USER_FB_CONNECT,
+  );
   /* ----------- Methods ----------- */
+  const onLoginSuccess = (token: string) => {
+    setAccessToken(token);
+    cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
+    void router.replace("/dashboard");
+  };
   const onSubmitEmailCredentials = async (variables: USER_EMAIL_SIGN_INVariables) => {
-    await loginMutation({
+    await emailLoginMutation({
       variables,
       update(_, { data:mutationData }) {
         if (mutationData?.USER_EMAIL_SIGN_IN) {
-          setAccessToken(mutationData.USER_EMAIL_SIGN_IN);
-          cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
-          void router.replace("/dashboard");
+          onLoginSuccess(mutationData.USER_EMAIL_SIGN_IN);
         }
       },
     });
+  };
+  const responseFacebook = async (payload: FaceBookProps) => {
+    console.log(payload.picture);
+    await fbConnectMutation({
+      variables: { email: payload.email, fbid: payload.id, name: payload.name },
+      update(_, { data:mutationData }) {
+        if (mutationData?.USER_FB_CONNECT) {
+          onLoginSuccess(mutationData.USER_FB_CONNECT);
+        }
+      },
+    });
+    // send payload to backend
   };
   /* ----------- EOL Methods ----------- */
 
@@ -40,10 +65,19 @@ export default () => {
       <Divider title="By Phone" mt="XL" mb="LG" />
       <PhoneLogin phoneNumberWithCode={["+358", ""]} onSetPhoneNumber={console.log} />
       <Divider title="Classic" mt="XL" mb="LG" />
-      <EmailLogin email="" password="" onSubmitEmailCredentials={onSubmitEmailCredentials} loading={loading} />
+      <EmailLogin email="" password="" onSubmitEmailCredentials={onSubmitEmailCredentials} loading={emailLoading} />
       <Divider title="Social media" mt="XL" mb="LG" />
-      <FacebookLogin />
+      <FacebookLoginWrapper
+        fields="name,email,picture"
+        appId={fbAppId}
+        autoLoad={false}
+        callback={responseFacebook}
+        render={(renderProps:any) => <FacebookLogin loading={fbConnectLoading} onClick={renderProps.onClick} />}
+      />
     </Div>
   );
   /* ----------- EOL Render ----------- */
 };
+
+export const getServerSideProps:GetServerSideProps = async () => ({ props: { fbAppId: process.env.FACEBOOK_APP_ID } });
+export default LoginPage;

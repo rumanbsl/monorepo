@@ -9,9 +9,9 @@ import Input from "../Form/Input";
 import Div, { DivProps } from "../Div";
 
 type CountryShape = typeof countriesWithPhoneCode[number];
-interface PropShape extends DivProps, Omit<HTMLAttributes<unknown>, "color"> {
+export interface PhonePropShape extends DivProps, Omit<HTMLAttributes<unknown>, "color"> {
   phoneNumberWithCode: [CountryShape["dial_code"], string];
-  onSetPhoneNumber: (phoneNumberWithCode: PropShape["phoneNumberWithCode"])=>void;
+  onSetPhoneNumber: (phoneNumberWithCode: PhonePropShape["phoneNumberWithCode"])=>void;
 }
 
 const PhoneInput = styled(Div)`
@@ -93,7 +93,7 @@ const ButtonComponent = styled(Button)<{showDropdown?: boolean}>`
   }
 `;
 
-export default function PhoneInputComponent(props: PropShape) {
+export default function PhoneInputComponent(props: PhonePropShape) {
   const { onSetPhoneNumber, phoneNumberWithCode, width = "100%", ...rest } = props;
   const [dialCode, num] = phoneNumberWithCode;
   const [phoneNumber, setPhoneNumber] = useState(num);
@@ -112,6 +112,7 @@ export default function PhoneInputComponent(props: PropShape) {
   return (
     // @ts-expect-error
     <PhoneInput {...rest} width={width}>
+      {/* eslint-disable-next-line styled-components-a11y/no-noninteractive-tabindex */}
       <Dropdown showDropdown={showDropdown} tabIndex={0} onBlur={() => { toggleShowDropdown(() => false); }}>
         <ButtonComponent variant="outline" onClick={() => { toggleShowDropdown(() => !showDropdown); }} showDropdown={showDropdown}>
           {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.dial_code}` : "Country Code" }

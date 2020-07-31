@@ -9,12 +9,13 @@ module.exports = {
   },
   extends: [
     "react-app",
+    "plugin:styled-components-a11y/recommended",
     "airbnb",
     "airbnb/hooks",
     "../.eslintrc",
   ],
   globals  : { React: "writable" },
-  plugins  : ["graphql"],
+  plugins  : ["graphql", "styled-components-a11y"],
   settings : {
     "import/parsers": {
       "@typescript-eslint/parser": [

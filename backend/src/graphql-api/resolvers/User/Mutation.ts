@@ -145,7 +145,6 @@ const Mutation: Mutations = {
     return true;
   }),
   USER_LOGOUT: loggedIn(async (_, __, { res }) => {
-    console.log("being called");
     setRefreshTokenInCookie(res, "");
     return true;
   }),

@@ -8,7 +8,7 @@ import { ButtonHTMLAttributes } from "react";
 
 type VariantShape = (keyof Variants) | "outline" | "outline_invert";
 
-interface Props extends ColorProps<MyTheme>, SpaceProps<MyTheme>, LayoutProps<MyTheme>{
+export interface ButtonProps extends ColorProps<MyTheme>, SpaceProps<MyTheme>, LayoutProps<MyTheme>{
   variant?: VariantShape;
   loading?: boolean;
   children: React.ReactNode;
@@ -36,7 +36,7 @@ function getcolor({ variant, theme }: { variant?: VariantShape, theme: DefaultTh
   return theme.colors[`${variant}_invert`]; // primary => primary_invert
 }
 
-const Button = styled.button<Props>`
+const Button = styled.button<ButtonProps>`
   align-items: center;
   background: ${({ variant, theme }) => getbg({ variant, theme })};
   border: ${({ variant, theme }) => getborder({ variant, theme })};
@@ -64,7 +64,7 @@ const Button = styled.button<Props>`
   ${layout}
 `;
 
-const ButtonComponent: React.FC<Props & ButtonHTMLAttributes<unknown>> = (props) => {
+const ButtonComponent: React.FC<ButtonProps & ButtonHTMLAttributes<unknown>> = (props) => {
   const { loading, children, ...rest } = props;
   return (
     <Button disabled={loading} {...rest}>
