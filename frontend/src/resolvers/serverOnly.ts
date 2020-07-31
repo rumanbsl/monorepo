@@ -6,6 +6,7 @@ const Query = {
       USER_GET {
         _id
         email
+        profilePhoto
       }
     }
   `,

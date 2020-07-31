@@ -59,9 +59,11 @@
     "codegen": "apollo client:codegen ./src/Interfaces/gql-definitions.ts --queries=src/resolvers/serverOnly.ts --addTypename --target typescript --outputFlat --localSchemaFile schema.json",
     "dev": "nodemon",
     "gen:icon": "svg-to-tsx --svgDir ./svgs --destination ./src/components/Icon.tsx",
+    "lint": "eslint --config .eslintrc.js --ext .ts,.tsx --max-warnings=500 src --fix && :",
     "precodegen": "apollo schema:download --endpoint=http://localhost/graphql",
     "start": "next start",
-    "storybook": "start-storybook -p 6006 -s ./public --ci"
+    "storybook": "start-storybook -p 6006 -s ./public --ci",
+    "typecheck": "wotan -c .wotanrc.yaml --fix && :"
   },
   "version": "1.0.0"
 }

@@ -1,19 +1,19 @@
-import PhoneLogin from "@/components/PhoneInput";
-import Divider from "@/components/Divider";
-import { useRouter } from "next/router";
-import cache from "@/cache";
-import clientOnly from "@/resolvers/clientOnly";
 import { useMutation } from "@apollo/client";
-import serverOnly from "@/resolvers/serverOnly";
-import { setAccessToken } from "@/utils/accessToken";
-import Div from "@/components/Div";
-import { USER_EMAIL_SIGN_INVariables, USER_FB_CONNECTVariables } from "@/Interfaces/gql-definitions";
+import { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
 // @ts-ignore
 import FacebookLoginWrapper from "react-facebook-login/dist/facebook-login-render-props";
-import { GetServerSideProps, NextPage } from "next";
+import { USER_EMAIL_SIGN_INVariables, USER_FB_CONNECTVariables } from "@/Interfaces/gql-definitions";
+import cache from "@/cache";
+import Div from "@/components/Div";
+import Divider from "@/components/Divider";
+import PhoneLogin from "@/components/PhoneInput";
+import clientOnly from "@/resolvers/clientOnly";
+import serverOnly from "@/resolvers/serverOnly";
+import { setAccessToken } from "@/utils/accessToken";
+import { FaceBookProps } from "./Interfaces";
 import FacebookLogin from "./components/FacebookLogin";
 import EmailLogin from "./components/emailLogin";
-import { FaceBookProps } from "./Interfaces";
 
 const LoginPage: NextPage<{fbAppId: string}> = (props) => {
   const { fbAppId } = props;

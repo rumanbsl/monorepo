@@ -59,7 +59,23 @@ module.exports = {
     "import/no-cycle"            : 0,
     "import/no-named-as-default" : 0,
     "import/no-unresolved"       : 0,
-    "indent"                     : [
+    "import/order"               : ["error", {
+      "alphabetize" : { "order": "asc", "caseInsensitive": false },
+      "pathGroups"  : [
+        {
+          "pattern"  : "@/**",
+          "group"    : "external",
+          "position" : "after"
+        },
+        {
+          "pattern"  : "common/**",
+          "group"    : "external",
+          "position" : "after"
+        }
+      ],
+      "pathGroupsExcludedImportTypes": ["builtin"]
+    }],
+    "indent": [
       "error",
       2
     ],

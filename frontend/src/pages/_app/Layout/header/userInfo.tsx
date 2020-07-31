@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import cache from "@/cache";
 import Icon from "@/components/Icon";
+import serverOnly from "@/resolvers/serverOnly";
 
-const Button = styled.button`
+const ProfilePic = styled.button<{image?: string}>`
   align-items: center;
   background: #000;
   border: 0;
@@ -21,10 +23,14 @@ const UserInfo = styled.div`
 `;
 
 export default function UserInfoComponent() {
+  // if (typeof window !== undefined) {
+  //   const userInfo = cache.readQuery({ query: serverOnly.Query.USER_GET });
+  //   console.log(userInfo);
+  // }
   return (
     <UserInfo>
       <Icon name="heart" width={24} height={24} />
-      <Button>0</Button>
+      <ProfilePic>0</ProfilePic>
       <span>US</span>
     </UserInfo>
   );

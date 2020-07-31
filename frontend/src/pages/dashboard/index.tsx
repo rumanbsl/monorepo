@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
-import serverOnly from "@/resolvers/serverOnly";
 import Div from "@/components/Div";
+import serverOnly from "@/resolvers/serverOnly";
 
 export default function Dashboard() {
   const { data, error, loading } = useQuery(serverOnly.Query.USER_GET);

@@ -1,10 +1,10 @@
-import styled, { DefaultTheme } from "styled-components";
 import { darken, lighten } from "polished";
-import { Variants } from "@/styles/colors";
-import { color, ColorProps, space, SpaceProps, layout, LayoutProps } from "styled-system";
-import { MyTheme } from "@/styles";
-import Loader from "@/components/Loader";
 import { ButtonHTMLAttributes } from "react";
+import styled, { DefaultTheme } from "styled-components";
+import { color, ColorProps, space, SpaceProps, layout, LayoutProps } from "styled-system";
+import Loader from "@/components/Loader";
+import { MyTheme } from "@/styles";
+import { Variants } from "@/styles/colors";
 
 type VariantShape = (keyof Variants) | "outline" | "outline_invert";
 

@@ -1,8 +1,8 @@
-import Input from "@/components/Form/Input";
-import Button from "@/components/Button";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { USER_EMAIL_SIGN_INVariables } from "@/Interfaces/gql-definitions";
+import Button from "@/components/Button";
+import Input from "@/components/Form/Input";
 
 interface LoginProps extends USER_EMAIL_SIGN_INVariables {
   onSubmitEmailCredentials: (input: USER_EMAIL_SIGN_INVariables)=>void;
@@ -38,7 +38,6 @@ const LoginForm = (props: LoginProps) => {
       <Button variant="primary" onClick={() => login({ email, password })} mt="LG" loading={!!loading}>
         submit
       </Button>
-      <ToastContainer />
     </div>
   );
 };

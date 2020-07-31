@@ -1,12 +1,12 @@
-import countriesWithPhoneCode from "@/utils/countriesWithPhoneCode";
-import Icon from "@/components/Icon";
 import { useState, HTMLAttributes } from "react";
-import styled from "styled-components";
-import { phoneRegEx } from "common/regex";
 import { ToastContainer, toast } from "react-toastify";
+import styled from "styled-components";
+import Icon from "@/components/Icon";
+import countriesWithPhoneCode from "@/utils/countriesWithPhoneCode";
+import { phoneRegEx } from "common/regex";
 import Button from "../Button";
-import Input from "../Form/Input";
 import Div, { DivProps } from "../Div";
+import Input from "../Form/Input";
 
 type CountryShape = typeof countriesWithPhoneCode[number];
 export interface PhonePropShape extends DivProps, Omit<HTMLAttributes<unknown>, "color"> {

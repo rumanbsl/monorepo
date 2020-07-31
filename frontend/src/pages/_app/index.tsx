@@ -1,8 +1,8 @@
+import { ApolloProvider } from "@apollo/client";
+import { AppProps } from "next/app";
 import React from "react";
 import BaseStyle from "@/styles/base";
-import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "@/utils/apolloClient";
-import { AppProps } from "next/app";
 import Layout from "./Layout";
 import Meta from "./Meta";
 

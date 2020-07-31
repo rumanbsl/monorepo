@@ -1,7 +1,7 @@
+import { ButtonHTMLAttributes } from "react";
+import styled from "styled-components";
 import Button, { ButtonProps } from "@/components/Button";
 import Icon from "@/components/Icon";
-import styled from "styled-components";
-import { ButtonHTMLAttributes } from "react";
 
 const ButtonComponent = styled(Button)`
   svg {

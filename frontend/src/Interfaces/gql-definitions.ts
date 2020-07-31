@@ -11,6 +11,7 @@ export interface UserGet_USER_GET {
   __typename: "UserOutput";
   _id: string | null;
   email: string | null;
+  profilePhoto: string | null;
 }
 
 export interface UserGet {

@@ -1,6 +1,6 @@
+import { InputHTMLAttributes } from "react";
 import styled from "styled-components";
 import Icon, { IconName } from "@/components/Icon";
-import { InputHTMLAttributes } from "react";
 
 const Input = styled.div<{labelInline: boolean, width: string}>`
   flex: 1;
