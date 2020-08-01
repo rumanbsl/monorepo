@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 // @ts-ignore
 import FacebookLoginWrapper from "react-facebook-login/dist/facebook-login-render-props";
@@ -18,7 +18,6 @@ import EmailLogin from "./components/emailLogin";
 const LoginPage: NextPage<{fbAppId: string}> = (props) => {
   const { fbAppId } = props;
   const router = useRouter();
-  const data = cache.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
   const [emailLoginMutation, { loading: emailLoading }] = useMutation<{USER_EMAIL_SIGN_IN: string}, USER_EMAIL_SIGN_INVariables>(
     serverOnly.Mutation.USER_EMAIL_SIGN_IN,
   );
@@ -56,9 +55,6 @@ const LoginPage: NextPage<{fbAppId: string}> = (props) => {
   /* ----------- EOL Methods ----------- */
 
   /* ----------- Render ----------- */
-  if (data?.isLoggedIn) {
-    return null;
-  }
   return (
     <Div width={{ lg: 1 / 2, md: 1, sm: 1 }} m="X-AUTO">
       <h2>Login</h2>
@@ -79,5 +75,6 @@ const LoginPage: NextPage<{fbAppId: string}> = (props) => {
   /* ----------- EOL Render ----------- */
 };
 
-export const getServerSideProps:GetServerSideProps = async () => ({ props: { fbAppId: process.env.FACEBOOK_APP_ID } });
+export * from "@/utils/getServerSideProps";
+
 export default LoginPage;

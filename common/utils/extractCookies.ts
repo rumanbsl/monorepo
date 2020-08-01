@@ -7,6 +7,5 @@ export default function extractCookies<T extends Record<string, unknown>>(str: u
     return acc;
   }, {} as T);
 
-  console.log(cookies, "--------------");
   return cookies;
 }

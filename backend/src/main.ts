@@ -1,5 +1,5 @@
-import console from "chalk-console";
 import http, { Server } from "http";
+import console from "chalk-console";
 import App, { initializeApolloServer } from "./app";
 
 (async function start(): Promise<void> {

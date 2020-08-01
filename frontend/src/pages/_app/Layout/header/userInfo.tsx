@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import cache from "@/cache";
 import Icon from "@/components/Icon";
-import serverOnly from "@/resolvers/serverOnly";
 
 const ProfilePic = styled.button<{image?: string}>`
   align-items: center;

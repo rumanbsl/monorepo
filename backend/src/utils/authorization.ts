@@ -1,10 +1,10 @@
-import jwt from "jsonwebtoken";
-import User from "@/models/User";
-import { AuthShape, ObjectID } from "@/Interfaces";
 import { Response } from "express";
-import apolloError from "./apolloError";
-import OID from "./OID";
+import jwt from "jsonwebtoken";
+import { AuthShape, ObjectID } from "@/Interfaces";
+import User from "@/models/User";
 import extractCookies from "../../../common/utils/extractCookies";
+import OID from "./OID";
+import apolloError from "./apolloError";
 
 const { JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } = process.env;
 

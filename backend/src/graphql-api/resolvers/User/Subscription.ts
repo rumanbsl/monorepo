@@ -1,5 +1,5 @@
-import { RootSubscription, Context, ContextWithSubscribedUser } from "@/Interfaces";
 import { withFilter } from "apollo-server-express";
+import { RootSubscription, Context, ContextWithSubscribedUser } from "@/Interfaces";
 import { UserSchemaWithMethods } from "@/models/User/methods";
 
 type Subscriptions = Pick<RootSubscription, "USER_DRIVERS_GET">

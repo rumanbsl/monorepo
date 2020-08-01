@@ -30,11 +30,13 @@ const Logo = styled.h1`
   }
 `;
 
-export default function HeaderComponent() {
-  return (
-    <Header>
-      <Logo><a href="/">N-Uber</a></Logo>
-      <UserInfo />
-    </Header>
-  );
-}
+type HeaderComponentProps = React.SFC<Record<string, unknown>>
+
+const HeaderComponent:HeaderComponentProps = () => (
+  <Header>
+    <Logo><a href="/">N-Uber</a></Logo>
+    <UserInfo />
+  </Header>
+);
+
+export default HeaderComponent;

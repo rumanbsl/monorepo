@@ -1,6 +1,6 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { ChatDbObject, ChatOutput } from "@/Interfaces/gql-definitions";
 import { ObjectID } from "@/Interfaces";
+import { ChatDbObject, ChatOutput } from "@/Interfaces/gql-definitions";
 import Message from "../Message";
 import User from "../User";
 import methods, { ChatSchemaWithMethods } from "./methods";

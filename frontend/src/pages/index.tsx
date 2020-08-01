@@ -1,1 +1,3 @@
-export default () => <div>Hello</div>;
+
+export default () => <div>Home</div>;
+export * from "@/utils/getServerSideProps";

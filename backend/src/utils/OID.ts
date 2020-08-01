@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 import { ObjectID } from "@/Interfaces";
-import validBson from "./validBson";
 import apolloError from "./apolloError";
+import validBson from "./validBson";
 
 /**
  * @description transform string to mongoose Object ID

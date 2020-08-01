@@ -1,12 +1,10 @@
-import { useQuery, useMutation, MutationUpdaterFn } from "@apollo/client";
+import { useMutation, MutationUpdaterFn, useQuery } from "@apollo/client";
 import Router, { useRouter } from "next/router";
 import ProgressBar from "nprogress";
-import { useEffect } from "react";
 import styled from "styled-components";
 import { initializeCacheWithDefaultValue } from "@/cache";
 import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
-import Routes from "@/utils/Routes";
 import { setAccessToken } from "@/utils/accessToken";
 import NavigationComponent from "./NavigationComponent";
 
@@ -25,41 +23,23 @@ const Main = styled.div`
   }
 `;
 
-const onLogout:MutationUpdaterFn<{USER_LOGOUT: boolean}> = (_, { data }) => {
+const onLogout:MutationUpdaterFn<{USER_LOGOUT: boolean}> = async (_, { data }) => {
   if (data?.USER_LOGOUT) {
+    await initializeCacheWithDefaultValue(false);
     setAccessToken("");
-    initializeCacheWithDefaultValue({ loggedOut: true });
   }
 };
-
 const MainComponent:React.SFC<unknown> = ({ children }) => {
-  const [logout] = useMutation<{USER_LOGOUT: boolean}>(serverOnly.Mutation.USER_LOGOUT);
   const router = useRouter();
-  const { data, error, loading } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
-
-  const visitingProtectedWithoutLoggingIn = Routes.some((route) => route.path === router.pathname && route.protected);
-  const authRoutes = ["/login", "/signup"];
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!data?.isLoggedIn && visitingProtectedWithoutLoggingIn) {
-        router.push("/login").then(console.log).catch(console.error);
-      } else if (data?.isLoggedIn && authRoutes.includes(router.pathname)) {
-        router.push("/").then(console.log).catch(console.error);
-      }
-    }
-  });
-
-  if (loading) return <div>loading...</div>;
-  if (error) return <div>Oh no!</div>;
-
-  if (!data?.isLoggedIn) {
-    return visitingProtectedWithoutLoggingIn ? null : <Main>{children}</Main>;
+  const { data } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
+  const [logout, { data: loggedOutData }] = useMutation<{USER_LOGOUT: boolean}>(serverOnly.Mutation.USER_LOGOUT);
+  if (loggedOutData?.USER_LOGOUT) {
+    window.location.href = "/login";
+    return null;
   }
-
   return (
     <Main>
-      <NavigationComponent router={router} onLogout={() => logout({ update: onLogout })} />
+      {data?.isLoggedIn && <NavigationComponent router={router} onLogout={() => logout({ update: onLogout })} />}
       {children}
     </Main>
   );

@@ -1,10 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import { FilterFn } from "apollo-server-express";
 import { ObjectID as bsonID } from "bson";
+import { Request } from "express";
 import { Mutation, Query, Subscription } from "@/Interfaces/gql-definitions";
 import { context } from "@/app";
-import { Request } from "express";
 import { UserSchemaWithMethods } from "@/models/User/methods";
-import { FilterFn } from "apollo-server-express";
 
 import { UserDbObject, VerificationDbObject, PlaceDbObject, RideDbObject, ChatDbObject, MessageDbObject } from "./gql-definitions";
 

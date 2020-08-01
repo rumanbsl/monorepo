@@ -1,8 +1,8 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
 import { RideDbObject, RideOutput } from "@/Interfaces/gql-definitions";
+import Chat from "../Chat";
 import User from "../User";
 import methods, { RideSchemaWithMethods } from "./methods";
-import Chat from "../Chat";
 
 export interface IRideSchema extends mongoose.Document, Omit<RideDbObject, "_id"> {
   _id: RideDbObject["_id"]

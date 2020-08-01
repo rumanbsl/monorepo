@@ -11,12 +11,11 @@ const Layout = styled.div`
   max-width: 111rem;
 `;
 
-const LayoutComponent: NextPage = ({ children }) => (
+const LayoutComponent: NextPage<{isLoggedIn: boolean;}> = ({ children, isLoggedIn }) => (
   <ThemeProvider theme={theme}>
     <Layout>
       <Header />
-      {/* Logic for rendering components based on login state is available in Main */}
-      <Main>{children}</Main>
+      <Main isLoggedIn={isLoggedIn}>{children}</Main>
     </Layout>
   </ThemeProvider>
 );

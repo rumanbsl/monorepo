@@ -1,8 +1,8 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { MessageDbObject, MessageOutput } from "@/Interfaces/gql-definitions";
 import { ObjectID } from "@/Interfaces";
-import User from "../User";
+import { MessageDbObject, MessageOutput } from "@/Interfaces/gql-definitions";
 import Chat from "../Chat";
+import User from "../User";
 import methods, { MessageSchemaWithMethods } from "./methods";
 
 export interface IMessageSchema extends mongoose.Document, Omit<MessageDbObject, "_id">{

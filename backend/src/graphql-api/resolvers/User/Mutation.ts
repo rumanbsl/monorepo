@@ -1,5 +1,5 @@
-import { RootMutation, CreateUserArg, CreatePlaceArg } from "@/Interfaces";
 import { Response } from "express";
+import { RootMutation, CreateUserArg, CreatePlaceArg } from "@/Interfaces";
 import {
   VerificationTarget,
   MutationUser_Fb_ConnectArgs,
@@ -13,12 +13,12 @@ import {
   MutationUser_Revoke_Refresh_TokenArgs,
 } from "@/Interfaces/gql-definitions";
 
-import apolloError from "@/utils/apolloError";
-import { createAccessToken, createRefreshToken, setRefreshTokenInCookie } from "@/utils/authorization";
-import { sendVerificationEMail } from "@/utils/sendEmail";
-import nonNullable from "@/utils/getNonNullable";
 import { UserSchemaWithMethods } from "@/models/User/methods";
 import OID from "@/utils/OID";
+import apolloError from "@/utils/apolloError";
+import { createAccessToken, createRefreshToken, setRefreshTokenInCookie } from "@/utils/authorization";
+import nonNullable from "@/utils/getNonNullable";
+import { sendVerificationEMail } from "@/utils/sendEmail";
 import { isAuthenticatedResolver, baseResolver } from "../Base";
 
 const { createResolver: baseCreateResolver } = baseResolver;
@@ -141,7 +141,6 @@ const Mutation: Mutations = {
     const { User } = models;
     const user = await User.findByIdAndUpdate(OID(input.userId), { $inc: { _tokenVersion: 1 } }, { new: true });
     if (!user) throw apolloError({ type: "NotFoundInDBError", data: input });
-    console.log(user);
     return true;
   }),
   USER_LOGOUT: loggedIn(async (_, __, { res }) => {

@@ -1,6 +1,6 @@
-import { Express } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { Express } from "express";
 
 export default function useVendorMiddlewares(app: Express): Express {
   app.use(cookieParser());

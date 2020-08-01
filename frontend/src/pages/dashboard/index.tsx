@@ -4,7 +4,6 @@ import serverOnly from "@/resolvers/serverOnly";
 
 export default function Dashboard() {
   const { data, error, loading } = useQuery(serverOnly.Query.USER_GET);
-
   if (error) {
     console.log(error);
     return <div>Oh no!</div>;
@@ -17,3 +16,5 @@ export default function Dashboard() {
     </Div>
   );
 }
+
+export * from "@/utils/getServerSideProps";

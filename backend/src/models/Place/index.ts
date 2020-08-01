@@ -1,6 +1,6 @@
 import mongoose, { DocumentToObjectOptions } from "mongoose";
-import { PlaceDbObject, PlaceOutput } from "@/Interfaces/gql-definitions";
 import { ObjectID } from "@/Interfaces";
+import { PlaceDbObject, PlaceOutput } from "@/Interfaces/gql-definitions";
 import User from "../User";
 import { PlaceSchemaWithMethods } from "./methods";
 

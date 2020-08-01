@@ -1,5 +1,5 @@
-import { createResolver } from "apollo-resolvers";
 import { isInstance } from "apollo-errors";
+import { createResolver } from "apollo-resolvers";
 import { Context, ContextWithReqUser } from "@/Interfaces";
 import ApolloError from "@/utils/apolloError";
 import { decodeJWTAndGetUser, extractAuthHeader } from "@/utils/authorization";
@@ -24,7 +24,10 @@ export const isAuthenticatedResolver = baseResolver.createResolver(
   async (_, __, ctx) => {
     const { req } = ctx as ContextWithUser;
     const token = extractAuthHeader(req.headers["x-auth"]);
-    req.user = (await decodeJWTAndGetUser({ "access-token": token })).user;
+    if (!token) throw ApolloError({ type: "ForbiddenError" });
+    const { user } = await decodeJWTAndGetUser({ "access-token": token });
+    if (!user) throw ApolloError({ type: "ForbiddenError" });
+    req.user = user;
   },
 ) as Resolver<any, ContextWithReqUser>;
 

@@ -6,10 +6,10 @@ import {
   MutationVerification_Phone_CompleteArgs,
   MutationVerification_Email_CompleteArgs,
 } from "@/Interfaces/gql-definitions";
-import { sendVerificationSMS } from "@/utils/sendSMS";
 import apolloError from "@/utils/apolloError";
 import { createAccessToken } from "@/utils/authorization";
 import { sendVerificationEMail } from "@/utils/sendEmail";
+import { sendVerificationSMS } from "@/utils/sendSMS";
 import { baseResolver, isAuthenticatedResolver } from "../Base";
 
 const { createResolver: baseCreateResolver } = baseResolver;

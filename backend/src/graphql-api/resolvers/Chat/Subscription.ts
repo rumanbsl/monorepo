@@ -1,5 +1,5 @@
-import { RootSubscription, Context, ContextWithSubscribedUser } from "@/Interfaces";
 import { withFilter } from "apollo-server-express";
+import { RootSubscription, Context, ContextWithSubscribedUser } from "@/Interfaces";
 import { MessageOutput } from "@/Interfaces/gql-definitions";
 
 type Subscriptions = Pick<RootSubscription, "ON_MESSAGE">

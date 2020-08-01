@@ -1,8 +1,8 @@
-import User from "./User";
 import Chat from "./Chat";
 import Message from "./Message";
 import Place from "./Place";
 import Ride from "./Ride";
+import User from "./User";
 import Verification from "./Verification";
 
 export default {
