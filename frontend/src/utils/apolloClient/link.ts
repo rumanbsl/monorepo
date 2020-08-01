@@ -54,7 +54,7 @@ const link = (_token?: string) => ApolloLink.from([
       if (typeof decoded?.exp !== "number") return false;
       return Date.now() < decoded.exp * 1000;
     },
-    fetchAccessToken : () => Fetch("http://backend:3000/api/v1/refresh-token", { method: "POST" }),
+    fetchAccessToken : () => Fetch("http://localhost/api/v1/refresh-token", { method: "POST" }),
     handleFetch      : (token) => {
       setAccessToken(token);
     },

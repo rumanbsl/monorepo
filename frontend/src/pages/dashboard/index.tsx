@@ -16,5 +16,3 @@ export default function Dashboard() {
     </Div>
   );
 }
-
-export * from "@/utils/getServerSideProps";

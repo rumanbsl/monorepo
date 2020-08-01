@@ -9,11 +9,12 @@ import serverOnly from "@/resolvers/serverOnly";
 import BaseStyle from "@/styles/base";
 import { setAccessToken, getAccessToken } from "@/utils/accessToken";
 import { useApollo, initializeApollo } from "@/utils/apolloClient";
+import routeGuard from "@/utils/routeGuard";
 import Layout from "./Layout";
 import Meta from "./Meta";
 
 const MyApp = ({ Component, pageProps = {}, initialApolloState, accessToken }: any) => {
-  if (accessToken) setAccessToken(accessToken);
+  if (accessToken && !getAccessToken()) setAccessToken(accessToken);
   pageProps.initialApolloState = initialApolloState || pageProps.initialApolloState;
   const apolloClient = useApollo(initialApolloState);
   const data = apolloClient.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
@@ -30,6 +31,7 @@ const MyApp = ({ Component, pageProps = {}, initialApolloState, accessToken }: a
 
 MyApp.getInitialProps = async ({ ctx }: AppContext) => {
   let accessToken = getAccessToken();
+  let returnable: Record<string, unknown> = {};
   try {
     if (typeof ctx.req?.headers.cookie === "string") {
       const token = cookie.parse<{"refresh-token": string}>(ctx.req.headers.cookie);
@@ -52,7 +54,14 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
     setAccessToken("");
     cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: false } });
   }
-  return { initialApolloState: cache.extract(), accessToken };
+  if (ctx.req && ctx.res) {
+    returnable = {
+      ...returnable,
+      ...routeGuard({ req: ctx.req, res: ctx.res }),
+    };
+  }
+  returnable = { ...returnable, initialApolloState: cache.extract(), accessToken };
+  return returnable;
 };
 
 export default MyApp;

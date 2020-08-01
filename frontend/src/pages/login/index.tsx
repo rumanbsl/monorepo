@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 // @ts-ignore
@@ -7,6 +7,7 @@ import { USER_EMAIL_SIGN_INVariables, USER_FB_CONNECTVariables } from "@/Interfa
 import cache from "@/cache";
 import Div from "@/components/Div";
 import Divider from "@/components/Divider";
+import Loader from "@/components/Loader";
 import PhoneLogin from "@/components/PhoneInput";
 import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
@@ -18,6 +19,7 @@ import EmailLogin from "./components/emailLogin";
 const LoginPage: NextPage<{fbAppId: string}> = (props) => {
   const { fbAppId } = props;
   const router = useRouter();
+  const { data } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
   const [emailLoginMutation, { loading: emailLoading }] = useMutation<{USER_EMAIL_SIGN_IN: string}, USER_EMAIL_SIGN_INVariables>(
     serverOnly.Mutation.USER_EMAIL_SIGN_IN,
   );
@@ -41,7 +43,6 @@ const LoginPage: NextPage<{fbAppId: string}> = (props) => {
     });
   };
   const responseFacebook = async (payload: FaceBookProps) => {
-    console.log(payload.picture);
     await fbConnectMutation({
       variables: { email: payload.email, fbid: payload.id, name: payload.name },
       update(_, { data:mutationData }) {
@@ -55,6 +56,7 @@ const LoginPage: NextPage<{fbAppId: string}> = (props) => {
   /* ----------- EOL Methods ----------- */
 
   /* ----------- Render ----------- */
+  if (data?.isLoggedIn) return <Div bg="primary" width={{ lg: 1, md: 1, sm: 1 }} m="X-AUTO"><Loader /></Div>;
   return (
     <Div width={{ lg: 1 / 2, md: 1, sm: 1 }} m="X-AUTO">
       <h2>Login</h2>
@@ -74,7 +76,5 @@ const LoginPage: NextPage<{fbAppId: string}> = (props) => {
   );
   /* ----------- EOL Render ----------- */
 };
-
-export * from "@/utils/getServerSideProps";
 
 export default LoginPage;
