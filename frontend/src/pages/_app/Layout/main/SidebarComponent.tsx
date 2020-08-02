@@ -1,9 +1,15 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+
+import { MutationUpdaterFn, useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Sidebar from "react-sidebar";
 import styled from "styled-components";
+import { USER_GET, USER_TOGGLE_DRIVING_MODE } from "@/Interfaces/gql-definitions";
+import cache from "@/cache";
 import Icon from "@/components/Icon";
+import serverOnly from "@/resolvers/serverOnly";
 import Routes from "@/utils/Routes";
 import { ViewPortShape } from "@/utils/useWindowSize";
 
@@ -50,7 +56,7 @@ const Navigation = styled.nav`
   }
 `;
 
-const NavigationComponent = () => {
+const NavigationComponent:React.SFC = () => {
   const router = useRouter();
 
   const className = (route: typeof Routes[number]) => {
@@ -70,24 +76,52 @@ const NavigationComponent = () => {
   );
 };
 
-const IconComponent = styled(Icon)`
+const Menu = styled(Icon)`
   cursor: pointer;
   fill: ${({ theme }) => theme.colors.primary};
   height: 2.5rem;
   margin: 2rem 0 0 2rem;
   width: 2.5rem;
 `;
+const DriverIcon = styled(Icon)<{isDriving: number}>`
+  cursor: pointer;
+  fill: ${({ theme, isDriving }) => (isDriving ? theme.colors.primary : theme.colors.error)};
+  height: 4.5rem;
+  width: 4.5rem;
+`;
 
 const SidebarComponent:React.SFC<{viewport: ViewPortShape}> = ({ viewport }) => {
+  const query = serverOnly.Query.USER_GET;
   const [isSidebarOpen, toggleSidebarVisibility] = useState(false);
+
+  const [toggleDriving] = useMutation<USER_TOGGLE_DRIVING_MODE>(serverOnly.Mutation.USER_TOGGLE_DRIVING_MODE);
+  let userInfo = cache.readQuery<USER_GET>({ query });
+
+  const onToggleDrivingMode:MutationUpdaterFn<USER_TOGGLE_DRIVING_MODE> = async (_, { data }) => {
+    userInfo = cache.readQuery<USER_GET>({ query });
+    cache.writeQuery({
+      query,
+      data: { USER_GET: { ...userInfo?.USER_GET || {}, isDriving: !!data?.USER_TOGGLE_DRIVING_MODE } },
+    });
+  };
+
   return viewport.width <= 800 ? (
     <Sidebar
-      sidebar={<NavigationComponent />}
+      sidebar={(
+        <>
+          <NavigationComponent />
+          <DriverIcon
+            name="wheel"
+            isDriving={userInfo?.USER_GET?.isDriving ? 1 : 0}
+            onClick={async () => { await toggleDriving({ update: onToggleDrivingMode }); }}
+          />
+        </>
+      )}
       open={isSidebarOpen}
       onSetOpen={() => toggleSidebarVisibility(() => !isSidebarOpen)}
       styles={{ sidebar: { background: "white", padding: "2rem" } }}
     >
-      <IconComponent name="menu" onClick={() => toggleSidebarVisibility(() => !isSidebarOpen)} />
+      <Menu name="menu" onClick={() => toggleSidebarVisibility(() => !isSidebarOpen)} />
     </Sidebar>
   ) : <NavigationComponent />;
 };

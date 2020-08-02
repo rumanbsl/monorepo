@@ -95,7 +95,7 @@ const Mutation: Mutations = {
     const { user } = req;
     user.isDriving = !user.isDriving;
     await user.save();
-    return true;
+    return user.isDriving;
   }),
   USER_REPORT_MOVEMENT: loggedIn(async (_, input: MutationUser_Report_MovementArgs, ctx) => {
     const { req, models: { User } } = ctx;

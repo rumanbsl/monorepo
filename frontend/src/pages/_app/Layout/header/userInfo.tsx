@@ -1,6 +1,8 @@
-import { useQuery } from "@apollo/client";
+/* eslint-disable react-hooks/rules-of-hooks */
+
+import { useQuery, useMutation, MutationUpdaterFn } from "@apollo/client";
 import styled from "styled-components";
-import { UserGet_USER_GET } from "@/Interfaces/gql-definitions";
+import { USER_GET, USER_TOGGLE_DRIVING_MODE } from "@/Interfaces/gql-definitions";
 import cache from "@/cache";
 import Icon from "@/components/Icon";
 import clientOnly from "@/resolvers/clientOnly";
@@ -20,6 +22,13 @@ const ProfilePic = styled.div`
   }
 `;
 
+const DriverIcon = styled(Icon)<{isDriving: number}>`
+  cursor: pointer;
+  fill: ${({ theme, isDriving }) => (isDriving ? theme.colors.primary : theme.colors.error)};
+  height: 26px;
+  width: 26px;
+`;
+
 const UserInfo = styled.div`
   align-items: center;
   display: flex;
@@ -27,18 +36,29 @@ const UserInfo = styled.div`
   width: 13rem;
 `;
 
+const onToggleDrivingMode:MutationUpdaterFn<USER_TOGGLE_DRIVING_MODE> = async (localCache, { data }) => {
+  const query = serverOnly.Query.USER_GET;
+  const user = cache.readQuery<USER_GET>({ query });
+
+  if (typeof data?.USER_TOGGLE_DRIVING_MODE === "boolean" && user) {
+    localCache.writeQuery({
+      query,
+      data: { USER_GET: { ...user.USER_GET, isDriving: data.USER_TOGGLE_DRIVING_MODE } },
+    });
+  }
+};
+
 export default function UserInfoComponent() {
   const user = cache.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
   if (!user?.isLoggedIn) return null;
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data } = useQuery<{USER_GET: UserGet_USER_GET}>(serverOnly.Query.USER_GET);
-  if (!data) return null;
+  const userInfo = cache.readQuery<USER_GET>({ query: serverOnly.Query.USER_GET });
+  const [toggleDriving] = useMutation<USER_TOGGLE_DRIVING_MODE>(serverOnly.Mutation.USER_TOGGLE_DRIVING_MODE);
   return (
     <UserInfo>
-      <Icon name="heart" width={24} height={24} />
+      <DriverIcon name="wheel" isDriving={userInfo?.USER_GET?.isDriving ? 1 : 0} onClick={() => toggleDriving({ update: onToggleDrivingMode })} />
       <ProfilePic>
-        {data.USER_GET.profilePhoto && <img src={data.USER_GET.profilePhoto} alt="" />}
+        {userInfo?.USER_GET?.profilePhoto && <img src={userInfo.USER_GET.profilePhoto} alt="" />}
       </ProfilePic>
       <span>US</span>
     </UserInfo>

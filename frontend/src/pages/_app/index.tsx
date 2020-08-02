@@ -21,8 +21,8 @@ interface ApplicationPropsShape extends AppProps {
 }
 
 const MyApp = (props: ApplicationPropsShape) => {
-  const viewport = useWindowSize();
   const { Component, pageProps = {}, initialApolloState, accessToken, fbAppId } = props;
+  const viewport = useWindowSize();
   // setting localstorage x-auth, bit redundant, but needed
   if (accessToken && !getAccessToken()) setAccessToken(accessToken);
   pageProps.initialApolloState = initialApolloState || pageProps.initialApolloState;

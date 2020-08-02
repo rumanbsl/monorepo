@@ -2,11 +2,12 @@ import { gql } from "@apollo/client";
 
 const Query = {
   USER_GET: gql`
-    query UserGet{
+    query USER_GET{
       USER_GET {
         _id
         email
         profilePhoto
+        isDriving
       }
     }
   `,
@@ -26,6 +27,11 @@ const Mutation = {
   USER_FB_CONNECT: gql`
     mutation USER_FB_CONNECT($name: String!,$email:String!,$fbid:String! ) {
       USER_FB_CONNECT(name:$name, email: $email, fbid: $fbid)
+    }
+  `,
+  USER_TOGGLE_DRIVING_MODE: gql`
+    mutation USER_TOGGLE_DRIVING_MODE {
+      USER_TOGGLE_DRIVING_MODE
     }
   `,
 };

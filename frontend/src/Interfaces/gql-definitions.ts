@@ -4,18 +4,19 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: UserGet
+// GraphQL query operation: USER_GET
 // ====================================================
 
-export interface UserGet_USER_GET {
+export interface USER_GET_USER_GET {
   __typename: "UserOutput";
   _id: string | null;
   email: string | null;
   profilePhoto: string | null;
+  isDriving: boolean;
 }
 
-export interface UserGet {
-  USER_GET: UserGet_USER_GET | null;
+export interface USER_GET {
+  USER_GET: USER_GET_USER_GET | null;
 }
 
 /* tslint:disable */
@@ -66,6 +67,19 @@ export interface USER_FB_CONNECTVariables {
   name: string;
   email: string;
   fbid: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: USER_TOGGLE_DRIVING_MODE
+// ====================================================
+
+export interface USER_TOGGLE_DRIVING_MODE {
+  USER_TOGGLE_DRIVING_MODE: boolean;
 }
 
 /* tslint:disable */
