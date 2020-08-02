@@ -5,7 +5,6 @@ import Routes from "@/utils/Routes";
 
 interface NavigationProps {
   router: NextRouter;
-  onLogout: () => void;
 }
 
 const Navigation = styled.nav`
@@ -51,7 +50,7 @@ const Navigation = styled.nav`
   }
 `;
 
-export default function NavigationComponent({ router, onLogout }: NavigationProps) {
+export default function NavigationComponent({ router }: NavigationProps) {
   const className = (route: typeof Routes[number]) => {
     const returnable: string[] = [];
     if (route.path === "/") returnable.push("home");
@@ -65,7 +64,6 @@ export default function NavigationComponent({ router, onLogout }: NavigationProp
           <a className={className(route)}>{route.path === "/" ? "home" : route.path.substring(1)}</a>
         </Link>
       ))}
-      <button type="button" onClick={onLogout}>logout</button>
     </Navigation>
   );
 }

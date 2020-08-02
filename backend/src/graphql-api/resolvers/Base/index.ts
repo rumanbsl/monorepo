@@ -12,10 +12,10 @@ interface ContextWithUser extends Omit<ContextWithReqUser, "req"> {
 export const baseResolver = createResolver(
   null,
   (_, __, ___, error) => {
-    if (isInstance(error)) return error;
     if (error.name === "TokenExpiredError") {
       return ApolloError({ internalData: error, type: "UnknownError", message: "Token Expired!" });
     }
+    if (isInstance(error)) return error;
     return ApolloError({ internalData: error, type: "UnknownError" });
   },
 ) as Resolver<any>;

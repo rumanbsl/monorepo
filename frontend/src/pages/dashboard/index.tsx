@@ -1,8 +1,10 @@
 import { useQuery } from "@apollo/client";
+import { NextPage } from "next";
+import { PageProps } from "@/Interfaces";
 import Div from "@/components/Div";
 import serverOnly from "@/resolvers/serverOnly";
 
-export default function Dashboard() {
+const Dashboard: NextPage<PageProps> = () => {
   const { data, error, loading } = useQuery(serverOnly.Query.USER_GET);
   if (error) {
     console.log(error);
@@ -15,4 +17,6 @@ export default function Dashboard() {
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </Div>
   );
-}
+};
+
+export default Dashboard;

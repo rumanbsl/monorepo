@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import styled, { ThemeProvider } from "styled-components";
 import theme from "@/styles";
 import Header from "./header";
@@ -11,11 +10,11 @@ const Layout = styled.div`
   max-width: 111rem;
 `;
 
-const LayoutComponent: NextPage<{isLoggedIn: boolean;}> = ({ children, isLoggedIn }) => (
+const LayoutComponent: React.SFC = ({ children }) => (
   <ThemeProvider theme={theme}>
     <Layout>
       <Header />
-      <Main isLoggedIn={isLoggedIn}>{children}</Main>
+      <Main>{children}</Main>
     </Layout>
   </ThemeProvider>
 );

@@ -13,6 +13,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-facebook-login": "4.1.1",
+    "react-sidebar": "3.0.2",
     "react-toastify": "6.0.8",
     "styled-components": "^5.1.1",
     "styled-system": "^5.1.5"
@@ -29,6 +30,7 @@
     "@types/nprogress": "^0.2.0",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "@types/react-sidebar": "2.2.3",
     "@types/styled-components": "^5.1.1",
     "@types/styled-system": "^5.1.9",
     "@zeit/next-css": "^1.0.1",

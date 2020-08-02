@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 // @ts-ignore
 import FacebookLoginWrapper from "react-facebook-login/dist/facebook-login-render-props";
+import { PageProps } from "@/Interfaces";
 import { USER_EMAIL_SIGN_INVariables, USER_FB_CONNECTVariables } from "@/Interfaces/gql-definitions";
 import cache from "@/cache";
 import Div from "@/components/Div";
@@ -16,7 +17,7 @@ import { FaceBookProps } from "./Interfaces";
 import FacebookLogin from "./components/FacebookLogin";
 import EmailLogin from "./components/emailLogin";
 
-const LoginPage: NextPage<{fbAppId: string}> = (props) => {
+const LoginPage: NextPage<PageProps> = (props) => {
   const { fbAppId } = props;
   const router = useRouter();
   const { data } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
@@ -37,6 +38,7 @@ const LoginPage: NextPage<{fbAppId: string}> = (props) => {
       variables,
       update(_, { data:mutationData }) {
         if (mutationData?.USER_EMAIL_SIGN_IN) {
+          cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
           onLoginSuccess(mutationData.USER_EMAIL_SIGN_IN);
         }
       },

@@ -1,2 +1,6 @@
+import { NextPage } from "next";
+import { PageProps } from "@/Interfaces";
 
-export default () => <div>Home</div>;
+const Index:NextPage<PageProps> = () => <div>Home</div>;
+
+export default Index;

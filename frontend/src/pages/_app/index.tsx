@@ -1,9 +1,9 @@
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider, NormalizedCacheObject } from "@apollo/client";
 import cookie from "cookie";
 import nodeFetch from "isomorphic-unfetch";
-import { AppContext } from "next/app";
+import { AppContext, AppProps } from "next/app";
 import React from "react";
-import cache from "@/cache";
+import cache, { initializeCacheWithDefaultValue } from "@/cache";
 import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
 import BaseStyle from "@/styles/base";
@@ -13,15 +13,24 @@ import routeGuard from "@/utils/routeGuard";
 import Layout from "./Layout";
 import Meta from "./Meta";
 
-const MyApp = ({ Component, pageProps = {}, initialApolloState, accessToken }: any) => {
+interface ApplicationPropsShape extends AppProps {
+  initialApolloState: NormalizedCacheObject;
+  accessToken: string;
+  fbAppId: string;
+}
+
+const MyApp = (props: ApplicationPropsShape) => {
+  const { Component, pageProps = {}, initialApolloState, accessToken, fbAppId } = props;
+  // setting localstorage x-auth, bit redundant, but needed
   if (accessToken && !getAccessToken()) setAccessToken(accessToken);
   pageProps.initialApolloState = initialApolloState || pageProps.initialApolloState;
+  pageProps.fbAppId = fbAppId;
+
   const apolloClient = useApollo(initialApolloState);
-  const data = apolloClient.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
   return (
     <ApolloProvider client={apolloClient}>
       <Meta />
-      <Layout isLoggedIn={!!data?.isLoggedIn}>
+      <Layout>
         <Component {...pageProps} />
       </Layout>
       <BaseStyle />
@@ -31,7 +40,8 @@ const MyApp = ({ Component, pageProps = {}, initialApolloState, accessToken }: a
 
 MyApp.getInitialProps = async ({ ctx }: AppContext) => {
   let accessToken = getAccessToken();
-  let returnable: Record<string, unknown> = {};
+  await initializeCacheWithDefaultValue(!!accessToken);
+  let returnable: Record<string, unknown> = { fbAppId: process.env.FACEBOOK_APP_ID };
   try {
     if (typeof ctx.req?.headers.cookie === "string") {
       const token = cookie.parse<{"refresh-token": string}>(ctx.req.headers.cookie);
@@ -41,7 +51,6 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
       })).json();
       accessToken = parsedToken.accessToken;
     }
-    await cache.reset();
 
     if (accessToken) {
       cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
