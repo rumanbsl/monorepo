@@ -1,7 +1,10 @@
 import { ApolloLink, createHttpLink, Observable } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import nodeFetch from "isomorphic-unfetch";
 import jwtDecode from "jwt-decode";
+import { toast } from "react-toastify";
+import { ErrorType } from "common/Interfaces";
 import { getAccessToken, setAccessToken } from "../accessToken";
 
 const isServer = () => typeof window === "undefined";
@@ -43,7 +46,30 @@ const createHttpAnfReqLinks = (token?:string) => [
   }),
 ];
 
-const link = (_token?: string) => ApolloLink.from([
+interface ReturnedErrorShape {
+  data?: Record<string, unknown>;
+  message: string;
+  name: ErrorType;
+  time_thrown: Date;
+}
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    (graphQLErrors as unknown as ReturnedErrorShape[]).forEach((e) => {
+      const message = (() => {
+        if (e.name === "NotFoundInDBError") {
+          return "Information missmatch";
+        }
+        return "something went wrong.";
+      })();
+      toast.error(message, { autoClose: 3000 });
+    });
+  }
+
+  if (networkError) toast.error(`[Network error]: ${networkError}`, { autoClose: 3000 });
+});
+
+const link = (_token?: string) => errorLink.concat(ApolloLink.from([
   new TokenRefreshLink({
     accessTokenField        : "accessToken",
     isTokenValidOrUndefined : () => {
@@ -65,6 +91,6 @@ const link = (_token?: string) => ApolloLink.from([
 
   }),
   ...createHttpAnfReqLinks(_token),
-]);
+]));
 
 export default link;

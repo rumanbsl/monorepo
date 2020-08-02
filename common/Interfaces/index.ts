@@ -1,3 +1,10 @@
-export interface Common {
-  shared: "across"
-}
+export type ErrorType = "UnknownError"
+  | "ForbiddenError"
+  | "AuthenticationRequiredError"
+  | "AlreadyExistsError"
+  | "InvalidInputError"
+  | "ValidationError"
+  | "NotFoundInDBError"
+  | "InvalidTokenError"
+  | "PhoneNotVerifiedError"
+  | "AuthenticationFailedError";

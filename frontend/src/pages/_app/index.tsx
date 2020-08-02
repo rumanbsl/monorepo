@@ -3,6 +3,7 @@ import cookie from "cookie";
 import nodeFetch from "isomorphic-unfetch";
 import { AppContext, AppProps } from "next/app";
 import React from "react";
+import { ToastContainer } from "react-toastify";
 import cache, { initializeCacheWithDefaultValue } from "@/cache";
 import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
@@ -36,6 +37,7 @@ const MyApp = (props: ApplicationPropsShape) => {
         <Component {...pageProps} />
       </Layout>
       <BaseStyle />
+      <ToastContainer />
     </ApolloProvider>
   );
 };

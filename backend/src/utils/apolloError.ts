@@ -1,16 +1,6 @@
 /* eslint-disable max-len */
 import { createError, ErrorConfig } from "apollo-errors";
-
-type ErrorType = "UnknownError"
-  | "ForbiddenError"
-  | "AuthenticationRequiredError"
-  | "AlreadyExistsError"
-  | "InvalidInputError"
-  | "ValidationError"
-  | "NotFoundInDBError"
-  | "InvalidTokenError"
-  | "PhoneNotVerifiedError"
-  | "AuthenticationFailedError";
+import { ErrorType } from "common/Interfaces";
 
 interface ErrConfig extends Omit<ErrorConfig, "message"> {
   type: ErrorType;

@@ -1,5 +1,5 @@
 import { useState, HTMLAttributes } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Icon from "@/components/Icon";
 import countriesWithPhoneCode from "@/utils/countriesWithPhoneCode";
@@ -143,7 +143,6 @@ export default function PhoneInputComponent(props: PhonePropShape) {
         }}
       />
       <Button onClick={() => onPressSubmitButton({ countryCode, phoneNumber })}>submit</Button>
-      <ToastContainer />
     </PhoneInput>
   );
 }
