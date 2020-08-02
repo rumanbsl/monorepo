@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { MutationUpdaterFn, useMutation } from "@apollo/client";
+import { Cloudinary } from "cloudinary-core";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { lighten } from "polished";
 import { useState } from "react";
 import Sidebar from "react-sidebar";
 import styled from "styled-components";
@@ -21,9 +23,9 @@ const Navigation = styled.nav`
 
   > * {
     align-items: center;
-    background: #f8f8f8;
+    background: ${({ theme }) => lighten(0.1, theme.colors.primary)};
     border-radius: 1.3rem;
-    color: inherit;
+    color: ${({ theme }) => lighten(0.1, theme.colors.primary_invert)};
     display: inline-flex;
     font-size: 1.4rem;
     font-style: italic;
@@ -41,8 +43,8 @@ const Navigation = styled.nav`
     }
 
     &.active {
-      background: #a38de3;
-      color: #fde0ff;
+      background: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.primary_invert};
     }
 
     &.home {
@@ -83,25 +85,21 @@ const Menu = styled(Icon)`
   margin: 2rem 0 0 2rem;
   width: 2.5rem;
 `;
-const DriverIcon = styled(Icon)<{isDriving: number}>`
+const DriverIcon = styled(Icon)<{driving: number}>`
   cursor: pointer;
-  fill: ${({ theme, isDriving }) => (isDriving ? theme.colors.primary : theme.colors.error)};
+  fill: ${({ theme, driving }) => (driving ? theme.colors.primary : theme.colors.error)};
   height: 4.5rem;
   width: 4.5rem;
 `;
 
-const SidebarComponent:React.SFC<{viewport: ViewPortShape}> = ({ viewport }) => {
-  const query = serverOnly.Query.USER_GET;
+const SidebarComponent:React.SFC<{viewport: ViewPortShape; userInfo: NonNullable<USER_GET["USER_GET"]>}> = ({ viewport, userInfo }) => {
   const [isSidebarOpen, toggleSidebarVisibility] = useState(false);
-
   const [toggleDriving] = useMutation<USER_TOGGLE_DRIVING_MODE>(serverOnly.Mutation.USER_TOGGLE_DRIVING_MODE);
-  let userInfo = cache.readQuery<USER_GET>({ query });
 
   const onToggleDrivingMode:MutationUpdaterFn<USER_TOGGLE_DRIVING_MODE> = async (_, { data }) => {
-    userInfo = cache.readQuery<USER_GET>({ query });
     cache.writeQuery({
-      query,
-      data: { USER_GET: { ...userInfo?.USER_GET || {}, isDriving: !!data?.USER_TOGGLE_DRIVING_MODE } },
+      query : serverOnly.Query.USER_GET,
+      data  : { USER_GET: { ...userInfo, isDriving: !!data?.USER_TOGGLE_DRIVING_MODE } },
     });
   };
 
@@ -112,7 +110,7 @@ const SidebarComponent:React.SFC<{viewport: ViewPortShape}> = ({ viewport }) => 
           <NavigationComponent />
           <DriverIcon
             name="wheel"
-            isDriving={userInfo?.USER_GET?.isDriving ? 1 : 0}
+            driving={userInfo.isDriving ? 1 : 0}
             onClick={async () => { await toggleDriving({ update: onToggleDrivingMode }); }}
           />
         </>

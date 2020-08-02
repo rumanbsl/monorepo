@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { useQuery, useMutation, MutationUpdaterFn } from "@apollo/client";
+import { useMutation, MutationUpdaterFn } from "@apollo/client";
 import styled from "styled-components";
 import { USER_GET, USER_TOGGLE_DRIVING_MODE } from "@/Interfaces/gql-definitions";
 import cache from "@/cache";
@@ -22,9 +22,9 @@ const ProfilePic = styled.div`
   }
 `;
 
-const DriverIcon = styled(Icon)<{isDriving: number}>`
+const DriverIcon = styled(Icon)<{driving: number}>`
   cursor: pointer;
-  fill: ${({ theme, isDriving }) => (isDriving ? theme.colors.primary : theme.colors.error)};
+  fill: ${({ theme, driving }) => (driving ? theme.colors.primary : theme.colors.error)};
   height: 26px;
   width: 26px;
 `;
@@ -56,7 +56,7 @@ export default function UserInfoComponent() {
   const [toggleDriving] = useMutation<USER_TOGGLE_DRIVING_MODE>(serverOnly.Mutation.USER_TOGGLE_DRIVING_MODE);
   return (
     <UserInfo>
-      <DriverIcon name="wheel" isDriving={userInfo?.USER_GET?.isDriving ? 1 : 0} onClick={() => toggleDriving({ update: onToggleDrivingMode })} />
+      <DriverIcon name="wheel" driving={userInfo?.USER_GET?.isDriving ? 1 : 0} onClick={() => toggleDriving({ update: onToggleDrivingMode })} />
       <ProfilePic>
         {userInfo?.USER_GET?.profilePhoto && <img src={userInfo.USER_GET.profilePhoto} alt="" />}
       </ProfilePic>
