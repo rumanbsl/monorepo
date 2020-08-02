@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { NextRouter } from "next/router";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import Sidebar from "react-sidebar";
 import styled from "styled-components";
+import Icon from "@/components/Icon";
 import Routes from "@/utils/Routes";
-
-interface NavigationProps {
-  router: NextRouter;
-}
+import { ViewPortShape } from "@/utils/useWindowSize";
 
 const Navigation = styled.nav`
   display: flex;
@@ -50,7 +50,9 @@ const Navigation = styled.nav`
   }
 `;
 
-export default function NavigationComponent({ router }: NavigationProps) {
+const NavigationComponent = () => {
+  const router = useRouter();
+
   const className = (route: typeof Routes[number]) => {
     const returnable: string[] = [];
     if (route.path === "/") returnable.push("home");
@@ -66,4 +68,27 @@ export default function NavigationComponent({ router }: NavigationProps) {
       ))}
     </Navigation>
   );
-}
+};
+
+const IconComponent = styled(Icon)`
+  cursor: pointer;
+  fill: ${({ theme }) => theme.colors.primary};
+  height: 2.5rem;
+  margin: 2rem 0 0 2rem;
+  width: 2.5rem;
+`;
+
+const SidebarComponent:React.SFC<{viewport: ViewPortShape}> = ({ viewport }) => {
+  const [isSidebarOpen, toggleSidebarVisibility] = useState(false);
+  return viewport.width <= 800 ? (
+    <Sidebar
+      sidebar={<NavigationComponent />}
+      open={isSidebarOpen}
+      onSetOpen={() => toggleSidebarVisibility(() => !isSidebarOpen)}
+      styles={{ sidebar: { background: "white", padding: "2rem" } }}
+    >
+      <IconComponent name="menu" onClick={() => toggleSidebarVisibility(() => !isSidebarOpen)} />
+    </Sidebar>
+  ) : <NavigationComponent />;
+};
+export default SidebarComponent;

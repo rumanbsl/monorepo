@@ -10,6 +10,7 @@ import BaseStyle from "@/styles/base";
 import { setAccessToken, getAccessToken } from "@/utils/accessToken";
 import { useApollo, initializeApollo } from "@/utils/apolloClient";
 import routeGuard from "@/utils/routeGuard";
+import useWindowSize from "@/utils/useWindowSize";
 import Layout from "./Layout";
 import Meta from "./Meta";
 
@@ -20,6 +21,7 @@ interface ApplicationPropsShape extends AppProps {
 }
 
 const MyApp = (props: ApplicationPropsShape) => {
+  const viewport = useWindowSize();
   const { Component, pageProps = {}, initialApolloState, accessToken, fbAppId } = props;
   // setting localstorage x-auth, bit redundant, but needed
   if (accessToken && !getAccessToken()) setAccessToken(accessToken);
@@ -30,7 +32,7 @@ const MyApp = (props: ApplicationPropsShape) => {
   return (
     <ApolloProvider client={apolloClient}>
       <Meta />
-      <Layout>
+      <Layout viewport={viewport}>
         <Component {...pageProps} />
       </Layout>
       <BaseStyle />

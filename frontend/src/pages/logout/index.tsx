@@ -19,7 +19,7 @@ const Index:NextPage<PageProps> = () => {
 
   useEffect(() => {
     if (data?.isLoggedIn) logout({ update: onLogout }).then(() => { /*  */ }).catch((e) => { throw e; });
-  });
+  }, [data?.isLoggedIn, logout]);
   return null;
 };
 

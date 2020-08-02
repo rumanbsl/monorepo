@@ -1,9 +1,10 @@
 import { useQuery } from "@apollo/client";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 import ProgressBar from "nprogress";
 import styled from "styled-components";
 import clientOnly from "@/resolvers/clientOnly";
-import NavigationComponent from "./NavigationComponent";
+import { ViewPortShape } from "@/utils/useWindowSize";
+import SidebarComponent from "./SidebarComponent";
 
 Router.events.on("routeChangeStart", () => { ProgressBar.start(); });
 Router.events.on("routeChangeComplete", () => { ProgressBar.done(); });
@@ -20,12 +21,11 @@ const Main = styled.div`
   }
 `;
 
-const MainComponent:React.SFC<unknown> = ({ children }) => {
-  const router = useRouter();
+const MainComponent:React.SFC<{viewport: ViewPortShape}> = ({ children, viewport }) => {
   const { data } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
   return (
     <Main>
-      {data?.isLoggedIn && <NavigationComponent router={router} />}
+      {data?.isLoggedIn && <SidebarComponent viewport={viewport} />}
       {children}
     </Main>
   );
