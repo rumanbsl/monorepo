@@ -2,15 +2,22 @@ import Router from "next/router";
 import ProgressBar from "nprogress";
 import styled from "styled-components";
 import { USER_GET } from "@/Interfaces/gql-definitions";
-import cache from "@/cache";
+import cache, { LocalStateShape } from "@/cache";
 import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
 import { ViewPortShape } from "@/utils/useWindowSize";
 import SidebarComponent from "./SidebarComponent";
 
-Router.events.on("routeChangeStart", () => { ProgressBar.start(); });
-Router.events.on("routeChangeComplete", () => { ProgressBar.done(); });
-Router.events.on("routeChangeError", () => { ProgressBar.done(); });
+function toggleeRootLoading(rootLoading: boolean) {
+  cache.writeQuery<Partial<LocalStateShape>>({
+    query : clientOnly.Query.ROOT_LOADING,
+    data  : { rootLoading },
+  });
+}
+
+Router.events.on("routeChangeStart", () => { ProgressBar.start(); toggleeRootLoading(true); });
+Router.events.on("routeChangeComplete", () => { ProgressBar.done(); toggleeRootLoading(false); });
+Router.events.on("routeChangeError", () => { ProgressBar.done(); toggleeRootLoading(false); });
 
 const Main = styled.div`
   column-gap: 5.7rem;

@@ -1,16 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { MutationUpdaterFn, useMutation } from "@apollo/client";
+import { MutationUpdaterFn, useMutation, useQuery } from "@apollo/client";
 import { Cloudinary } from "cloudinary-core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { lighten } from "polished";
+import { lighten, darken } from "polished";
 import { useState } from "react";
 import Sidebar from "react-sidebar";
 import styled from "styled-components";
 import { USER_GET, USER_TOGGLE_DRIVING_MODE } from "@/Interfaces/gql-definitions";
 import cache from "@/cache";
 import Icon from "@/components/Icon";
+import Loader from "@/components/Loader";
+import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
 import Routes from "@/utils/Routes";
 import { ViewPortShape } from "@/utils/useWindowSize";
@@ -23,9 +25,9 @@ const Navigation = styled.nav`
 
   > * {
     align-items: center;
-    background: ${({ theme }) => lighten(0.1, theme.colors.primary)};
+    background: ${({ theme }) => theme.colors.primary};
     border-radius: 1.3rem;
-    color: ${({ theme }) => lighten(0.1, theme.colors.primary_invert)};
+    color: ${({ theme }) => theme.colors.primary_invert};
     display: inline-flex;
     font-size: 1.4rem;
     font-style: italic;
@@ -43,8 +45,14 @@ const Navigation = styled.nav`
     }
 
     &.active {
-      background: ${({ theme }) => theme.colors.primary};
+      background: ${({ theme }) => darken(0.1, theme.colors.primary)};
       color: ${({ theme }) => theme.colors.primary_invert};
+    }
+
+    &.disabled {
+      background: ${({ theme }) => lighten(0.3, theme.colors.primary)};
+      cursor: default;
+      pointer-events: none;
     }
 
     &.home {
@@ -60,18 +68,24 @@ const Navigation = styled.nav`
 
 const NavigationComponent:React.SFC = () => {
   const router = useRouter();
+  const { data } = useQuery<{rootLoading: boolean}>(clientOnly.Query.ROOT_LOADING);
 
   const className = (route: typeof Routes[number]) => {
     const returnable: string[] = [];
     if (route.path === "/") returnable.push("home");
     if (router.pathname === route.path) returnable.push("active");
+    if (data?.rootLoading) returnable.push("disabled");
     return returnable.join(" ");
   };
   return (
     <Navigation>
       {Routes.filter((route) => route.navItem).map((route, i) => (
         <Link href={route.path} key={i}>
-          <a className={className(route)}>{route.path === "/" ? "home" : route.path.substring(1)}</a>
+          <a className={className(route)}>
+            {data?.rootLoading && <Loader />}
+            {" "}
+            {route.path === "/" ? "home" : route.path.substring(1)}
+          </a>
         </Link>
       ))}
     </Navigation>

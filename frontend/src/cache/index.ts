@@ -6,6 +6,7 @@ const cache: InMemoryCache = new InMemoryCache({ typePolicies: {} });
 
 export interface LocalStateShape {
   isLoggedIn: boolean;
+  rootLoading: boolean;
 }
 
 export async function initializeCacheWithDefaultValue(isLoggedIn: boolean) {
@@ -13,9 +14,13 @@ export async function initializeCacheWithDefaultValue(isLoggedIn: boolean) {
     setAccessToken("");
   }
   return cache.reset().then(() => {
-    cache.writeQuery<LocalStateShape>({
+    cache.writeQuery<Partial<LocalStateShape>>({
       data  : { isLoggedIn },
       query : clientOnlyResolvers.Query.IS_LOGGED_IN,
+    });
+    cache.writeQuery<Partial<LocalStateShape>>({
+      data  : { rootLoading: false },
+      query : clientOnlyResolvers.Query.ROOT_LOADING,
     });
   }).catch((err) => {
     console.error(err);

@@ -10,5 +10,10 @@ export default {
         isLoggedIn @client
       }
     `,
+    ROOT_LOADING: gql`
+      query IsLoggedIn {
+        rootLoading @client
+      }
+    `,
   },
 };
