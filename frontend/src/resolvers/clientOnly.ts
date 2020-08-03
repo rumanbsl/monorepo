@@ -11,7 +11,7 @@ export default {
       }
     `,
     ROOT_LOADING: gql`
-      query IsLoggedIn {
+      query rootLoading {
         rootLoading @client
       }
     `,

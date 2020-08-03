@@ -58,9 +58,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     (graphQLErrors as unknown as ReturnedErrorShape[]).forEach((e) => {
       const message = (() => {
         if (e.name === "NotFoundInDBError") {
-          return "Information missmatch";
+          return "Information not found";
         }
-        return "something went wrong.";
+        return e.message || "something went wrong.";
       })();
       toast.error(message, { autoClose: 3000 });
     });

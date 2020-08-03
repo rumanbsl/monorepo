@@ -49,6 +49,7 @@
     "start": "nodemon",
     "test": "jest --passWithNoTests",
     "type-gen": "graphql-codegen -c typeGen.yml --watch",
+    "codegen": "graphql-codegen -c typeGen.yml",
     "typecheck": "wotan -p tsconfig.json -r && :",
     "watch": "nodemon dist/main.js"
   },

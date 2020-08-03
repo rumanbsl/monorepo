@@ -4,23 +4,10 @@ import { useMutation, MutationUpdaterFn } from "@apollo/client";
 import styled from "styled-components";
 import { USER_GET, USER_TOGGLE_DRIVING_MODE } from "@/Interfaces/gql-definitions";
 import cache from "@/cache";
+import FileUploader from "@/components/FileUploader";
 import Icon from "@/components/Icon";
 import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
-
-const ProfilePic = styled.div`
-  img {
-    align-items: center;
-    background: #000;
-    border: 0;
-    border-radius: 50%;
-    color: #fff;
-    display: flex;
-    height: 3.2rem;
-    justify-content: center;
-    width: 3.2rem;
-  }
-`;
 
 const DriverIcon = styled(Icon)<{driving: number}>`
   cursor: pointer;
@@ -34,6 +21,18 @@ const UserInfo = styled.div`
   display: flex;
   justify-content: space-between;
   width: 13rem;
+`;
+
+const ProfilePic = styled.img`
+  align-items: center;
+  background: #000;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  height: 3.2rem;
+  justify-content: center;
+  width: 3.2rem;
 `;
 
 const onToggleDrivingMode:MutationUpdaterFn<USER_TOGGLE_DRIVING_MODE> = async (localCache, { data }) => {
@@ -57,9 +56,9 @@ export default function UserInfoComponent() {
   return (
     <UserInfo>
       <DriverIcon name="wheel" driving={userInfo?.USER_GET?.isDriving ? 1 : 0} onClick={() => toggleDriving({ update: onToggleDrivingMode })} />
-      <ProfilePic>
-        {userInfo?.USER_GET?.profilePhoto && <img src={userInfo.USER_GET.profilePhoto} alt="" />}
-      </ProfilePic>
+      <FileUploader accept="image/*" onUpload={(e) => { console.log(e); }}>
+        {userInfo?.USER_GET?.profilePhoto && <ProfilePic src={userInfo.USER_GET.profilePhoto} alt="" />}
+      </FileUploader>
       <span>US</span>
     </UserInfo>
   );

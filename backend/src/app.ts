@@ -75,11 +75,7 @@ export const context = (pl: ExpressShape) => ({
 function formatError(error: GraphQLError) {
   const originalError = error.originalError as ApolloError;
   if (isApolloErrorInstance(originalError)) {
-    console.error(JSON.stringify({
-      type         : "error",
-      data         : originalError.data,
-      internalData : originalError.internalData,
-    }, null, 2));
+    console.error(JSON.stringify(originalError, null, 2));
   }
   return formatApolloError(error);
 }
