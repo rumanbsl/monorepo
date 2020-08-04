@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { usePopper } from "react-popper";
 import { Variants } from "@/styles/colors";
 import useClickOutside from "@/utils/useClickOutside";
@@ -14,10 +14,11 @@ const ArrowElement: React.SFC<PopperElementProps> = ({ reference, ...prop }) => 
 
 interface PopperBaseProps {
   activator: React.ReactElement;
-  component: React.ReactNode;
+  component: React.ReactElement;
   withArrow?: boolean;
   popperColor?: keyof Variants;
   activeOn?: "click" | "hover"
+  componentHideOnClick?: boolean
 }
 
 const listeners = (activeOn: PopperBaseProps["activeOn"], state: boolean, toggleVisibility:(value: React.SetStateAction<boolean>) => void) => {
@@ -36,7 +37,7 @@ const listeners = (activeOn: PopperBaseProps["activeOn"], state: boolean, toggle
 };
 
 const PopperBase: React.SFC<PopperBaseProps> = (props) => {
-  const { activeOn, activator, popperColor, component, withArrow = false } = props;
+  const { activeOn, activator, popperColor, component, withArrow = false, componentHideOnClick = true } = props;
   const [visibility, setVisibility] = useState(false);
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
@@ -52,6 +53,7 @@ const PopperBase: React.SFC<PopperBaseProps> = (props) => {
   );
 
   const Activator = React.cloneElement(activator, { ref: setReferenceElement, ...listeners(activeOn, visibility, setVisibility) });
+  const Component = React.cloneElement(component, { ref: setArrowElement, ...(componentHideOnClick ? listeners(activeOn, visibility, setVisibility) : {}) });
   const PopperRef = useRef(null);
   useClickOutside(PopperRef, () => { setVisibility(false); });
   return (
@@ -61,7 +63,7 @@ const PopperBase: React.SFC<PopperBaseProps> = (props) => {
         {visibility && (
           <PopperElement reference={setPopperElement} popperColor={popperColor || "primary"} style={styles.popper} {...attributes.popper}>
             {withArrow && <ArrowElement reference={setArrowElement} popperColor={popperColor || "primary"} style={styles.arrow} />}
-            {component}
+            {Component}
           </PopperElement>
         )}
       </motion.div>

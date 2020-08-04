@@ -7,7 +7,25 @@ import Dropdown from './index';
 
 <Preview>
   <Story name="Default">
-    <Dropdown items={[{ label: "noni", value: "1234" }]} />
+    <Dropdown
+      items={[
+      { label: "noni", value: "1234", _id: "0" },
+      { label: "wow", value: "noni" , _id: "1"},
+      { label: "boo", value: "too", _id: "2" },
+      ]}
+      onSelectItem={console.log}
+    />
+  </Story>
+  <Story name="multiple">
+    <Dropdown
+      items={[
+      { label: "noni", value: "1234", _id: "0" },
+      { label: "wow", value: "noni" , _id: "1"},
+      { label: "boo", value: "too", _id: "2" },
+      ]}
+      onSelectItem={console.log}
+      multiple
+    />
   </Story>
 </Preview>
 
