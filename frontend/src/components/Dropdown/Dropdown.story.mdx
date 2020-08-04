@@ -1,0 +1,16 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import Dropdown from './index';
+
+<Meta title="Dropdown" component={Dropdown} />
+
+# Dropdown
+
+<Preview>
+  <Story name="Default">
+    <Dropdown items={[{ label: "noni", value: "1234" }]} />
+  </Story>
+</Preview>
+
+## Props
+
+<Props of={Dropdown} />

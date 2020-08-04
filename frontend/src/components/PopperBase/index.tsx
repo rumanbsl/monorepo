@@ -1,54 +1,9 @@
-import React, { useState } from "react";
+import { motion } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
 import { usePopper } from "react-popper";
-import styled from "styled-components";
 import { Variants } from "@/styles/colors";
-import Div from "../Div";
-
-interface PopperElementProps {
-  reference: React.Dispatch<React.SetStateAction<any>>;
-  style: React.CSSProperties;
-  popperColor: keyof Variants;
-}
-
-const PopperElementStyled = styled(Div)<{popperColor: keyof Variants}>`
-  background: ${({ popperColor, theme }) => theme.colors[popperColor]};
-  border: 1px solid #eaeaea;
-  border-radius: 4px;
-  color: ${({ popperColor, theme }) => (theme.colors as Record<string, string>)[`${popperColor}_invert`]};
-  font-size: 13px;
-  padding: 4px 8px;
-
-  &[data-popper-placement^="top"] > #arrow {
-    bottom: -4px;
-  }
-
-  &[data-popper-placement^="bottom"] > #arrow {
-    top: -4px;
-  }
-
-  &[data-popper-placement^="left"] > #arrow {
-    right: -4px;
-  }
-
-  &[data-popper-placement^="right"] > #arrow {
-    left: -4px;
-  }
-`;
-const ArrowElementStyled = styled(Div)<{popperColor: keyof Variants}>`
-  &,
-  &:before {
-    height: 8px;
-    position: absolute;
-    width: 8px;
-    z-index: -1;
-  }
-
-  &:before {
-    background: ${({ popperColor, theme }) => theme.colors[popperColor]};
-    content: "";
-    transform: rotate(45deg);
-  }
-`;
+import useClickOutside from "@/utils/useClickOutside";
+import { PopperElementProps, PopperElementStyled, ArrowElementStyled } from "./styles";
 
 const PopperElement: React.SFC<PopperElementProps> = ({ reference, ...prop }) => (
   <PopperElementStyled ref={reference} {...prop} />
@@ -57,14 +12,32 @@ const ArrowElement: React.SFC<PopperElementProps> = ({ reference, ...prop }) => 
   <ArrowElementStyled id="arrow" data-popper-arrow ref={reference} {...prop} />
 );
 
-interface DropDownProps {
+interface PopperBaseProps {
   activator: React.ReactElement;
   component: React.ReactNode;
   withArrow?: boolean;
   popperColor?: keyof Variants;
+  activeOn?: "click" | "hover"
 }
 
-const PopperBase: React.SFC<DropDownProps> = ({ activator, popperColor, component, withArrow = false }) => {
+const listeners = (activeOn: PopperBaseProps["activeOn"], state: boolean, toggleVisibility:(value: React.SetStateAction<boolean>) => void) => {
+  switch (activeOn) {
+  case "click": return {
+    onClick : () => toggleVisibility(!state),
+    onBlur  : () => toggleVisibility(false),
+
+  };
+  case "hover":
+  default: return {
+    onMouseOver : () => toggleVisibility(true),
+    onMouseOut  : () => toggleVisibility(false),
+  };
+  }
+};
+
+const PopperBase: React.SFC<PopperBaseProps> = (props) => {
+  const { activeOn, activator, popperColor, component, withArrow = false } = props;
+  const [visibility, setVisibility] = useState(false);
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const [arrowElement, setArrowElement] = useState(null);
@@ -78,14 +51,20 @@ const PopperBase: React.SFC<DropDownProps> = ({ activator, popperColor, componen
     },
   );
 
-  const Activator = React.cloneElement(activator, { ref: setReferenceElement });
+  const Activator = React.cloneElement(activator, { ref: setReferenceElement, ...listeners(activeOn, visibility, setVisibility) });
+  const PopperRef = useRef(null);
+  useClickOutside(PopperRef, () => { setVisibility(false); });
   return (
-    <div>
+    <div ref={PopperRef}>
       {Activator}
-      <PopperElement reference={setPopperElement} popperColor={popperColor || "primary"} style={styles.popper} {...attributes.popper}>
-        {withArrow && <ArrowElement reference={setArrowElement} popperColor={popperColor || "primary"} style={styles.arrow} />}
-        {component}
-      </PopperElement>
+      <motion.div animate={{ opacity: visibility ? 1 : 0 }}>
+        {visibility && (
+          <PopperElement reference={setPopperElement} popperColor={popperColor || "primary"} style={styles.popper} {...attributes.popper}>
+            {withArrow && <ArrowElement reference={setArrowElement} popperColor={popperColor || "primary"} style={styles.arrow} />}
+            {component}
+          </PopperElement>
+        )}
+      </motion.div>
     </div>
   );
 };
