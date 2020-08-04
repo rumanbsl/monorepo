@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { MutationUpdaterFn, useMutation, useQuery } from "@apollo/client";
-import { Cloudinary } from "cloudinary-core";
+// import { Cloudinary } from "cloudinary-core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { lighten, darken } from "polished";

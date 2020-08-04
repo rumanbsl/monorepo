@@ -14,7 +14,10 @@
     "react-sidebar": "3.0.2",
     "react-toastify": "6.0.8",
     "styled-components": "^5.1.1",
-    "styled-system": "^5.1.5"
+    "styled-system": "^5.1.5",
+    "downshift": "5.4.6",
+    "@popperjs/core": "2.4.4",
+    "react-popper": "2.2.3"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.3.19",

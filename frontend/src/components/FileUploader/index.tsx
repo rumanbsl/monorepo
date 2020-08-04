@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 type FileSrc = string | ArrayBuffer;
 
-interface FileUploaderProps {
-  onUpload: (src: FileSrc|FileSrc[])=> void;
+export interface FileUploaderProps {
+  onUpload: (pl: {src: FileSrc|FileSrc[], filename: string})=> void;
   accept: "audio/*"|"video/*"|"image/*"|"media_type"
   multiple?: boolean
   src?: FileSrc;
@@ -35,8 +35,8 @@ const FileUploader:React.SFC<FileUploaderProps> = ({ children, onUpload, accept,
         if (e.target?.result) {
           filesStr.push(e.target.result);
           if (filesArr.length === filesStr.length) {
-            if (multiple) onUpload(filesStr);
-            else onUpload(filesStr[0]);
+            if (multiple) onUpload({ src: filesStr, filename: file.name });
+            else onUpload({ src: filesStr[0], filename: file.name });
           }
         }
       };
