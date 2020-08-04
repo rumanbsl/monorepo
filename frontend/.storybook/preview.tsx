@@ -11,7 +11,11 @@ configureActions({
 });
 
 const Wrapper = styled.div`
-  margin: 2rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 500px;
+  width: 100%;
 `;
 
 addDecorator(s => (
