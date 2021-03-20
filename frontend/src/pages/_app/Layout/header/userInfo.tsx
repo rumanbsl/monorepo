@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { useMutation, MutationUpdaterFn } from "@apollo/client";
+import { useMutation, MutationUpdaterFn, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { USER_GET, USER_TOGGLE_DRIVING_MODE } from "@/Interfaces/gql-definitions";
-import cache from "@/cache";
 import FileUploader from "@/components/FileUploader";
 import Icon from "@/components/Icon";
 import clientOnly from "@/resolvers/clientOnly";
@@ -35,23 +34,19 @@ const ProfilePic = styled.img`
   width: 3.2rem;
 `;
 
-const onToggleDrivingMode:MutationUpdaterFn<USER_TOGGLE_DRIVING_MODE> = async (localCache, { data }) => {
-  const query = serverOnly.Query.USER_GET;
-  const user = cache.readQuery<USER_GET>({ query });
-
-  if (typeof data?.USER_TOGGLE_DRIVING_MODE === "boolean" && user) {
-    localCache.writeQuery({
-      query,
-      data: { USER_GET: { ...user.USER_GET, isDriving: data.USER_TOGGLE_DRIVING_MODE } },
-    });
-  }
-};
-
 export default function UserInfoComponent() {
-  const user = cache.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
-  if (!user?.isLoggedIn) return null;
+  const query = serverOnly.Query.USER_GET;
+  const { data: clientResolver } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
+  const { data: userInfo } = useQuery<USER_GET>(query, { skip: !clientResolver?.isLoggedIn });
+  const onToggleDrivingMode:MutationUpdaterFn<USER_TOGGLE_DRIVING_MODE> = async (localCache, { data }) => {
+    if (typeof data?.USER_TOGGLE_DRIVING_MODE === "boolean" && userInfo) {
+      localCache.writeQuery({
+        query,
+        data: { USER_GET: { ...userInfo.USER_GET, isDriving: data.USER_TOGGLE_DRIVING_MODE } },
+      });
+    }
+  };
 
-  const userInfo = cache.readQuery<USER_GET>({ query: serverOnly.Query.USER_GET });
   const [toggleDriving] = useMutation<USER_TOGGLE_DRIVING_MODE>(serverOnly.Mutation.USER_TOGGLE_DRIVING_MODE);
   return (
     <UserInfo>

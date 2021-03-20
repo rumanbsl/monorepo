@@ -1,8 +1,23 @@
-import { InMemoryCache } from "@apollo/client";
-import clientOnlyResolvers from "@/resolvers/clientOnly";
+import { InMemoryCache, makeVar } from "@apollo/client";
 import { getAccessToken, setAccessToken } from "@/utils/accessToken";
 
-const cache: InMemoryCache = new InMemoryCache({ typePolicies: {} });
+export const isLoggedInVar = makeVar(false);
+export const rootLoadingInVar = makeVar(false);
+
+const cache: InMemoryCache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        isLoggedIn() {
+          return isLoggedInVar();
+        },
+        rootLoadingIn() {
+          return rootLoadingInVar();
+        },
+      },
+    },
+  },
+});
 
 export interface LocalStateShape {
   isLoggedIn: boolean;
@@ -14,14 +29,8 @@ export async function initializeCacheWithDefaultValue(isLoggedIn: boolean) {
     setAccessToken("");
   }
   return cache.reset().then(() => {
-    cache.writeQuery<Partial<LocalStateShape>>({
-      data  : { isLoggedIn },
-      query : clientOnlyResolvers.Query.IS_LOGGED_IN,
-    });
-    cache.writeQuery<Partial<LocalStateShape>>({
-      data  : { rootLoading: false },
-      query : clientOnlyResolvers.Query.ROOT_LOADING,
-    });
+    isLoggedInVar(isLoggedIn);
+    rootLoadingInVar(false);
   }).catch((err) => {
     console.error(err);
   });

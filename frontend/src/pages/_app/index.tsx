@@ -4,8 +4,7 @@ import nodeFetch from "isomorphic-unfetch";
 import { AppContext, AppProps } from "next/app";
 import React from "react";
 import { ToastContainer } from "react-toastify";
-import cache, { initializeCacheWithDefaultValue } from "@/cache";
-import clientOnly from "@/resolvers/clientOnly";
+import cache, { initializeCacheWithDefaultValue, isLoggedInVar } from "@/cache";
 import serverOnly from "@/resolvers/serverOnly";
 import BaseStyle from "@/styles/base";
 import { setAccessToken, getAccessToken } from "@/utils/accessToken";
@@ -57,7 +56,7 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
     }
 
     if (accessToken) {
-      cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
+      isLoggedInVar(true);
       const client = initializeApollo(cache.extract(), accessToken);
       await client.query({ query: serverOnly.Query.USER_GET, fetchPolicy: "network-only" });
       setAccessToken(accessToken);
@@ -65,7 +64,7 @@ MyApp.getInitialProps = async ({ ctx }: AppContext) => {
   } catch (err) {
     console.log(err);
     setAccessToken("");
-    cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: false } });
+    isLoggedInVar(false);
   }
   if (ctx.req && ctx.res) {
     returnable = {

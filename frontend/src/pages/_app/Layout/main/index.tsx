@@ -1,23 +1,17 @@
+import { useQuery } from "@apollo/client";
 import Router from "next/router";
 import ProgressBar from "nprogress";
 import styled from "styled-components";
 import { USER_GET } from "@/Interfaces/gql-definitions";
-import cache, { LocalStateShape } from "@/cache";
+import { rootLoadingInVar } from "@/cache";
 import clientOnly from "@/resolvers/clientOnly";
 import serverOnly from "@/resolvers/serverOnly";
 import { ViewPortShape } from "@/utils/useWindowSize";
 import SidebarComponent from "./SidebarComponent";
 
-function toggleeRootLoading(rootLoading: boolean) {
-  cache.writeQuery<Partial<LocalStateShape>>({
-    query : clientOnly.Query.ROOT_LOADING,
-    data  : { rootLoading },
-  });
-}
-
-Router.events.on("routeChangeStart", () => { ProgressBar.start(); toggleeRootLoading(true); });
-Router.events.on("routeChangeComplete", () => { ProgressBar.done(); toggleeRootLoading(false); });
-Router.events.on("routeChangeError", () => { ProgressBar.done(); toggleeRootLoading(false); });
+Router.events.on("routeChangeStart", () => { ProgressBar.start(); rootLoadingInVar(true); });
+Router.events.on("routeChangeComplete", () => { ProgressBar.done(); rootLoadingInVar(false); });
+Router.events.on("routeChangeError", () => { ProgressBar.done(); rootLoadingInVar(false); });
 
 const Main = styled.div`
   column-gap: 5.7rem;
@@ -30,12 +24,14 @@ const Main = styled.div`
   }
 `;
 
-const MainComponent:React.SFC<{viewport: ViewPortShape}> = ({ children, viewport }) => {
-  const user = cache.readQuery<{isLoggedIn: boolean}>({ query: clientOnly.Query.IS_LOGGED_IN });
-  const userInfo = user?.isLoggedIn ? cache.readQuery<USER_GET>({ query: serverOnly.Query.USER_GET }) : null;
+const MainComponent:React.FC<{viewport: ViewPortShape}> = ({ children, viewport }) => {
+  const { data: clientResolver } = useQuery<{isLoggedIn: boolean}>(clientOnly.Query.IS_LOGGED_IN);
+
+  const { data: userInfo } = useQuery<USER_GET>(serverOnly.Query.USER_GET, { skip: !clientResolver?.isLoggedIn });
+  if (!userInfo?.USER_GET) return null;
   return (
     <Main>
-      {user?.isLoggedIn && userInfo?.USER_GET ? <SidebarComponent viewport={viewport} userInfo={userInfo.USER_GET} /> : null}
+      <SidebarComponent viewport={viewport} userInfo={userInfo.USER_GET} />
       {children}
     </Main>
   );

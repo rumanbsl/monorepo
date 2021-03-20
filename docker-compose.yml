@@ -66,8 +66,8 @@ services:
       - ~/mono/data/db:/data/db
     ports:
       - "27010:27017"
-    logging:
-      driver: none
+    # logging:
+    #   driver: none
   ############################################################################
   redis:
     container_name: "MONO_REDIS"
@@ -87,8 +87,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    logging:
-      driver: none
+    # logging:
+    #   driver: none
   # #############################################################################
 volumes:
   frontend-deps:

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import FacebookLoginWrapper from "react-facebook-login/dist/facebook-login-render-props";
 import { PageProps } from "@/Interfaces";
 import { USER_EMAIL_SIGN_INVariables, USER_FB_CONNECTVariables } from "@/Interfaces/gql-definitions";
-import cache from "@/cache";
+import { isLoggedInVar } from "@/cache";
 import Div from "@/components/Div";
 import Divider from "@/components/Divider";
 import Loader from "@/components/Loader";
@@ -30,7 +30,7 @@ const LoginPage: NextPage<PageProps> = (props) => {
   /* ----------- Methods ----------- */
   const onLoginSuccess = (token: string) => {
     setAccessToken(token);
-    cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
+    isLoggedInVar(true);
     void router.replace("/dashboard");
   };
   const onSubmitEmailCredentials = async (variables: USER_EMAIL_SIGN_INVariables) => {
@@ -38,7 +38,7 @@ const LoginPage: NextPage<PageProps> = (props) => {
       variables,
       update(_, { data:mutationData }) {
         if (mutationData?.USER_EMAIL_SIGN_IN) {
-          cache.writeQuery({ query: clientOnly.Query.IS_LOGGED_IN, data: { isLoggedIn: true } });
+          isLoggedInVar(true);
           onLoginSuccess(mutationData.USER_EMAIL_SIGN_IN);
         }
       },
